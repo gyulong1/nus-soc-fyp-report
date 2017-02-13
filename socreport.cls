@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{socreport}
-              [2001/04/21 v1.4e NUS SoC HYP/UROP Report Class]
+              [2017/02/13 NUS SoC FYP/UROP Report Class]
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
@@ -8,7 +8,7 @@
 \newif\if@openright
 % OOWIT
 \newif\if@urop
-\newif\if@hyp
+\newif\if@fyp
 \if@compatibility\else
 \DeclareOption{a4paper}
    {\setlength\paperheight {297mm}%
@@ -58,7 +58,7 @@
 %
 % OOIWT additions
 \DeclareOption{urop}{\@uroptrue}
-\DeclareOption{hyp}{\@hyptrue}
+\DeclareOption{fyp}{\@fyptrue}
 \def\projyear#1{%
    \def\@pjyear{#1}%
 }
@@ -76,29 +76,33 @@
 
 \newenvironment{descriptors}
                {\parindent 0em
-			   \vspace{1cm}Subject Descriptors: \list{}{\itemindent 1.5em%
+			   \vspace{1cm}Subject Descriptors: \\ \list{}{\itemindent 4em%
 			   											\leftmargin 0em%
-														\topsep 0em%
+														   \topsep 0em%
 			   											\listparindent \z@
 			   											\itemsep \z@
-														  \parsep \z@}}
+														   \parsep \z@}}
                {\endlist}
-\newenvironment{keywords}[1]
-               {\parindent 0em
-			   \parsep \z@
-			   \vspace{1cm}Keywords: 
-			   \parindent 1.5em%
+\newenvironment{keywords}{%
+    \parindent 0em
+    \parsep \z@
+    \vspace{1cm}Keywords: \\
+    \par%
+    \medskip
+    \leftskip=4em\rightskip=2em%
+    \noindent\ignorespaces}{%
+    \par\medskip}
 
-			   #1}
                {\par}
-\newenvironment{implement}[1]
-               {\parindent 0em
-			   \parsep \z@
-			   \vspace{1cm}Implementation Software and Hardware: 
-			   \parindent 1.5em%
-
-			   #1}
-               {\par}
+\newenvironment{implement}{%
+    \parindent 0em
+    \parsep \z@
+    \vspace{1cm}Implementation Software and Hardware: \\
+    \par%
+    \medskip
+    \leftskip=4em\rightskip=2em%
+    \noindent\ignorespaces}{%
+    \par\medskip}
                                                                                                               
   \newenvironment{acknowledgement}{%
       \titlepage
@@ -477,22 +481,22 @@
   Undergraduate Research Opportunity Program\\
   (UROP) Project Report \\
 \else
-  \if@hyp
-     Honours Year Project Report \\
+  \if@fyp
+     B.Comp. Dissertation \\
    \else
-     \errmessage{Unknown project type. Please use option hyp or urop in documentclass}
+     \errmessage{Unknown project type. Please use option fyp or urop in documentclass}
   \fi
 \fi
-\vspace{2 cm}
-\Large \textbf{\@title} \vspace{2 cm} \large \\
+\vspace{6 cm}
+\Large \textbf{\@title} \vspace{4 cm} \large \\
 By \\ \vspace{.5cm}
 \@author \\
-\vspace{2 cm} 
+\vspace{4 cm} 
 Department of Computer Science \\  \vspace{.5cm}
 School of Computing \\ \vspace{.5cm}
 National University of Singapore \\ \vspace{1cm}
 \@pjyear \\
-\vspace{6 cm}
+\vspace{5 cm}
 \newpage
 \setcounter{page}\@ne
 \addcontentsline{toc}{chapter}{Title}
@@ -502,8 +506,8 @@ National University of Singapore \\ \vspace{1cm}
   Undergraduate Research Opportunity Program\\
   (UROP) Project Report \\
 \else
-  \if@hyp
-    Honours Year Project Report \\
+  \if@fyp
+    B.Comp. Dissertation \\
    \else
     
   \fi
@@ -523,7 +527,7 @@ National University of Singapore \\ \vspace{1cm}
 
 Project No: \@pjnumber
 
-Advisor: \@advisor
+Advisor: \@advisor \\
 
 Deliverables: 
   \begin{list}{}{%

@@ -1,4 +1,4 @@
-\documentclass[hyp,12pt]{socreport}
+\documentclass[fyp,12pt]{socreport}
 
 % Some generic packets.
 \usepackage{color, colortbl}
@@ -10,6 +10,7 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{listings}
+\usepackage{fullpage}
 \pgfplotsset{width=10cm,compat=1.9}
 
 % Sets the root path to look for all images.
@@ -20,51 +21,60 @@
 \newcommand*\lstinputpath[1]{\lstset{inputpath=#1}}
 \lstinputpath{listings}
 \lstset{frame=single, tabsize=2, captionpos=b}
-
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\newcommand{\tab}[1]{\hspace{.11\textwidth}\rlap{#1}}
 
 \begin{document}
 \pagenumbering{roman}
 
 % Replace as necessary
-\title{An Example HYP Final Report}
-\author{Harold Finch}
-\projyear{2015}
-\projnumber{123-45-6789}
-\advisor{Dr. Samaritan}
+\title{Development of a Database Link Between Mainframe and PC}
+\author{Chua Meng Lee}
+\projyear{AY 2016/2017}
+\projnumber{H90000}
+\advisor{Assoc Prof Jarzabek Stanislaw}
 \deliverables{
-    \item Report: 1 Volume
+    \item \itab{Report:} \tab{1 Volume}
+    \item \itab{Manual:} \tab{1 Volume}
+    \item \itab{Program:} \tab{1 Diskette}
+    \item \itab{Database:} \tab{1 Diskette}
 }
 \maketitle
 
 % Replace as necessary
 \begin{abstract}
-This report demonstrates the format of the SOC HYP final report and acts as boilerplate.
+The use of Wireless Sensor Networks for environmental monitoring has become
+increasingly popular over the past decade due to its affordability, ease of deployment
+and customisation, as well as its potentiality in the processing of sensed data. One of the
+greatest challenges in this field would be in the design and implementation of an
+efficient routing protocol which takes into account the various limitations of Wireless
+Sensor Networks, such as battery life, limited storage capacities and high probability of
+packet losses. Besides this, it is also extremely difficult to evaluate the performance of
+such a protocol under crisis scenarios, due to its infrequency and unpredictability. In our
+work, we have designed a routing protocol based on optimised Virtual Polar Coordinate
+Routing (VPCR) (Newsome and Song, 2003) for use with our three-dimensional
+testbed, comprising of 48 MICAz (Crossbow) motes spread across two floors of a
+building. We have also developed a Java-based application with features for Event
+Emulation and simple nodal analysis to assist us in our experiments. The overall
+performance of our protocol will be gauged based on the average Path Stretch Factor
+and path length comparisons between optimised and naïve VPCR.
 
 \begin{descriptors}
-\item Networks
-    \begin{itemize}
-    \item[] Network protocols
-        \begin{itemize}
-        \item[] Application layer protocols
-            \begin{itemize}
-            \item[] Peer-to-peer protocols
-            \end{itemize}
-        \end{itemize}
-    \end{itemize}
-    \item[] Network services
-        \begin{itemize}
-        \item[] Programmable networks
-        \end{itemize}
+    \item \itab{C.2.1}	\tab{Network Architecture and Design}
+    \item \itab{C.2.2}	\tab{Network Protocols}
+    \item \itab{C.2.4}	\tab{Distributed Systems}
+    \item \itab{C.4} 	\tab{Performance of Systems}
+    \item \itab{I.2.9}	\tab{Robotics}
 \end{descriptors}
 \begin{keywords}
-    Keyword 1, Keyword 2, Keyword 3
+    Wireless communication, routing protocols, distributed applications, fault tolerance, sensors
 \end{keywords}
 
 % Replace/Delete as necessary
 \begin{implement}
-    LaTeX, Mac OSX 10.10.2
+    Ubuntu Linux 7.04 Feisty Fawn, TinyOS 2.x, NesC 1.2.8a, Java 1.6 SE, Xbow
+Motes, Tembusu cluster
 \end{implement}
-
 
 \end{abstract}
 
