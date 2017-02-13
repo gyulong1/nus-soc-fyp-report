@@ -4,14 +4,14 @@ __Project updated as at 13 Feb 2017, conforming to NUS SOC requirements__
 
 This repository is meant as a quickstart guide for NUS SOC students doing their Final Year Project(FYP) final report in LaTeX.
 
-It handles all the necessary styling and formatting of the final report so you can focus on your content. We have meticulously ensured that the report conform to the Final Report Guidelines as specified in [http://www.comp.nus.edu.sg/images/resources/content/undergraduates/CP4101-CA-Rpt-Guideline.pdf](NUS - Final Report Guidelines). However, by using the code in this repository, you are agreeing that the project and its authors are dissolved from responsibility from your use of the project. You are welcome to submit a bug report using the issue tracker if you encounter any problems with the code.
+It handles all the necessary styling and formatting of the final report so you can focus on your content. We have meticulously ensured that the report conform to the Final Report Guidelines as specified in [NUS - Final Report Guidelines](http://www.comp.nus.edu.sg/images/resources/content/undergraduates/CP4101-CA-Rpt-Guideline.pdf). However, by using the code in this repository, you are agreeing that the project and its authors are dissolved from responsibility from your use of the project. You are welcome to submit a bug report using the issue tracker if you encounter any problems with the code.
 
 \*If you aren't going to use LaTeX _(which is really awesome)_ for your final report, then you should ignore this entire repository. There is nothing here for you. _(Except maybe how the final report should look like.)_
 
 ## Pre-requisites
-You need to install __LaTeX__ in order to build the final report. Please refer to [http://latex-project.org/ftp.html](Latex Project) for installation instructions for your particular machine.
+You need to install __LaTeX__ in order to build the final report. Please refer to [Latex Project](http://latex-project.org/ftp.html) for installation instructions for your particular machine.
 
-You will also need to install __Make__ in order to automate the building of your final report. Please refer to [https://www.gnu.org/software/make/](GNU Make) for installation instructions for your particular machine.
+You will also need to install __Make__ in order to automate the building of your final report. Please refer to [GNU Make](https://www.gnu.org/software/make/) for installation instructions for your particular machine.
 
 ## Usage
 0. Install pre-requisites
@@ -157,5 +157,5 @@ This project is structured as follows:
     - Take a look at the example table included.
 
 ## Credits
-0. The `socreport.bst` and `socreport.cls` files are courtesy of Prof Wei Tsang Ooi. [https://www.comp.nus.edu.sg/~ooiwt/latex/socreport/](SOC'S LATEX CLASS) It was further modified and updated to meet modern requirements.
-0. The upstream project for this repository[https://github.com/ymichael/soc-hyp-boilerplate](soc-hyp-boilerplate)
+0. The `socreport.bst` and `socreport.cls` files are courtesy of Prof Wei Tsang Ooi: [SOC'S LATEX CLASS](https://www.comp.nus.edu.sg/~ooiwt/latex/socreport/). It was further modified and updated to meet modern requirements.
+0. The upstream project-[soc-hyp-boilerplate](https://github.com/ymichael/soc-hyp-boilerplate).
