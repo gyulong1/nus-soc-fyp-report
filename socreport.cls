@@ -97,12 +97,13 @@
 \newenvironment{implement}{%
     \parindent 0em
     \parsep \z@
-    \vspace{1cm}Implementation Software and Hardware: \\
-    \par%
-    \medskip
-    \leftskip=4em\rightskip=2em%
-    \noindent\ignorespaces}{%
-    \par\medskip}
+    \vspace{1cm}Implementation Software and Hardware: \\ \list{}{\itemindent 0em%
+			   											\leftmargin 4em%
+														   \topsep 0em%
+			   											\listparindent \z@
+			   											\setlength\itemsep{1em}
+														   \parsep \z@}}
+               {\endlist}
                                                                                                               
   \newenvironment{acknowledgement}{%
       \titlepage
