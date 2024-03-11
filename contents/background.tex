@@ -4,110 +4,127 @@
 \vspace{2em}
 
 \section{Quadratic unconstrained binary optimization}
-The QUBO problem is defined as
+The quadratic unconstrained binary optimization (QUBO) problem is usually defined as
 \begin{equation} 
 \argmin_{x \in \{0, 1\}^n} x^\intercal Q x
 \end{equation}
-where $Q \in \boldsymbol{M}_{n\times n}(\mathbb{R})$ is a symmetric/upper triangular square matrix with real coefficients \cite{b1}. In general, the solution does not need to be unique. The density $d$ of a QUBO problem refers to the number of non-zero elements above the main diagonal of $Q$ divided by the total number of elements above the main diagonal. This QUBO model has applications in a wide range of combinatorial optimization problems such as Max-Cut \cite{b2}, number partitioning \cite{b3} and machine scheduling problems \cite{b4}. Problems that are concerned with finding the best set of binary decisions to optimize an objective function can generally be formulated as a QUBO problem \cite{b5}.
+where $Q \in \boldsymbol{M}_{n\times n}(\mathbb{R})$ is an upper triangular square matrix with real coefficients and $x$ is a binary input vector~\cite{b1}. The matrix $Q$ characterizes the QUBO problem and can be thought of as a way of representing the QUBO problem. $x^\intercal Q x$ is also known as the objective function for the problem. Some characteristics of QUBO problems are summarised below:
+\begin{itemize}
+    \item The possible input space grows exponentially with the size of the problem $n$ and makes the QUBO problem NP-hard and difficult to solve efficiently.
+    \item In general, the solution of a QUBO problem does not need to be unique as multiple input $x$'s can produce the same objective value.
+    \item The objective function $x^\intercal Q x$ can also be expressed as $\sum_{i=1}^{n}\sum_{j=1}^{n} Q_{ij}x_{i}x_{j}$ which intuitively means that we sum up the coefficients $Q_{ij}$ where both $x_{i}$ and $x_{j}$ are $1$.
+    \item The density $d$ of a QUBO problem refers to the number of non-zero elements above the main diagonal of $Q$ (quadratic terms) divided by the total number of elements above the main diagonal. 
+    \item We can also express a QUBO problem as a maximization problem by using finding $\argmax_{x \in \{0, 1\}^n} -x^\intercal Q x$.
+\end{itemize}
 
-Once a problem is expressed in a QUBO format, we can utilize general QUBO-solving methods to efficiently obtain solutions to the original problem without specializing in a particular problem domain \cite{b1}. The following sections will describe multiple examples of QUBO problems and reformulations.
+Problems that are concerned with finding the best set of binary decisions to optimize an objective function can generally be formulated as a QUBO problem~\cite{b5}. Thus, the QUBO problem model has applications in a wide range of combinatorial optimization problems such as Max-Cut~\cite{b2}, number partitioning~\cite{b3}, and machine scheduling problems~\cite{b4}. 
 
-\subsection{Simple problem}
+Once an optimization problem is expressed in a QUBO format, we can utilize general QUBO-solving methods to efficiently obtain solutions to the original problem without specializing in a particular problem domain~\cite{b1}. The following sections will describe multiple examples of QUBO problems and reformulations.
+
+\subsection{Example QUBO problem}\label{subsection:example_qubo}
 Consider the objective function \begin{equation}
 f(x_1, x_2, x_3) = -8x_1 + 6x_2 + 3x_3 - 2 x_1 x_2 + 4 x_2 x_3
-\end{equation} where $x_1, x_2, x_3 \in \{0, 1\}$ and we want to maximise $f$ over all possible $x_1$, $x_2$ and $x_3$ (if we wanted to minimise $f$ instead we can simply multiply all the coefficients of $f$ by $-1$). Since $x_i^2 = x_i$ for all $i$, we can redefine the objective function as 
+\end{equation} where $x_1, x_2, x_3 \in \{0, 1\}$ and we want to minimise $f$ over all possible ($x_1$, $x_2$, $x_3$) (if we wanted to maximise $f$ instead we can simply multiply all the coefficients of $f$ by $-1$). Since the variables are binary, $x_i^2 = x_i$ for all $i$, we can redefine the objective function as 
 
 \begin{equation}
-f(x) = x^\intercal Q x, x = \begin{bmatrix}
+f(x) = x^\intercal Q x, \text{ where } x = \begin{bmatrix}
 x_1 \\
 x_2 \\
 x_3 
-\end{bmatrix}, 
+\end{bmatrix}, \text{ }
 Q = \begin{bmatrix}
--8 & -1 & 0\\
--1 & 6 & 2\\
-0 & 2 & 3
+-8 & -2 & 0\\
+0 & 6 & 4\\
+0 & 0 & 3
 \end{bmatrix}
 \end{equation}
 
-The coefficients for $Q_{ii}$ are equal to the coefficient of $x_i$ in the original objective function while the coefficient for $Q_{ij} = Q_{ji}$ where $i \neq j$ is equal to half the original coefficient of $x_ij$ to keep the matrix symmetric. This is a simple QUBO problem and can be solved by enumerating the possible inputs to obtain the optimal solution of $x_1 = 0, x_2 = 1, x_3 = 1$.
+The coefficients for $Q_{ii}$ are equal to the coefficient of $x_i$ in the original objective function while the coefficient for $Q_{ij}$ where $i < j$ is the coefficient of $x_{i}x_j$ while the coefficients in the lower triangular portion of $Q$ is $0$. This is a simple QUBO problem and can be solved by enumerating all the possible inputs to obtain the optimal solution of $x_1 = 1, x_2 = 0, x_3 = 0$, and $f(1,0,0) = -8$.
 
 \subsection{Knapsack problem}
-The knapsack problem is a classic combinatorial optimization problem where we have a knapsack with weight capacity $W > 0$ and $n$ items each having a weight $w_i > 0$, profit $c_i > 0$. The problem is to find the optimal set of items to place in the knapsack to maximize total profit while not exceeding the knapsack weight limit.
-
-Here, we can see an example of how QUBO solvers can also be used to solve combinatorial problems with inequality constraints. Formally, we have
-
+In this section, we give an example of how a combinatorial optimization problem with inequality constraints can be formalized as a QUBO problem. The knapsack problem is a classic combinatorial optimization problem where we have a knapsack with integer weight capacity $W > 0$ and $n$ items each having a weight $w_i > 0$ and profit $c_i > 0$. The problem seeks to find the optimal set of items to place in the knapsack to maximize total profit while not exceeding the knapsack weight limit. Formally, we have
 \begin{align}
-\max &\sum_{i=1}^n c_i x_i \nonumber\\
-\mathrm{st.} &\sum_{i=1}^n w_i x_i \leq W \\
+\max &\sum_{i=1}^n c_i x_i \label{eq:knapsack_cost}\\
+\mathrm{st.} &\sum_{i=1}^n w_i x_i \leq W \label{eq:knapsack_constraint}\\
 x_i &\in \{0,1\}^n \nonumber
 \end{align}
-
-To include the inequality constraint into our QUBO formulation, we introduce slack variables, $y_i$'s, which turn the inequality constraint into an equality constraint \cite{b6}.
-
+The quantity \refeq{eq:knapsack_cost} refers to the total profit of the chosen items and constraint \refeq{eq:knapsack_constraint} keeps the total weight below the weight limit. To convert this optimization problem into a QUBO problem, we can include the inequality constraint in our QUBO formulation by introducing slack variables, $y_j$'s, which turn the inequality constraint into an equality constraint~\cite{b6}.
 \begin{align}
-\max &\sum_{i=1}^n c_i x_i \nonumber\\
-\mathrm{st.} &\sum_{i=1}^n w_i x_i = \sum_{j=1}^W jy_j\\
-&\sum_{j=1}^W y_j = 1 \nonumber\\
+\max &\sum_{i=1}^n c_i x_i \\
+\mathrm{st.} &\sum_{i=1}^n w_i x_i = \sum_{j=1}^W jy_j \label{eq:knapsack_slack_weight}\\
+&\sum_{j=1}^W y_j = 1 \label{eq:knapsack_slack_sum}\\
 x &\in \{0,1\}^n, y \in \{0,1\}^W \nonumber
 \end{align}
-
-With any penalty parameters $C_1 > \sum_{i=1}^n c_i$ and $C_2 > \sum_{i=0}^n c_i$, we can formulate the following QUBO problem 
-
+The slack variables $y_j$'s track the total weight of the knapsack with $y_j = 1 \Leftrightarrow$ total weight is $j$. Constraint \refeq{eq:knapsack_slack_sum} ensures that only one of $y_j$ is equal to $1$. With penalty parameters $C_1 > \sum_{i=1}^n c_i$ and $C_2 > \sum_{i=0}^n c_i$, we can formulate the following QUBO problem:
 \begin{align}
     \max f(x, y) &\coloneqq \sum_{i=1}^n c_i x_i - C_1 P_w^2 - C_2 P_n^2 \\
     P_w &\coloneqq \sum_{i=1}^n w_i x_i - \sum_{j=1}^W jy_j \\
     P_n &\coloneqq 1 - \sum_{j=1}^W y_j \\
     x &\in \{0,1\}^n, y \in \{0,1\}^W \nonumber
 \end{align}
-
-Since the penalty parameters are chosen to be larger than $\sum_{i=1}^n c_i$, the optimal solution to the QUBO problem must have $P_w = P_n = 0$. Hence, ensuring that exactly one of the $y_i=1$ and the total weight is below the knapsack capacity. Since the optimal solution to the original knapsack must also have a total weight below the knapsack capacity, the value of $x$ that solves the QUBO must also solve the original knapsack problem.
+Since the penalty parameters are chosen to be larger than $\sum_{i=1}^n c_i$, the optimal solution to the QUBO problem must have $P_w = P_n = 0$. Hence, ensuring that exactly one of the $y_i=1$ and the total weight is below the knapsack capacity. Since the optimal solution to the original knapsack must also have a total weight below the knapsack capacity, the value of $x$ that solves the QUBO must also solve the original knapsack problem. We can also formulate this QUBO problem in terms of $Q$ by following similar steps as \autoref{subsection:example_qubo}.
 
 \subsection{Practical applications}
-There are many practical scenarios where QUBO formulations can be utilized. 
+There are numerous practical scenarios where QUBO formulations can be utilized. 
 \begin{itemize}
-    \item \cite{b7} uses real-world data of the location of DB Schenker shipping hubs in Europe to solve the shipment rerouting problem which aims to reduce the total distance traveled to fulfill a set of shipments.
-    \item \cite{b8} uses a QUBO formulation to solve portfolio optimization problems using real-world stock data sets of the New York Stock Exchange.
-    \item \cite{b9} formulates an image binarization method as a QUBO problem where the objective is to segment an image into its foreground and background which has further possible medical applications to improve x-ray imaging.
+    \item~\cite{b7} uses real-world data of the location of DB Schenker shipping hubs in Europe to solve the shipment rerouting problem which aims to reduce the total distance traveled to fulfill a set of shipments.
+    \item~\cite{b8} uses a QUBO formulation to solve portfolio optimization problems using real-world stock data sets of the New York Stock Exchange.
+    \item~\cite{b9} formulates an image binarization method as a QUBO problem where the objective is to segment an image into its foreground and background which has further possible medical applications to improve x-ray imaging.
 \end{itemize}
+These practical applications of the QUBO problem motivate further exploration into different ways that QUBO problems can be solved efficiently which are explained further in \autoref{review}.
 
-\section{Ising model}
-The Ising model in Physics can be thought of as a model of a magnet \cite{b11}. In the general Ising model, a magnet consists of $n$ molecules that are constrained to lie on the sites of a regular lattice \cite{b11}. Each molecule $i$ can be treated as a microscopic magnet that points along some axis and can have a 'spin' ($s_i)$ that is either $+1$ (parallel to the axis) or $-1$ (anti-parallel to the axis). With $N$ particles, the system can then have $2^N$ states, each corresponding to a configuration of the individual molecule spins.
+\section{The Ising Model}
+The Ising model in Physics, proposed by Ernst Ising in 1925, can be thought of as a model of a magnet~\cite{isingising} and has been widely studied in Physics for its phase transition properties~\cite{cipra1987introduction}. The Ising model serves as the bridge that allows for QUBO problems to be solved with quantum-based methods~\cite{b10}. In the classical Ising model, a magnet consists of $n$ molecules that are `constrained to lie on the sites of a regular lattice'~\cite{b11}. Each molecule $i$ can be treated as a `microscopic magnet' that points along some axis and has a `spin' ($s_i$) that is either $+1$ (parallel to the axis) or $-1$ (anti-parallel to the axis). With $n$ particles, the system can then have $2^n$ states, each corresponding to a configuration of the individual molecule spins.
+
 
 \subsection{Ising Hamiltonian}
-In quantum mechanics, the Hamiltonian is an operator that represents the total energy of a system. In the Ising model, the possible energies of the system are exactly the eigenvalues of its Hamiltonian and the corresponding eigenvectors are the possible states that result in the energy level \cite{b21}. The Hamiltonian of the Ising model has two components --- the external field term (characterized by $h$) and the interaction term between molecules (characterized by $J$) \cite{b10}. 
+In quantum mechanics, the Hamiltonian of a system $\Hat{H}$, is a linear operator that represents the total energy of a system and is a key component that governs the evolution of the system~\cite{GriffithsSchroeter2018}. \hyperref[sdd_1]{Section \ref{wavefunction}} discusses the Hamiltonian and general quantum mechanics in greater detail. For this study, we can treat the Hamiltonian as a function of the quantum system that maps a quantum state to an energy level. The possible energy levels of the system are exactly the eigenvalues of its Hamiltonian and the corresponding eigenvectors are the possible states that are mapped to the certain energy level~\cite{b21}. 
 
+In the Ising model with $n$ particles, the Hamiltonian has two components --- the external field term (characterized by $\mathbf{h} = (h_1, h_2, ..., h_n) \in \mathbb{R}^n$) and the interaction term between molecules (characterized by a strictly upper triangular matrix $\mathbf{J} \in \boldsymbol{M}_{n\times n}(\mathbb{R})$)~\cite{b10}. We can express the Hamiltonian as a function of the $n$ spins from each particle:
 \begin{equation}
-    H(s) = H(s_1, ... , s_n) = -\sum_{i < j} J_{ij}s_i s_j - \sum_{i=1}^N h_i s_i
+    \Hat{H}(s) = \Hat{H}(s_1, s_2, ... , s_n) = -\sum_{1\leq i < j \leq N} J_{ij}s_i s_j - \sum_{i=1}^N h_i s_i
 \end{equation}
-
-To find the ground state (lowest energy state) of the Ising model, we then have to solve for $\argmin H(s)$ for $s \in \{0, 1\}^N$. This is equivalent to a corresponding QUBO problem up to a change in basis. The equivalence of the QUBO problem and the Ising model is one of the most significant applications of QUBO \cite{b5}.
-
-\subsection{Converting Ising to QUBO}
-Given the Hamiltonian of an Ising problem, we use the conversion $s_i = 2x_i - 1, x_i \in \{0, 1\}$,
-
-\begin{align}
-    H(s) &= -\sum_{i < j} J_{ij}s_i s_j - \sum_{i=1}^N h_i s_i \nonumber\\
-    &= -\sum_{i < j} J_{ij}(2x_i - 1) (2x_j - 1) - \sum_{i=1}^N h_i (2x_i - 1) \nonumber\\
-    &= -\sum_{i < j} J_{ij}(4x_i x_j - 2x_i - 2x_j + 1) - \sum_{i=1}^N (2h_i x_i - h_i) \nonumber\\
-    &\text{Group constants into $k$} \nonumber \\
-    &\text{Let $a_i = \sum_{j \neq i} 2J_{\min(i,j)\max(i,j)} + 2h_i$} \nonumber \\
-    &= -\sum_{i < j} 4J_{ij}x_i x_j - \sum_{i=0}^N a_{i}x_i + k \nonumber
-\end{align}
-
-Removing the constant $k$ which is irrelevant for optimization, we can reformulate the Ising model as a QUBO model with matrix $Q$ such that $Q_{ii} = -a_i$ and $Q_{ij} = Q_{ji} = -2J_{ij}$ for $i \neq j$. The solution to the QUBO problem can then be converted to a solution for the ground state of the Ising model using $s_i = 2x_i - 1$. However, note that the optimal objective function value may be different due to the constant $k$.
+We can view $\mathbf{h}$ as the interaction of each particle with an external magnetic field and $\mathbf{J}$ as the coupling between pairs of spins. A positive $J_{ij}$ term means that the energy is low when spins $s_i$ and $s_j$ are aligned while a negative $J_{ij}$ term means that the energy is low when the spins are anti-aligned. A large value of $h_i$ means that the spin $s_i$ tends to be aligned or anti-aligned with an external magnetic field in the ground state.
+The Ising model was initially proposed to study phase transitions of the system at certain critical temperatures by solving for the ground state of the system at different temperatures~\cite{isingising}. To find the ground state---the state of spins that minimizes the total system energy of the Ising model---we have to solve for $ \argmin \Hat{H}(s) $ for $ s \in \{ 0, 1 \}^N $. This is equivalent to a corresponding QUBO problem up to a change in the variable domain (from spins to binary variables). The equivalence of the QUBO problem and the Ising model is one of the most significant applications of QUBO~\cite{b5}. We will show in the following subsections how we can convert a QUBO problem into an Ising model and vice versa.
 
 \subsection{Converting QUBO to Ising}
-
-Given a QUBO problem with matrix $Q$, we can use the conversion, $x_i = \frac{s_i + 1}{2}, s_i \in \{-1, 1\}$. The objective function $f(x)$ of the QUBO problem can be expressed as
-
+Given a QUBO problem with QUBO matrix $Q$, we can use the conversion, $x_i = \frac{s_i + 1}{2}, s_i \in \{-1, 1\}$ to change the spin variables into binary variables. The objective function $f(x)$ of the QUBO problem can be expressed as
 \begin{align}
     f(x) &= f(x_1, ..., x_n) \nonumber\\
-    &= \sum_{i < j} Q_{ij}(x_i x_j) + \sum_{i=1}^N Q_{ii} x_i \nonumber \\
-    &= \sum_{i < j} \frac{1}{4} Q_{ij}(s_i + 1)(s_j + 1) + \sum_{i=1}^N \frac{1}{2} Q_{ii} (s_i + 1) \nonumber \\
-    &\text{Group constants into $k$} \nonumber \\
-    &\text{Let $a_i = \sum_{j \neq i} \frac{1}{4}Q_{\min(i,j)\max(i,j)} + \frac{1}{2}Q_{ii}$} \nonumber \\
-    &= \sum_{i < j} \frac{1}{4} Q_{ij}s_i s_j + \sum_{i=1}^N a_i s_i + k \nonumber \\
+    &= \sum_{1\leq i < j \leq n} Q_{ij}(x_i x_j) + \sum_{i=1}^N Q_{ii} x_i \nonumber \\
+    &= \sum_{1\leq i < j \leq n} \frac{1}{4} Q_{ij}(s_i + 1)(s_j + 1) + \sum_{i=1}^N \frac{1}{2} Q_{ii} (s_i + 1) \nonumber
 \end{align}
+If we group the constant terms into $k$ and let $a_i = \sum_{1\leq j \leq N, j \neq i} \frac{1}{4}Q_{\min(i,j)\max(i,j)} + \frac{1}{2}Q_{ii}$, we can express the objective function as:
+\begin{align}
+    f(x) = \sum_{1\leq i < j \leq n} \frac{1}{4} Q_{ij}s_i s_j + \sum_{i=1}^N a_i s_i + k \nonumber
+\end{align}
+Removing the constant $k$ which is irrelevant for optimization, we can reformulate the QUBO problem as an Ising model with $h_i = -a_i$ and $J_{ij} = -\frac{1}{4}Q_{ij}$ for $i \neq j$. Finding the ground state for the Ising model is the same problem as finding $\argmin_{x \in \{0, 1\}^n} x^\intercal Q x$, and the solution to the ground state of the Ising model can be mapped to a solution for QUBO problem using $x_i = \frac{s_i + 1}{2}$. However, note that the optimal objective function value may be different due to the constant $k$.
 
-Removing the constant $k$ which is irrelevant for optimization, we can reformulate the QUBO problem as an Ising model with $h_i = -a_i$ and $J_{ij} = -\frac{1}{4}Q_{ij}$ for $i \neq j$. Similarly, the ground state for the Ising model can be converted to a solution for the QUBO problem and the optimal objective function value may be different due to the constant $k$.
+\subsection{Converting Ising to QUBO}
+Given the Hamiltonian of an Ising problem, we use the conversion $s_i = 2x_i - 1, x_i \in \{0, 1\}$ to change the spin variables into binary variables:
+\begin{align}
+    \Hat{H}(s) &= -\sum_{1\leq i < j \leq n} J_{ij}s_i s_j - \sum_{i=1}^N h_i s_i \nonumber\\
+    &= -\sum_{1\leq i < j \leq n} J_{ij}(2x_i - 1) (2x_j - 1) - \sum_{i=1}^N h_i (2x_i - 1) \nonumber\\
+    &= -\sum_{1\leq i < j \leq n} J_{ij}(4x_i x_j - 2x_i - 2x_j + 1) - \sum_{i=1}^N (2h_i x_i - h_i) \nonumber
+\end{align}
+If we group the constant terms into $k$ and let $a_i = 2h_i + \sum_{1\leq j \leq N, j \neq i} 2J_{\min(i,j)\max(i,j)}$, we can express the Hamiltonian as:
+\begin{align}
+    \Hat{H}(s) &= -\sum_{1\leq i < j \leq n} 4J_{ij}x_i x_j - \sum_{i=0}^N a_{i}x_i + k \nonumber
+\end{align}
+Removing the constant $k$ which is irrelevant for optimization, we can reformulate the Ising model Hamiltonian as a QUBO matrix $Q$ such that $Q_{ii} = -a_i$ and $Q_{ij} = -4J_{ij}$ for $i < j$. Finding $\argmin_{x \in \{0, 1\}^n} x^\intercal Q x$ is now the same problem as finding the ground state for the original Ising model and the solution to the ground state of the Ising model can be mapped to a solution for QUBO problem using $s_i = 2x_i - 1$. However, note that the optimal objective function value may be different due to the constant $k$.
+
+\section{Solving for the ground state of the Ising model}
+In one and two-dimensional Ising models, where each particle can only interact with two or four direct neighbors, the ground state can be solved through exact methods such as calculating the partition function~\cite{onsager} or using the transfer matrix method~\cite{kramerising}. However, when solving for the ground state of higher dimension Ising models, which are those that we are interested in, exact methods are computationally intractable for large systems since the computational resources scale exponentially with the number of spins~\cite{barahona1982computational}. However, there are ways to approximate the ground state such as with the Metropolis-Hastings algorithm \cite{metropolissampling} which can be used to increase the probability of finding the ground state of the system. More details for methods of solving Ising models that have higher dimensions can be found in \autoref{review}.
+
+\section{Wave functions, Observables and Ansatzes}\label{wavefunction}
+Quantum physics is built around wave functions and operators \cite{GriffithsSchroeter2018}. Wave functions represent the state of the system and live in a Hilbert space, which is the set of all square-integrable functions:
+\begin{equation*}
+    f(x) \text{ such that } \int_{-\infty}^\infty |f(x)|^2 \; dx < \infty
+\end{equation*}
+This is generally an infinite dimensional complex vector space and allows for the wave function, denoted as $\Psi$, to be normalized so that $\int_{-\infty}^\infty |\Psi|^2 \; dx = 1$. Under the statistical interpretation of quantum mechanics, $|\Psi(x)|^2$ would also represent the probability of a system being in state $x$ once it is measured. This also means that a wave function can exist as a superposition of states. For this project, we will adopt the statistical interpretation and view the wave function as simply a probability distribution over all possible state configurations.
+
+Quantum operators represent the observables---measurable quantities of the system such as position, momentum, or energy. Quantum operators are hermitian linear operators that act on a wave function to map states to real values. The eigenvalues of the operator have to be real as they correspond to one of the possible measured values of the represented quantity. When an operator acts on a wavefunction that exists as a superposition of multiple states, it returns an expected value of the observable instead. The Hamiltonian, which is the energy operator, is the main operator used in this study and the set of eigenvalues of the Hamiltonian are all the possible energies that the system could have. 
+
+For an Ising model, the wavefunction encodes the probabilities of each configuration of spins and the Hamiltonian maps each wavefunction to an energy level. If a wave function only has one possible configuration, the Hamiltonian will return the eigenvalue that matches the energy level of the state. If the wave function is in a superposition of states, the Hamiltonian will return a linear combination of the eigenvalues instead.
+
+An Ansatz is an educated guess for the solution to a problem and often involves a reduction in the complexity or size of the problem \cite{qaoareview}. When solving for the ground state of a wave function with variational methods, an Ansatz is used to represent a subspace of the infinite-dimensional Hilbert space that the wave function lives in. It is important to ensure that the wave function is general enough to closely approximate the space of all solutions yet is specific enough to be computed.

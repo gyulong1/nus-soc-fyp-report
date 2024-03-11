@@ -51,14 +51,14 @@
 \newcommand*{\RootPicDir}{pic}
 \newcommand*{\PicDir}{\RootPicDir}
 \newcommand*{\ResetPicDir}{\renewcommand*{\PicDir}{\RootPicDir}}
-\newcommand*{\SetPicSubDir}[1]{\renewcommand*{\PicDir}{\RootPicDir /#1}}
-\newcommand*{\Pic}[2]{\PicDir /#2.#1}
+\newcommand*{\SetPicSubDir}[1]{\renewcommand*{\PicDir}{\RootPicDir/#1}}
+\newcommand*{\Pic}[2]{\PicDir/#2.#1}
 
 \newcommand*{\RootExpDir}{exp}
 \newcommand*{\ExpDir}{\RootExpDir}
 \newcommand*{\ResetExpDir}{\renewcommand*{\ExpDir}{\RootExpDir}}
-\newcommand*{\SetExpSubDir}[1]{\renewcommand*{\ExpDir}{\RootExpDir /#1}}
-\newcommand*{\Exp}[2]{\ExpDir /#2.#1}
+\newcommand*{\SetExpSubDir}[1]{\renewcommand*{\ExpDir}{\RootExpDir/#1}}
+\newcommand*{\Exp}[2]{\ExpDir/#2.#1}
 
 \newcommand*{\BeforeCaptionVSpace}{1ex}
 \newcommand*{\BeforeSubCaptionVSpace}{0.75ex}
@@ -116,6 +116,7 @@ See \texttt{README.md} of this repository.
 \input{contents/review}
 \input{contents/methodology}
 \input{contents/results.tex}
+\input{contents/results2.tex}
 
 \bibliographystyle{socreport}
 \bibliography{report}

@@ -669,7 +669,6 @@ FUNCTION {book}
       new.block
       format.number.series output
       new.sentence
-      address "address" output.check
       publisher "publisher" pub.output.check
     }
     { new.block
@@ -719,7 +718,6 @@ FUNCTION {inbook}
       new.block
       format.number.series output
       new.sentence
-      address "address" output.check
       publisher "publisher" pub.output.check
     }
     { format.chapter.pages "chapter and pages" output.check
@@ -747,7 +745,6 @@ FUNCTION {incollection}
       format.number.series output
       output.chapter.pages.check
       new.sentence
-      address "address" output.check
       publisher "publisher" pub.output.check
       format.edition output
     }
@@ -774,7 +771,6 @@ FUNCTION {inproceedings}
       format.number.series output
       output.chapter.pages.check
       organization output				% here so things
-      address "address" output.check
       format.month.year output
       publisher pub.output					% are simpler
     }
@@ -879,7 +875,6 @@ FUNCTION {techreport}
   format.btitle "title" output.check
   output.tr.number
   new.block
-  address "address" output.check
   institution "institution" pub.output.check
   new.block
   note output
