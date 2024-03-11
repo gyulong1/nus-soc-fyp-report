@@ -1,0 +1,41 @@
+\SetPicSubDir{ch-methodology}
+\SetExpSubDir{ch-methodology}
+
+\chapter{Methodology}
+\label{methodology}
+
+\section{Solvers}
+The most popular commercially available quantum annealing hardware comes from D-Wave Systems and uses superconducting qubits to represent binary variables \cite{b14}. We will use quantum annealers from D-wave Systems as the solver for Quantum Annealing. Given a QUBO problem, the process for using a D-Wave Systems Quantum Processing Unit (QPU) is as follows
+
+\begin{itemize}
+    \item \textbf{Problem Definition} QUBO problem is converted to its Ising Hamiltonian.
+    \item \textbf{Minor Embedding} As the QPU is not fully connected, a single variable in the Ising model may need to be represented by multiple qubits called a \textit{chain} which are forced to return the same value with large interaction terms \cite{b16}.
+    \item \textbf{Programming} The parameters of the annealing process are set, which consists of the bias for each qubit (represents magnetic field acting on each qubit) and coupler strength (represents variable interaction).
+    \item \textbf{Initialization} The QPU is initialized in the ground state of an easy-to-implement initial Hamiltonian. The qubits are prepared to be in a superposition of all possible states.
+    \item \textbf{Annealing} The system slowly transitions to the final Hamiltonian.
+    \item \textbf{Readout of solution} The spin values of the qubits are measured and stored as a possible solution.
+    \item \textbf{Resample} As the quantum annealing process has to take finite time, it does not guarantee that the system ends up in the ground state. By repeated sampling, we can obtain a solution that is likely to be the ground state of the initial Hamiltonian.
+\end{itemize}
+
+For Neural-Network Quantum States, we will use a Python library MAPALUS that is implemented in Python. We will use both RBM (with $2n$ hidden nodes) and MLP (with one positive real output, $1$ hidden layers of size $2n$ and the ReLU activation function) as the underlying architecture. The NNQS will be used to simulate a quantum annealing process with a time-dependent Hamiltonian that follows \autoref{eqn:annealinghamiltonian}. 
+
+There are two training algorithms that will be employed---Stepwise Annealing and Continuous Annealing. In Stepwise Annealing, the normalized anneal fraction $s$ starts at $0$ and will be incremented by $0.1$ each time while the NNQS is trained until convergence or the $100$ epoch limit. In Continuous Annealing, we first set an epoch limit of $1100$ and for each epoch $i$, use $s = \frac{i}{1100}$ as the anneal fraction to train the NNQS for a single epoch. The learning rate is $0.001$ and the optimizer is RMSprop.
+
+We will employ the implementation of QAOA in Qiskit with different values of $p$ using a backend hosted on the IBM Quantum Platform, which provides limited access to quantum computers with up to 127 qubits \cite{b24}.
+
+The MQLib solver and the GUROBI optimizer are used as classical benchmark solvers, MQLib as a non-commercial option, and the GUROBI optimizer as the state-of-the-art commercial solver. The MQLib solver is a "machine learning-based hyper-heuristic" that selects the best classical heuristic for a problem and is available open-source \cite{b12}. GUROBI is a state-of-the-art commercial solver, which is free for academic use \cite{b26}. If an exact solution is needed for small problems, we will use the Implicitly Restarted Arnoldi Method, which  is a variation of the Lanczos algorithm with improved stability and convergence, which is readily available in the Python package scipy \cite{b29}.
+
+\section{Benchmark dataset}
+We plan to use a subset of the 3296 QUBO problems provided by MQLib as our benchmark dataset. These problems are publicly accessible and contain both "real-world problem instances" and randomly generated problems \cite{b12}. The dataset also contains problems of various sizes and densities. The exact benchmark dataset will be determined after further testing to determine the input limits of each solver. Each QUBO problem will first be converted into an Ising model problem and then passed to each of the solvers.
+
+\section{Performance evaluation}
+For each solver, we will have two performance metrics 
+\begin{enumerate}
+    \item The probability of finding the optimal solution
+    \item The average normalized performance, used in \cite{b34}, which is 
+    \begin{equation}
+        r = \frac{1}{n} \sum_n \frac{E_{\text{sol}} - E_{\min}}{E_{\max} - E_{\min}}
+    \end{equation}
+\end{enumerate}
+
+The normalized performance has the range of possible energies in the denominator to account for both negative and positive ground state energies. Experiments for the NNQS and QAOA have also been set up and tested with small input problem sizes ($<10$).

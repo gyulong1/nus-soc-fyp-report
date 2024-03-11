@@ -11,6 +11,18 @@
 \usepackage{multirow}
 \usepackage{listings}
 \usepackage{fullpage}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition} \newcommand{\defnautorefname}{Definition}
+\theoremstyle{plain}
+\newtheorem{rul}{Rule} \newcommand{\rulautorefname}{Rule}
+\newtheorem{thm}{Theorem} \newcommand{\thmautorefname}{Theorem}
+\newtheorem{lemma}{Lemma} \newcommand{\lemmaautorefname}{Lemma}
+\newtheorem{coroll}{Corollary} \newcommand{\corollautorefname}{Corollary}
+
 \pgfplotsset{width=10cm,compat=1.9}
 
 % Sets the root path to look for all images.
@@ -24,40 +36,50 @@
 \newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
 \newcommand{\tab}[1]{\hspace{.11\textwidth}\rlap{#1}}
 
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\vbar}{\vert}{\vert}
+\DeclarePairedDelimiter{\vbarbar}{\Vert}{\Vert}
+\DeclarePairedDelimiter{\parenLR}{\lparen}{\rparen}
+\DeclarePairedDelimiter{\brackLR}{\lbrack}{\rbrack}
+\DeclarePairedDelimiter{\braceLR}{\lbrace}{\rbrace}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+%%% Handy commands for image/figure insertion
+\newcommand*{\RootPicDir}{pic}
+\newcommand*{\PicDir}{\RootPicDir}
+\newcommand*{\ResetPicDir}{\renewcommand*{\PicDir}{\RootPicDir}}
+\newcommand*{\SetPicSubDir}[1]{\renewcommand*{\PicDir}{\RootPicDir /#1}}
+\newcommand*{\Pic}[2]{\PicDir /#2.#1}
+
+\newcommand*{\RootExpDir}{exp}
+\newcommand*{\ExpDir}{\RootExpDir}
+\newcommand*{\ResetExpDir}{\renewcommand*{\ExpDir}{\RootExpDir}}
+\newcommand*{\SetExpSubDir}[1]{\renewcommand*{\ExpDir}{\RootExpDir /#1}}
+\newcommand*{\Exp}[2]{\ExpDir /#2.#1}
+
+\newcommand*{\BeforeCaptionVSpace}{1ex}
+\newcommand*{\BeforeSubCaptionVSpace}{0.75ex}
+
 \begin{document}
 \pagenumbering{roman}
 
 % Replace as necessary
-\title{Development of a Database Link Between Mainframe and PC}
-\author{Chua Meng Lee}
-\projyear{AY 2016/2017}
-\projnumber{H90000}
-\advisor{Assoc Prof Jarzabek Stanislaw}
+\title{Data-driven and Physics-inspired Machine Learning: Benchmarking quantum-based QUBO solvers}
+\author{Guo Yulong}
+\projyear{2023/2024}
+\projnumber{H0811550}
+\advisor{Assoc Prof St\'ephane Bressan}
 \deliverables{
     \item \itab{Report:} \tab{1 Volume}
-    \item \itab{Manual:} \tab{1 Volume}
-    \item \itab{Program:} \tab{1 Diskette}
-    \item \itab{Database:} \tab{1 Diskette}
 }
 \maketitle
 
 % Replace as necessary
 \begin{abstract}
-The use of Wireless Sensor Networks for environmental monitoring has become
-increasingly popular over the past decade due to its affordability, ease of deployment
-and customisation, as well as its potentiality in the processing of sensed data. One of the
-greatest challenges in this field would be in the design and implementation of an
-efficient routing protocol which takes into account the various limitations of Wireless
-Sensor Networks, such as battery life, limited storage capacities and high probability of
-packet losses. Besides this, it is also extremely difficult to evaluate the performance of
-such a protocol under crisis scenarios, due to its infrequency and unpredictability. In our
-work, we have designed a routing protocol based on optimised Virtual Polar Coordinate
-Routing (VPCR) (Newsome and Song, 2003) for use with our three-dimensional
-testbed, comprising of 48 MICAz (Crossbow) motes spread across two floors of a
-building. We have also developed a Java-based application with features for Event
-Emulation and simple nodal analysis to assist us in our experiments. The overall
-performance of our protocol will be gauged based on the average Path Stretch Factor
-and path length comparisons between optimised and naïve VPCR.
+TODO
 
 \begin{descriptors}
     \item \itab{C.2.1}	\tab{Network Architecture and Design}
@@ -85,21 +107,20 @@ See \texttt{README.md} of this repository.
 
 \listoffigures % Remove if no figures
 \listoftables % Remove if no tables
-\lstlistoflistings % Remove if no listings
 \tableofcontents
 
 % Actual contents in the contents folder.
 % Include additional tex files here.
-\include{contents/intro}
-\include{contents/results}
-\include{contents/conclusion}
+\input{contents/intro}
+\input{contents/background}
+\input{contents/review}
+\input{contents/methodology}
+\input{contents/results.tex}
 
 \bibliographystyle{socreport}
 \bibliography{report}
 
 % Appendix (Remove if no appendix)
-\appendix
-\input{contents/appendixa}
-\input{contents/appendixb}
+%\appendix
 
 \end{document}

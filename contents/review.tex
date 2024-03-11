@@ -1,0 +1,74 @@
+\chapter{Related Work}
+\label{review}
+\vspace{2em}
+
+\section{Methods for solving QUBO problems}
+There are many possible methods for solving QUBO and Ising problems which can be broadly categorized as Classical, Quantum-based, and Hybrid.
+
+\subsection{Classical}
+A typical classical approach to solving QUBO problems is by exact diagonalization of the corresponding Ising Hamiltonian \cite{b25}. Exact diagonalization solves for all the eigenvalues and eigenvectors by diagonalizing the Hamiltonian matrix \cite{b25}. This is also known as the eigendecomposition of a matrix and is possible for all real symmetric matrices \cite{b27}. However, the runtime of exact diagonalization scales exponentially with input problem size and becomes computationally infeasible once the matrix grows large \cite{b25}. Since we are only interested in finding the smallest eigenvalue and the corresponding eigenvector, we can use iterative methods such as the Lanczos algorithm or the implicitly restarted Arnoldi method to find the smallest eigenvalue \cite{b28,b29}. However, such methods often run into stability issues.
+
+Other classical methods for efficiently solving QUBO problems rely on "heuristics and approximation algorithms" as exact methods have an exponential worst-case runtime \cite{b12}. For example, variants of Tabu search---a local search algorithm that allows for moves that are not improvements and discourages visiting already visited states---are highly competitive heuristic algorithms to find good solutions to QUBO problems\cite{b2,b30}.
+
+Dunning et al.\cite{b12} conducted a systematic review and evaluation of published heuristics for QUBO problems and provided an open-source problem repository MQLib for further research. In addition, the solver by Dunning et al.\cite{b12} also provides a machine-learning model that predicts the best-performing set of heuristics for a given problem input.
+
+\subsection{Quantum-based}
+Quantum-based methods for solving QUBO problems include quantum annealing and neural network quantum states.
+
+\subsubsection{Quantum Annealing}
+Quantum annealing-based methods can solve for the ground state configuration of Ising models by utilizing the \textit{adiabatic theorem}\cite{b14}. The \textit{adiabatic theorem} states that "a quantum system in its ground state will remain in the ground state, provided the Hamiltonian governing the dynamics changes sufficiently slowly" \cite{b14,b15}.
+
+Quantum annealers first prepare a system in the ground state with a simple initial Hamiltonian $H_0$, then slowly manipulate the system Hamiltonian to a more complex form $H_c$ \cite{b10}. The Hamiltonian at any point $H(s)$, where $s \in [0,1]$ is the normalized anneal fraction, can be written as
+
+\begin{equation}
+    \label{eqn:annealinghamiltonian}
+    H(s) = A(s)H_0 + B(s)H_c
+\end{equation}
+
+Where $A(s)$ and $B(S)$ are decreasing and increasing functions respectively and are determined by the quantum annealing controls. If the transition time is sufficiently large, and $H_0$ and $H_c$ do not commute, the adiabatic theorem ensures that the system will remain in the ground state which can then be measured to yield the desired ground state configuration \cite{b14}.
+
+Quantum annealing has been extensively studied and applied in multiple fields such as Scheduling Problems \cite{b17}, Portfolio Optimization \cite{b18} and Quantum simulations \cite{b19}. Even though it is debated whether Quantum Annealing will be superior to classical methods \cite{b10} and there are significant roadblocks in scaling hardware capabilities \cite{b14}, there is hope that these challenges will be solved in the near future with the rapid progress made in quantum computing research.
+
+\subsubsection{Neural-Network Quantum States}
+Carleo and Troyer \cite{b20} introduced another quantum-based method for modeling the wave function of a given Ising Hamiltonian known as \textit{neural-network quantum states} (NNQS). The wave function can be viewed as a complex probability distribution over all the possible state configurations and the NNQS method approximates the wave function of a system as an artificial neural network \cite{b25}. 
+
+The original NNQS architecture utilized a Restricted Boltzmann Machine (RBM) to represent the wave function of an arbitrary quantum system \cite{b20}. The RBM is an energy-based machine learning model that has two layers of nodes, a visible layer $\boldsymbol{s}$, and a hidden layer $\boldsymbol{h}$, where each visible node $s_i$ represents the spin of a particle in the Ising model \cite{b20}. Each visible node $s_i$ is connected to every hidden node $h_j$ with a certain weight $W_{ij}$ but there are no connections within the visible or hidden layer \cite{b20}. The representation of the wave function by the RBM can then be expressed as
+
+\begin{equation}
+    \Psi(\boldsymbol{s}, \boldsymbol{\theta}_{rbm}) = \sum_{h} e^{\sum_i a_s s_i + \sum_j b_j h_j + \sum_{i,j}W_i s_i h_j} 
+\end{equation}
+
+where  $\boldsymbol{\theta}_{rbm} = \{\boldsymbol{a}, \boldsymbol{b}, \boldsymbol{W}\}$ are the biases and weights of the RBM \cite{b20}. The RBM is trained in an unsupervised manner. The weights $W$ are usually updated by performing Gibbs sampling, calculating the average energy of sampled configurations, and using gradient-based optimization algorithms \cite{b25}.
+
+Other neural network architectures such as the Multilayer Perceptron (MLP) can also be used for NNQS. An MLP model consists of an input layer $\boldsymbol{x}$, one or more hidden layers, and an output layer. Each layer is fully connected to the next layer with certain weights and each node has an activation function $\sigma$ such as the sigmoid or ReLU. Each input node $x_i$ represents the spin of a particle in the Ising model and the output nodes represent the output from the wave function. If we assume that the wave function is real and positive, then only one output node is needed to represent the real part of the wave function. \cite{b20}. With one hidden layer, the MLP representation of the wave function can be expressed as
+
+\begin{equation}
+    \Psi(\boldsymbol{x}, \boldsymbol{\theta}_{mlp}) = 
+    \sigma_{out} \left(
+    \boldsymbol{W}_{out}
+    \sigma_{hidden} \left( \boldsymbol{W}_{hidden}\boldsymbol{x} + \boldsymbol{b}_{input} \right) + \boldsymbol{b}_{hidden} \right)
+\end{equation}
+
+where  $\boldsymbol{\theta}_{mlp} = \{\boldsymbol{W}_{hidden}, \boldsymbol{b}_{input}, \boldsymbol{W}_{out}, \boldsymbol{b}_{hidden}\}$ are the weights and bias of the MLP \cite{b20}. The MLP is trained in an unsupervised manner, similar to the RBM, except that a more general sampling method, the Metropolis algorithm, has to be used \cite{b25}.
+
+\subsection{Hybrid quantum-classical}
+A third class of QUBO solving methods are hybrid quantum-classical methods which are designed to make use of current limited quantum computing resources by integrating them with classic methods to solve combinatorial optimization problems \cite{b32}. One such algorithm is the Quantum Approximate Optimization Algorithm (QAOA) which is used to find approximate solutions to general combinatorial optimization problems \cite{b23}. Similar to NNQS, QAOA aims to find an approximation of the ground state of an input Hamiltonian using gate-based quantum circuits and $2p$ parameters which are optimized with a classical computer \cite{b34}. With a problem of size $N$. the algorithm first prepares a quantum state $| + \rangle^{\otimes N}$ in uniform superposition by applying the Hadamard gate to each of the $n$ inputs \cite{b34}. The trial wave function is then constructed by
+
+\begin{equation}
+    \Psi(\boldsymbol{\gamma}, \boldsymbol{\beta}) = U_B(\beta_p) U_C(\gamma_p)...U_B(\beta_1) U_C(\gamma_1) | + \rangle^{\otimes N}
+\end{equation}
+\begin{align*}
+    U_C(\gamma) &= e^{-i\gamma H_c} \\
+    U_B(\beta) &= e^{-i\beta H_0}
+\end{align*}
+
+$U_c$ and $U_B$ are operators that evolve the state with the Hamiltonian $H_c$ (problem Hamiltonian) and $H_0$ (an easy-to-implement Hamiltonian) for times $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ and the parameter $p$ determines the number of independent parameters of the final state \cite{b34}. The state is then measured and $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ are chosen to minimize the average energy of the sample measurements. With the optimal parameters, the final solution can then be determined by repeatedly sampling from the trial wave function and using the state that occurs most frequently during measurements.
+
+In contrast to quantum annealing which can only be run on specialized quantum annealing devices, QAOA can be implemented on a general gate-based quantum computer \cite{b22}. 
+
+\section{Related benchmarking work}
+Willsch et al. \cite{b34} evaluated the performance of the QAOA algorithm and the D-Wave quantum annealer using instances of MaxCut and 2-satisfiability problems with up to 18 variables. The performance of the QAOA algorithm is inconsistent and underperforms quantum annealing in their problem set \cite{b34}. 
+
+Similarly, Pelofske et al. \cite{b35} compared the performance of QAOA and quantum annealing on Ising models with cubic interaction terms and also found that quantum annealing had superior performance over QAOA. 
+
+Benchmarking work of NNQS against other quantum-based QUBO solving methods is unexplored.

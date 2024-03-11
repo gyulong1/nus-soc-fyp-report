@@ -1,35 +1,34 @@
+\SetPicSubDir{ch-Intro}
+
 \chapter{Introduction}
-This is the introduction of the example report using LaTex\cite{lamport1986document}. Also an example citation.
+\vspace{2em}
 
-\section{Goals}
-This is some \textbf{BOLD} text.
+\section{Motivation}
+The quadratic unconstrained binary optimization (QUBO) problem arises in many types of combinatorial optimization tasks and has vast applications in both operational research and industry~\cite{b1}. Problems that involve choosing a set of binary decisions to optimise an objective function can usually be expressed as a QUBO problem. However, QUBO problems are NP-hard and are extremely hard to solve efficiently~\cite{b1}. Traditionally, QUBO-solving methods are specialized for a specific problem domain in order to leverage the unique characteristics of each problem domain, limiting the versatility and portability of QUBO-solving methods~\cite{b5}.
 
-This is some \textit{italicised} text.
+The QUBO problem shares similarities with the Ising model in Physics, where variables are expressed as either $-1$ or $1$, instead of the binary variables used in QUBO. The two models turn out to be equivalent and the correspondence between the QUBO problem and the Ising model has opened the doors to solving QUBO problems with quantum computational methods~\cite{b5}. The equivalence not only enhances the problem domains that could be modelled as QUBO problems but also allows for the QUBO problem to be solved by more general quantum-based solving methods~\cite{b5}.
 
-This is some \texttt{monospaced} text.
+With a broad range of classical and quantum-based methods available to tackle QUBO problems, it is imperative to consolidate and benchmark existing QUBO-solving methods to highlight their strengths and weaknesses for solving different kinds of QUBO problems.
 
-This is some math: $a^2 + b^2 = c^2$.
+\section{Objectives}
+In this study, we aim to measure the performance of 3 quantum-based QUBO-solving methods:
+\begin{itemize}
+    \item Quantum Annealing
+    \item Neural Network Quantum States
+    \item Quantum Approximate Optimization Algorithm
+\end{itemize}
+For comparison with quantum-based methods, we will also use classical solvers as a baseline. We will explore 2 classical solvers:
+\begin{itemize}
+    \item MQLib solver
+    \item GUROBI Optimizer
+\end{itemize}
 
-\subsection{Contributions}
-This is an example of an enumeration.
+%QUBOs are not always effective in practice, though. In particular, they cannot directly:
 
-\begin{enumerate}
-    \item Point one.
-    \item Point two.
-    \item Point three.
-\end{enumerate}
+%Support common real-world situations, such as continuous variables (e.g., prices, commodity flow)
+%Support constraints (e.g., max/mins, price cannot exceed a certain value)
+%Prove optimality (e.g., you can’t be sure you’ve identified the best solution)
 
-\begin{lstlisting}[
-    language=TeX,
-    caption={Example Listing.}
-]
-\title{An Example HYP Final Report}
-\author{Harold Finch}
-\projyear{2015}
-\projnumber{123-45-6789}
-\advisor{Dr. Samaritan}
-\deliverables{
-    \item Report: 1 Volume
-}
-\maketitle
-\end{lstlisting}
+For each solver, we will measure the success rate (probability of solving optimally) and effectiveness (performance of candidate solution) across QUBO problems with different sizes and densities. More details of the solvers and performance metrics are available in \autoref{review} and \autoref{methodology}.
+
+The results of the study will allow us to understand the current state of quantum-based QUBO-solving methods and how they compare to classical solvers. For Neural Network Quantum States specifically, the study will allow a systematic comparison of two different training algorithms highlighted in \autoref{methodology} and extract any physical insights they provide.
