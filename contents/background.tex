@@ -77,7 +77,7 @@ These practical applications of the QUBO problem motivate further exploration in
 The Ising model in Physics, proposed by Ernst Ising in 1925, can be thought of as a model of a magnet~\cite{isingising} and has been widely studied in Physics for its phase transition properties~\cite{cipra1987introduction}. The Ising model serves as the bridge that allows for QUBO problems to be solved with quantum-based methods~\cite{b10}. In the classical Ising model, a magnet consists of $n$ molecules that are `constrained to lie on the sites of a regular lattice'~\cite{b11}. Each molecule $i$ can be treated as a `microscopic magnet' that points along some axis and has a `spin' ($s_i$) that is either $+1$ (parallel to the axis) or $-1$ (anti-parallel to the axis). With $n$ particles, the system can then have $2^n$ states, each corresponding to a configuration of the individual molecule spins.
 
 
-\subsection{Ising Hamiltonian}
+\subsection{Ising Hamiltonian}\label{isinghamiltonian}
 In quantum mechanics, the Hamiltonian of a system $\Hat{H}$, is a linear operator that represents the total energy of a system and is a key component that governs the evolution of the system~\cite{GriffithsSchroeter2018}. \hyperref[sdd_1]{Section \ref{wavefunction}} discusses the Hamiltonian and general quantum mechanics in greater detail. For this study, we can treat the Hamiltonian as a function of the quantum system that maps a quantum state to an energy level. The possible energy levels of the system are exactly the eigenvalues of its Hamiltonian and the corresponding eigenvectors are the possible states that are mapped to the certain energy level~\cite{b21}. 
 
 In the Ising model with $n$ particles, the Hamiltonian has two components --- the external field term (characterized by $\mathbf{h} = (h_1, h_2, ..., h_n) \in \mathbb{R}^n$) and the interaction term between molecules (characterized by a strictly upper triangular matrix $\mathbf{J} \in \boldsymbol{M}_{n\times n}(\mathbb{R})$)~\cite{b10}. We can express the Hamiltonian as a function of the $n$ spins from each particle:
@@ -128,3 +128,27 @@ Quantum operators represent the observables---measurable quantities of the syste
 For an Ising model, the wavefunction encodes the probabilities of each configuration of spins and the Hamiltonian maps each wavefunction to an energy level. If a wave function only has one possible configuration, the Hamiltonian will return the eigenvalue that matches the energy level of the state. If the wave function is in a superposition of states, the Hamiltonian will return a linear combination of the eigenvalues instead.
 
 An Ansatz is an educated guess for the solution to a problem and often involves a reduction in the complexity or size of the problem \cite{qaoareview}. When solving for the ground state of a wave function with variational methods, an Ansatz is used to represent a subspace of the infinite-dimensional Hilbert space that the wave function lives in. It is important to ensure that the wave function is general enough to closely approximate the space of all solutions yet is specific enough to be computed.
+
+\section{Sampling methods}
+Both Gibbs and Metropolis-Hasting (MH) sampling are Markov Chain Monte Carlo (MCMC) sampling methods and are used to sample from a probability distribution $\probP(X)$ when direct sampling is difficult. We will first introduce MH sampling and then Gibbs sampling as a special case of MH sampling.
+
+\subsection*{Metropolis-Hasting sampling}
+Metropolis-Hasting sampling \cite{metropolissampling} proceeds as follows:
+\begin{enumerate}
+    \item Initialise the system with a random sample $\mathbf{x}$
+    \item Draw new candidate $x^*$ from $q(x^*|x)$.
+    \item Accept the new candidate by replacing $\mathbf{x} \leftarrow x^*$ with probability $\alpha = \min \left(1, \frac{\probP(x^*)/q(x^*|x)}{\probP(x^*)/q(x^*|x)}\right)$.
+    \item Repeat steps 2 and 3 for a certain number of iterations or until $\mathbf{x}$ fulfills some convergence criteria.
+\end{enumerate}
+
+\subsection*{Gibbs sampling}
+Gibbs sampling \cite{gibbssampling} is used when directly sampling from the joint distribution $\probP(X)$ is difficult but sampling from the separate conditional distributions is more practical. It proceeds as follows:
+
+\begin{enumerate}
+    \item Initialise the visible layer of the RBM with a random sample $\mathbf{s}$.
+    \item Update the hidden layer by sampling from their respective conditional probability distribution given the current visible layer configuration.
+    \item Update the visible layer by sampling from their respective conditional probability distribution given the current hidden layer configuration.
+    \item Repeat steps 2 and 3 for a certain number of iterations or until $\mathbf{s}$ fulfills some convergence criteria.
+\end{enumerate}
+
+The Gibbs sampling method can be seen as a special case of MH sampling where we have $\alpha = 1$ and thus always accept the new candidate sample. The key benefit of Gibbs sampling on a RBM is that the visible units are conditionally independent given the hidden layer and the hidden units are similarly conditionally independent given the visible layer. Thus the sampling can be easily parallelized and accelerated using GPUs.
