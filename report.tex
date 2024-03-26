@@ -14,6 +14,8 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 
 \theoremstyle{definition}
 \newtheorem{defn}{Definition} \newcommand{\defnautorefname}{Definition}
@@ -35,6 +37,7 @@
 \lstset{frame=single, tabsize=2, captionpos=b}
 \newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
 \newcommand{\tab}[1]{\hspace{.11\textwidth}\rlap{#1}}
+\newcommand{\algorithmautorefname}{Algorithm}
 
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
@@ -82,27 +85,25 @@
 TODO
 
 \begin{descriptors}
-    \item \itab{C.2.1}	\tab{Network Architecture and Design}
-    \item \itab{C.2.2}	\tab{Network Protocols}
-    \item \itab{C.2.4}	\tab{Distributed Systems}
-    \item \itab{C.4} 	\tab{Performance of Systems}
-    \item \itab{I.2.9}	\tab{Robotics}
+    \item \itab{10002950.10003714.10003716.10011136 Mathematics of computing~Discrete optimization}
+    \item \itab{10010405.10010432.10010441 Applied computing~Physics}
+    \item \itab{10010147.10010257.10010293.10010294 Neural networks}
+
 \end{descriptors}
 \begin{keywords}
-    Wireless communication, routing protocols, distributed applications, fault tolerance, sensors
+    Quadratic unconstrained binary optimization, Ising model, Quantum annealing, Neural network quantum states, Quantum Approximate Optimization Algorithm
 \end{keywords}
 
 % Replace/Delete as necessary
 \begin{implement}
-    \item{Ubuntu Linux 7.04 Feisty Fawn\\ TinyOS 2.x, NesC 1.2.8a, Java 1.6 SE, \\Xbow Motes}
-    \item{Tembusu cluster}
+    \item{Linux, GPUs, Tesla A100, Python, Tensorflow, Dimod, Qiskit}
 \end{implement}
 
 \end{abstract}
 
 % Replace as necessary
 \begin{acknowledgement}
-See \texttt{README.md} of this repository.
+I would like to thank my friends and family for their support during the project. I would also like to thank my project advisor associate professor St\'ephane Bressan, research fellow Lu Jianlong, and past and present members of the research group for their invaluable guidance and support. Without them, I would not have been able to complete this project.
 \end{acknowledgement}
 
 \listoffigures % Remove if no figures
@@ -122,6 +123,8 @@ See \texttt{README.md} of this repository.
 \bibliography{report}
 
 % Appendix (Remove if no appendix)
-%\appendix
+\appendix
+\input{contents/appendixa}
+\input{contents/appendixb}
 
 \end{document}

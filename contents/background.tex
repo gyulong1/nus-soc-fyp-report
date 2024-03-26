@@ -87,7 +87,7 @@ In the Ising model with $n$ particles, the Hamiltonian has two components --- th
 We can view $\mathbf{h}$ as the interaction of each particle with an external magnetic field and $\mathbf{J}$ as the coupling between pairs of spins. A positive $J_{ij}$ term means that the energy is low when spins $s_i$ and $s_j$ are aligned while a negative $J_{ij}$ term means that the energy is low when the spins are anti-aligned. A large value of $h_i$ means that the spin $s_i$ tends to be aligned or anti-aligned with an external magnetic field in the ground state.
 The Ising model was initially proposed to study phase transitions of the system at certain critical temperatures by solving for the ground state of the system at different temperatures~\cite{isingising}. To find the ground state---the state of spins that minimizes the total system energy of the Ising model---we have to solve for $ \argmin \Hat{H}(s) $ for $ s \in \{ 0, 1 \}^N $. This is equivalent to a corresponding QUBO problem up to a change in the variable domain (from spins to binary variables). The equivalence of the QUBO problem and the Ising model is one of the most significant applications of QUBO~\cite{b5}. We will show in the following subsections how we can convert a QUBO problem into an Ising model and vice versa.
 
-\subsection{Converting QUBO to Ising}
+\subsection{Converting QUBO to Ising}\label{qubotoising}
 Given a QUBO problem with QUBO matrix $Q$, we can use the conversion, $x_i = \frac{s_i + 1}{2}, s_i \in \{-1, 1\}$ to change the spin variables into binary variables. The objective function $f(x)$ of the QUBO problem can be expressed as
 \begin{align}
     f(x) &= f(x_1, ..., x_n) \nonumber\\
@@ -100,7 +100,7 @@ If we group the constant terms into $k$ and let $a_i = \sum_{1\leq j \leq N, j \
 \end{align}
 Removing the constant $k$ which is irrelevant for optimization, we can reformulate the QUBO problem as an Ising model with $h_i = -a_i$ and $J_{ij} = -\frac{1}{4}Q_{ij}$ for $i \neq j$. Finding the ground state for the Ising model is the same problem as finding $\argmin_{x \in \{0, 1\}^n} x^\intercal Q x$, and the solution to the ground state of the Ising model can be mapped to a solution for QUBO problem using $x_i = \frac{s_i + 1}{2}$. However, note that the optimal objective function value may be different due to the constant $k$.
 
-\subsection{Converting Ising to QUBO}
+\subsection{Converting Ising to QUBO}\label{isingtoqubo}
 Given the Hamiltonian of an Ising problem, we use the conversion $s_i = 2x_i - 1, x_i \in \{0, 1\}$ to change the spin variables into binary variables:
 \begin{align}
     \Hat{H}(s) &= -\sum_{1\leq i < j \leq n} J_{ij}s_i s_j - \sum_{i=1}^N h_i s_i \nonumber\\
@@ -129,7 +129,7 @@ For an Ising model, the wavefunction encodes the probabilities of each configura
 
 An Ansatz is an educated guess for the solution to a problem and often involves a reduction in the complexity or size of the problem \cite{qaoareview}. When solving for the ground state of a wave function with variational methods, an Ansatz is used to represent a subspace of the infinite-dimensional Hilbert space that the wave function lives in. It is important to ensure that the wave function is general enough to closely approximate the space of all solutions yet is specific enough to be computed.
 
-\section{Sampling methods}
+\section{Sampling methods}\label{samplingmethods}
 Both Gibbs and Metropolis-Hasting (MH) sampling are Markov Chain Monte Carlo (MCMC) sampling methods and are used to sample from a probability distribution $\probP(X)$ when direct sampling is difficult. We will first introduce MH sampling and then Gibbs sampling as a special case of MH sampling.
 
 \subsection*{Metropolis-Hasting sampling}

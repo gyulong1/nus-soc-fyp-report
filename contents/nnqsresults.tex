@@ -1,8 +1,38 @@
-\chapter{NNQS deep dive}\label{nnqsresults}
+\chapter{NNQS exploration}\label{nnqsresults}
+In this chapter, we will explore the different architectures and training schemes that can be used for training the NNQS to solve QUBO problems. All experiments in this section were run on a subset of the full dataset with problem sizes of $10,25,50,75,200,250$ and $10$ problems for each problem type and size. The problem evaluation metrics are also calculated by considering the solutions from the different types of NNQS to be able to draw a clearer comparison between architectures and training schemes.
 
-In this chapter, we will explore the different architectures and training schemes that can be used for training the NNQS to solve QUBO problems.
-\section{Comparing Architectures and training schemes}
-We will compare the Restricted Boltzmann Machine (RBM) and the Multilayer Perceptron (MLP) in their performance as a NNQS. We will also compare 3 training schemes, namely direct, progressive, and continuous.
+\section{Architectures and training schemes}
+We will utilize both the Restricted Boltzmann Machine (RBM) and the Multilayer Perceptron (MLP) in their performance as a NNQS. For a given input problem with $n$ variables, the RBM model will have $n$ visible nodes and $5n$ hidden nodes while the MLP will have $n$ input nodes, $1$ hidden layer of size $5n$ and $1$ positive real output node. The RBM uses the sigmoid function while the MLP uses the ReLU activation function. We use Gibbs sampling for the RBM and Metropolis-Hasting sampling for the MLP, both sampling methods are detailed in \autoref{samplingmethods}.
+
+We will also compare 3 training algorithms for NNQS---progressive, direct, and continuous. The progressive training algorithm follows \autoref{alg:progressive}. In direct training, the normalized anneal fraction $s$ is held constant at $1$ for all epochs and follows \autoref{alg:direct}.  In continuous training, the NNQS is not trained to convergence but is trained for a single epoch while incrementing the normalized anneal fraction slowly and follows \autoref{alg:continuous}.
+
+\begin{algorithm}
+    \begin{algorithmic}
+    \Require Problem Hamiltonian $\hat{H}_c$
+    \Ensure Trained NNQS
+    \State Initialize NNQS with random weights;
+    \State Set $H \leftarrow B(1)\hat{H}_c$;
+    \State Train NNQS on $H$ until convergence or until epoch limit of $1000$ is reached;
+    \end{algorithmic}
+    \caption{NNQS Direct Training}
+    \label{alg:direct}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+    \Require Problem Hamiltonian $\hat{H}_c$
+    \Ensure Trained NNQS
+    \State Initialize NNQS with random weights;
+    \For {$s \in [0.001, 1.0]$ step $0.001$}
+    \State Set $H(s) \leftarrow A(s)\hat{H}_0 + B(s)\hat{H}_c$;
+    \State Train NNQS on $H(s)$ for $1$ epoch;
+    \EndFor
+    \end{algorithmic}
+    \caption{NNQS Direct Training}
+    \label{alg:continuous}
+\end{algorithm}
+
+The direct training scheme serves as a baseline for directly training a neural network with the cost function as the problem Hamiltonian. The progressive training scheme most closely resembles the quantum annealing process, where the system is kept at the ground state by training until convergence in each increment of $s$. The continuous training scheme is a combination of the other two schemes by slowly incrementing $s$ but never reaching convergence.
 
 \subsection{NAE3SAT}
 \begin{figure}[!h]
@@ -51,4 +81,7 @@ We will compare the Restricted Boltzmann Machine (RBM) and the Multilayer Percep
 
 Using the RBM with a continuous training scheme gives the highest normalized performance across all datasets.
 
-\section{Quenching}
+\section{Future Work}
+Future studies could investigate if more state-of-the-art machine learning models such as Graph Neural Networks or Attention-based Neural Networks can be used as the underlying architecture for NNQS.
+
+To investigate whether the NNQS closely models the wave function of a D-wave solver in the annealing process, we can do a quench of the D-wave annealing process in order to take a snapshot of the intermediate state. Some initial work is detailed in \autoref{appendix:quenching} but is not included in the main report as the results are not substantial.
