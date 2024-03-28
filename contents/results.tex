@@ -6,7 +6,7 @@ One of the first benchmarking works for quantum annealing was conducted by Dench
 
 \outcite{b34} evaluated the performance of QAOA on the IBMQ backend and the D-Wave quantum annealer using instances of MaxCut and 2-satisfiability problems with up to 18 variables. The performance of the QAOA algorithm is inconsistent and underperforms quantum annealing in their problem set. More recently, \outcite{b35} also compared the performance of QAOA on the IBMQ backend and D-Wave quantum annealing on randomly generated Ising problems with cubic interaction terms and also found that quantum annealing had superior performance over QAOA for all problem sizes. 
 
-\outcite{gomes2019classical} showed that the NNQS method with an RBM architecture produces good solutions for the max-cut problem with graph sizes of up to 256. \outcite{khandoker2023supplementing} uses recurrent neural networks as the NNQS architecture for the max-cut and traveling salesman problem and found that it outperforms SA. However, there is no direct study that compares performance across QA, QAOA, NNQS, and SA.
+\outcite{gomes2019classical} showed that the NNQS solver with an RBM architecture produces good solutions for the max-cut problem with graph sizes of up to 256. \outcite{khandoker2023supplementing} uses recurrent neural networks as the NNQS architecture for the max-cut and traveling salesman problem and found that it outperforms SA. However, there is no direct study that compares performance across QA, QAOA, NNQS, and SA.
 
 \section{Results and Discussion}
 Increase to 500 for classic solvers.
@@ -27,7 +27,7 @@ Increase to 500 for classic solvers.
     \label{all-maxcut-size}
 \end{figure}
 
-\subsection{SK Model}
+\subsection{SK model}
 \begin{figure}[!h]
     \centering
     \includegraphics[width=1\linewidth]{images/skmodel_normalized_performance_all.png}

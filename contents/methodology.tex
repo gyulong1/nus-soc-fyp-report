@@ -30,19 +30,19 @@ We will use quantum annealers from D-wave Systems as the solver for Quantum Anne
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\linewidth]{images/pegasus_topology.png}
-    \caption{A view of the D-Wave pegasus topology where each line represents a qubit and intersections represent available couplers~\protect\cite{dwaveadvantage}}
+    \caption[A view of the D-Wave pegasus topology---each line represents a qubit and intersections represent available couplers]{A view of the D-Wave pegasus topology where each line represents a qubit and intersections represent available couplers~\protect\cite{dwaveadvantage}}
     \label{pegasustopology}
 \end{figure}
 The experiments will be conducted with the D-Wave Advantage 4.1 QPU with up to 5640 qubits and 40484 couplers \cite{dwaveadvantage}. The QPU operates at a temperature of approximately $12$mK and is built with "a network of tunably coupled rf superconducting quantum–interference device (rf-SQUID) qubits" arranged with the Pegasus graph topology that allows for up to 15 couplers per qubit, shown in \autoref{pegasustopology}. The system Hamiltonian as a function of $s$, the normalized anneal fraction, is:
 \begin{equation}
     \label{eqn:dwavehamiltonian}
-    H(s) = -\frac{A(s)}{2}\left( \right) + \frac{B(s)}{2}\left(\sum_{i}h_i \Hat{\sigma}_z^{(i)}\ + \sum_{i > j}J_{i,j} \Hat{\sigma}_z^{(i)}\Hat{\sigma}_z^{j)}\right)
+    H(s) = -\frac{A(s)}{2}\left(\sum_{i} \Hat{\sigma}_x^{(i)}\right) + \frac{B(s)}{2}\left(\sum_{i}h_i \Hat{\sigma}_z^{(i)}\ + \sum_{i > j}J_{i,j} \Hat{\sigma}_z^{(i)}\Hat{\sigma}_z^{j)}\right)
 \end{equation}
 where functions $A(s)$ and $B(s)$ used in the Advantage 4.1 QPU are shown in \autoref{dwaveannealing} with $A(s) >> B(s)$ when $s=0$ and $B(s) >> A(s)$ when $s=1$ and have an energy scale of around $10^{-24} J$.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.6\linewidth]{images/dwave_annealing.png}
-    \caption{Annealing functions $A(s)$ and $B(s)$ as a function of the normalized anneal fraction $s$~\protect\cite{dwaveadvantage}}
+    \caption[Annealing functions $A(s)$ and $B(s)$ as a function of the normalized anneal fraction $s$]{Annealing functions $A(s)$ and $B(s)$ as a function of the normalized anneal fraction $s$~\protect\cite{dwaveadvantage}}
     \label{dwaveannealing}
 \end{figure}
 We will use the default annealing time of $20\mu s$ with $1000$ repeated samplings (number of reads). The candidate solution will be taken as the best solution among the $1000$ sampled configurations.
@@ -104,7 +104,7 @@ To convert a max-cut problem into a QUBO problem, we represent the assignment of
 
 \subsection*{Sherrington-Kirkpatrick (SK) model}
 The Sherrington Kirkpatrick (SK) model is an Ising problem with a random Hamiltonian of the form $\hat{H}_c = \frac{1}{\sqrt{n}} \sum_{1 \leq i < j \leq n} J_{ij}s_i s_j$
-where $J_{ij} \sim \mathcal{N}(0,1)$ are independent standard Gaussian random variables. The energy landscape of the SK model is complex and has exponentially many local minima with a unique global minimum separated by high energy barriers \cite{skmodel}. This many-valley structure implies that it is extremely difficult to find the exact solution of the model. We generate random Gaussian variables with a random normal generator from the NumPy Python library.
+where $J_{ij} \sim \mathcal{N}(0,1)$ are independent standard Gaussian variables. The energy landscape of the SK model is complex and has exponentially many local minima with a unique global minimum separated by high energy barriers \cite{skmodel}. This many-valley structure implies that it is extremely difficult to find the exact solution of the model. We generate random Gaussian variables with a random normal generator from the NumPy Python library.
 
 %Parisi [6] provides a formula (for proof, see [7]) that, when numerically evaluated [8, 9, 1], shows for typical instances,
 %\begin{equation*}
@@ -114,7 +114,7 @@ where $J_{ij} \sim \mathcal{N}(0,1)$ are independent standard Gaussian random va
 
 %\subsection*{Quantum Critical Points}
 %get rid of Linear term
-%J terms are 0
+%J terms are 1
 %Ising model has no linear term
 %QCP is A(s)/2 = +-B(s)/2 * J magnitude is the same.
 %harder for Dwave to solve, jump to excited state
@@ -129,9 +129,9 @@ To evaluate the performance of each solver we will use two performance metrics:
     \begin{equation}
         \Bar{p} = \frac{\text{number of best solutions found}}{20}
     \end{equation}
-    \item The average normalized performance, used in \cite{b34}, which is:
+    \item The average normalized energy, used in \cite{b34}, which is:
     \begin{equation}
         \Bar{r}_{solver} =  \frac{1}{20} \sum_{i = 1}^{20} \frac{E_{max} - E_{solver}}{E_{max} - E_{min}}
     \end{equation}
-    where $E_{max}$ and $E_{min}$ are the energies of the worst and best solutions found by all solvers and $E_{solver}$ is the energy that the solver found. Note that if a solver finds the best solution it gets a score of $1$ and if it finds the worst solution it gets a score of $0$. All solvers get a score of $1$ if $E_{max}=E_{min}$.
+    where $E_{max}$ and $E_{min}$ are the energies of the worst and best solutions found by all solvers and $E_{solver}$ is the energy that the solver found. Note that if a solver finds the best solution it gets a normalized energy of $1$ and if it finds the worst solution it gets a normalized energy of $0$. All solvers get a normalized energy of $1$ if all solutions have the same energy.
 \end{enumerate}

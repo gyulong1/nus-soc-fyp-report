@@ -28,58 +28,72 @@ We will also compare 3 training algorithms for NNQS---progressive, direct, and c
     \State Train NNQS on $H(s)$ for $1$ epoch;
     \EndFor
     \end{algorithmic}
-    \caption{NNQS Direct Training}
+    \caption{NNQS Continuous Training}
     \label{alg:continuous}
 \end{algorithm}
 
 The direct training scheme serves as a baseline for directly training a neural network with the cost function as the problem Hamiltonian. The progressive training scheme most closely resembles the quantum annealing process, where the system is kept at the ground state by training until convergence in each increment of $s$. The continuous training scheme is a combination of the other two schemes by slowly incrementing $s$ but never reaching convergence.
 
+\section{Results and Discussion}
 \subsection{NAE3SAT}
+
 \begin{figure}[!h]
-    \centering
-    \includegraphics[width=1\linewidth]{images/nae3sat_nnqs_avg.png}
-    \caption{Performance of different NNQS types on the NAE3SAT dataset}
+    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_avg.png}}\hfill
+    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_success_avg.png}}
+    \caption{Average performance of different NNQS types for NAE3SAT}
     \label{nnqs-nae3sat-average}
 \end{figure}
 
 \begin{figure}[!h]
-    \centering
-    \includegraphics[width=1\linewidth]{images/nae3sat_nnqs_size.png}
-    \caption{Performance by size on the NAE3SAT dataset}
+    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_size.png}}\hfill
+    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_success_size.png}}
+    \caption{Performance of different NNQS types for NAE3SAT by problem size}
     \label{nnqs-nae3sat-size}
 \end{figure}
 
+%\begin{figure}[!h]
+%    \centering
+%    \includegraphics[width=1\linewidth]{images/nae3sat_nnqs_size.png}
+%    \caption{Performance by size on the NAE3SAT dataset}
+%    \label{nnqs-nae3sat-size}
+%\end{figure}
+
 \subsection{Max-cut}
+
 \begin{figure}[!h]
-    \centering
-    \includegraphics[width=1\linewidth]{images/maxcut_nnqs_avg.png}
-    \caption{Performance of different NNQS types on the max-cut dataset}
+    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_avg.png}}\hfill
+    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_success_avg.png}}
+    \caption{Average performance of different NNQS types for max-cut}
     \label{nnqs-maxcut-average}
 \end{figure}
 
 \begin{figure}[!h]
-    \centering
-    \includegraphics[width=1\linewidth]{images/maxcut_nnqs_size.png}
-    \caption{Performance by size on the max-cut dataset}
+    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_size.png}}\hfill
+    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_success_size.png}}
+    \caption{Performance of different NNQS types for max-cut by problem size}
     \label{nnqs-maxcut-size}
 \end{figure}
 
-\subsection{SK Model}
+
+\subsection{SK model}
+
 \begin{figure}[!h]
-    \centering
-    \includegraphics[width=1\linewidth]{images/skmodel_nnqs_avg.png}
-    \caption{Performance of different NNQS types on the SK model dataset}
+    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/skmodel_nnqs_avg.png}}\hfill
+    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/skmodel_nnqs_success_avg.png}}
+    \caption{Average performance of different NNQS types for SK model}
     \label{nnqs-skmodel-average}
 \end{figure}
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=1\linewidth]{images/skmodel_nnqs_size.png}
-    \caption{Performance by size on the SK model dataset}
+    \subfloat[Normalized energy]{\includegraphics[width=0.9\textwidth]{images/skmodel_nnqs_size.png}}%\hfill
+    \\
+    \subfloat[Success probability]{\includegraphics[width=0.9\textwidth]{images/skmodel_nnqs_success_size.png}}
+    \caption{Performance of different NNQS types for SK model by problem size}
     \label{nnqs-skmodel-size}
 \end{figure}
 
-Using the RBM with a continuous training scheme gives the highest normalized performance across all datasets.
+Across all the problem sets, we see that the RBM has a better average performance compared to the MLP in both average normalized energy and success probability. In terms of training schemes, direct training performs the worst among the 3, and continuous training performs better than progressive training. Using the RBM with a continuous training scheme gives the highest normalized performance across all datasets.
 
 \section{Future Work}
 Future studies could investigate if more state-of-the-art machine learning models such as Graph Neural Networks or Attention-based Neural Networks can be used as the underlying architecture for NNQS.
