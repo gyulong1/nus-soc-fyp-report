@@ -11,12 +11,15 @@ In this study, we have benchmarked $5$ QUBO solvers:
     \item GUROBI Optimizer
     \item Fixstars Amplify QUBO Solver
 \end{enumerate}
-The datasets used comprised of $3$ types of combinatorial optimization problems:
+$3$ datasets were used which comprised of $3$ types of combinatorial optimization problems:
 \begin{enumerate}
     \item Not-all-equal 3-satisfiability (NAE3SAT)
     \item Max-cut
     \item Sherrington-Kirkpatrick model (SK model)
 \end{enumerate}
+Among the quantum-inspired solvers, our results show that the D-wave and NNQS solvers achieve the best performance. The NNQS solver is generally better than the D-wave solver except for the SK model dataset. The QAOA solver achieves generally poor performance across datasets and is not comparable due to the lack of large-scale gate-based quantum computers. All 3 quantum-inspired solvers underperform the 2 classical solvers with the simulated\-annealing\-based Fixstar Amplify QOBO solver achieving the best performance out of all solvers for all datasets. 
+
+We also investigated the NNQS solver with different architectures and training algorithms. The Restricted Boltzmann Machine (RBM) and the Multilayer Perceptron (MLP) were used as the underlying neural networks along with $3$ different training algorithms---progressive, direct, and continuous. We found that using the RBM with a continuous training scheme gives the best performance across all datasets.
 
 \section{Future work}
 Future studies can explore more QUBO problem types and attempt to classify classes of problems that are difficult for annealing-based solvers such as QA and SA but easier for other solvers such as QAOA. When gate-based quantum computers are readily available, the QAOA solver with higher $p > 1$ values could be benchmarked which should give better performance.

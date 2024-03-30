@@ -126,7 +126,7 @@ where $J_{ij} \sim \mathcal{N}(0,1)$ are independent standard Gaussian variables
 \section{Performance evaluation}
 To evaluate the performance of each solver we will use two performance metrics:
 \begin{enumerate}
-    \item The probability of finding the best solution. The best solution is one that has the same energy as the lowest energy among all solutions found by the $5$ solvers. Since we are generating $20$ problems of each type and size, the probability for each solver is:
+    \item The probability of finding the best solution. The best solution is one that has the same energy as the lowest energy among all solutions found by the $5$ solvers. Since we are generating $20$ problems of each type and size, the success probability for each solver is:
     \begin{equation}
         \Bar{p} = \frac{\text{number of best solutions found}}{20}
     \end{equation}
@@ -136,3 +136,5 @@ To evaluate the performance of each solver we will use two performance metrics:
     \end{equation}
     where $E_{max}$ and $E_{min}$ are the energies of the worst and best solutions found by all solvers and $E_{solver}$ is the energy that the solver found. Note that if a solver finds the best solution it gets a normalized energy of $1$ and if it finds the worst solution it gets a normalized energy of $0$. All solvers get a normalized energy of $1$ if all solutions have the same energy.
 \end{enumerate}
+
+The average normalized energy reflects the quality of the solutions that the solvers produce, while the success probability measures the solvers's ability to find the best solution.

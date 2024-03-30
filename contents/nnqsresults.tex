@@ -75,45 +75,36 @@ For the maxcut dataset, the continuous training algorithm with the RBM performs 
 For the SK model dataset, the continuous training algorithm with the RBM performs the best in terms of both average performance and success probability when averaged across all sizes, shown in \autoref{nnqs-skmodel-average}. The performance averaged across all sizes, shown in \autoref{nnqs-skmodel-average}, also highlights that the RBM with a continuous training algorithm performs the best. However, it is interesting that the direct training schemes have poor performance with small problem sizes ($\leq 50$) but are relatively better at higher problem sizes ($100, 250$).
 
 \section{Conclusion}
-Across all the problem sets, we see that the RBM has a better average performance compared to the MLP in both average normalized energy and success probability for each training algorithm. In terms of training schemes, direct training performs the worst among the 3, and continuous training performs better than progressive training. Using the RBM with a continuous training scheme gives the highest normalized performance across all datasets.
+Across all the problem sets, the RBM has a better average performance compared to the MLP in both average normalized energy and success probability for each training algorithm. In terms of training schemes, direct training performs the worst among the 3, and continuous training performs better than progressive training. Using the RBM with a continuous training scheme gives the highest normalized energy and success probability across all datasets.
+
+\autoref{results:nnqsnormalizedenergy} and \autoref{results:nnqssuccess} show the average normalized energy and success probability for different types of NNQS for each dataset and the average across all datasets.
 
 \begin{table}[!ht]
     \centering
-    \begin{tabular}{|l|l|l|l|l|l|l}
-        \hline
-            ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM}  \\ \hline
-            NAE3SAT & 0.860383 & 0.087382 & 0.349169 & 0.989656 & 0.507670 & 0.894926 \\ \hline
-            Max-cut & 0.927952 & 0.154537 & 0.776010 & 0.997074 & 0.751874 & 0.986666 \\ \hline
-            SK model & 0.784972 & 0.246483 & 0.410168 & 0.992441 & 0.484431 & 0.988997 \\ \hline
-            Average & 0.857769 & 0.162801 & 0.511782 & 0.993057 & 0.581325 & 0.956863 \\ \hline
-        \end{tabular}
-    \caption{Average normalized energy for different solvers}
-    \label{results:allnormalizedenergy}
-\end{table}
-
-
-\begin{table}[!ht]
-    \centering
-    \begin{tabular}{cccccc} \toprule
-        ~ & D-wave & NNQS & QAOA & GUROBI & Fixstar \\ \midrule
-        NAE3SAT & 0.617 & \textbf{0.755} & 0.640 & 0.983 & 1.00 \\
-        Max-cut & 0.610 & \textbf{0.783} & 0.190 & 0.983 & 1.00 \\
-        SK model & \textbf{0.691} & 0.646 & 0.178 & 0.870 & 0.910 \\ \midrule
-        Average & 0.640 & \textbf{0.728} & 0.336 & 0.946 & 0.970 \\ \bottomrule
+    \begin{tabular}{ccccccc} \toprule
+        ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\
+        \cmidrule{2-7} & Continuous & Direct & Progressive & Continuous & Direct & Progressive \\
+        \midrule
+        NAE3SAT & 0.860 & 0.087 & 0.349 & \textbf{0.990} & 0.508 & 0.895 \\
+        Max-cut & 0.928 & 0.155 & 0.776 & \textbf{0.997} & 0.752 & 0.987 \\
+        SK model & 0.785 & 0.247 & 0.410 & \textbf{0.992} & 0.484 & 0.989 \\ \midrule
+        Average & 0.858 & 0.163 & 0.512 & \textbf{0.993} & 0.581 & 0.957 \\ \bottomrule
     \end{tabular}
-    \caption{Average normalized energy for different solvers}
+    \caption{Average normalized energy for different NNQS types}
     \label{results:nnqsnormalizedenergy}
 \end{table}
 
 \begin{table}[!ht]
     \centering
-    \begin{tabular}{cccccc} \toprule
-        ~ & D-wave & NNQS & QAOA & GUROBI & Fixstar \\ \midrule
-        NAE3SAT & 0.617 & \textbf{0.755} & 0.640 & 0.983 & 1.00 \\
-        Max-cut & 0.610 & \textbf{0.783} & 0.190 & 0.983 & 1.00 \\
-        SK model & \textbf{0.691} & 0.646 & 0.178 & 0.870 & 0.910 \\ \midrule
-        Average & 0.640 & \textbf{0.728} & 0.336 & 0.946 & 0.970 \\ \bottomrule
+    \begin{tabular}{ccccccc} \toprule
+        ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\
+        \cmidrule{2-7} & Continuous & Direct & Progressive & Continuous & Direct & Progressive \\
+        \midrule
+        NAE3SAT & 0.533 & 0.000 & 0.062 & \textbf{0.700} & 0.167 & 0.227 \\
+        Max-cut & 0.808 & 0.000 & 0.667 & \textbf{0.912} & 0.417 & 0.817 \\
+        SK model & 0.400 & 0.000 & 0.333 & \textbf{0.650} & 0.000 & 0.583 \\ \midrule
+        Average & 0.580 & 0.000 & 0.354 & \textbf{0.754} & 0.194 & 0.542 \\ \bottomrule
     \end{tabular}
-\caption{Success probability for different solvers}
-\label{results:nnqssuccess}
+    \caption{Success probability for different NNQS types}
+    \label{results:nnqssuccess}
 \end{table}
