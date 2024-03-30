@@ -1,17 +1,26 @@
 \chapter{Conclusion}
 
-Hopefully this example report is helpful.
+This chapter summarises the contributions and limitations of our study. There are also recommendations for further work that could be investigated by future projects.
 
-\section{Section 1}
+\section{Contributions}
+In this study, we have benchmarked $5$ QUBO solvers:
+\begin{enumerate}
+    \item D-Wave Quantum Annealing
+    \item Neural Network Quantum States (NNQS)
+    \item Quantum Approximate Optimization Algorithm (QAOA)
+    \item GUROBI Optimizer
+    \item Fixstars Amplify QUBO Solver
+\end{enumerate}
+The datasets used comprised of $3$ types of combinatorial optimization problems:
+\begin{enumerate}
+    \item Not-all-equal 3-satisfiability (NAE3SAT)
+    \item Max-cut
+    \item Sherrington-Kirkpatrick model (SK model)
+\end{enumerate}
 
-\subsection{Sub Section 1}
+\section{Future work}
+Future studies can explore more QUBO problem types and attempt to classify classes of problems that are difficult for annealing-based solvers such as QA and SA but easier for other solvers such as QAOA. When gate-based quantum computers are readily available, the QAOA solver with higher $p > 1$ values could be benchmarked which should give better performance.
 
-Some text here.
+For further work with NNQS, future studies could investigate if more modern machine learning models such as Graph Neural Networks or Attention-based Neural Networks can be used as the underlying architecture for NNQS and whether they provide better performance.
 
-\subsection{Sub Section 2}
-
-Moar text here.
-
-\section{Section 2}
-
-Fin.
+Future work could also investigate whether NNQS closely approximates the wave function of a D-wave solver in the quantum annealing process. This could be done by conducting a quench of the D-wave annealing process in order to take a snapshot of the intermediate state. Some initial work is detailed in \autoref{appendix:quenching} but has not been included in the main report as the results are not substantial.

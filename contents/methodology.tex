@@ -3,19 +3,20 @@
 
 \chapter{Methodology}
 \label{methodology}
+This chapter explains the methodology employed in our study, which includes the solvers, datasets, and evaluation metrics.
 
 \section{Solvers}
 We will employ five QUBO-solving-methods:
 \begin{enumerate}
-    \item Quantum Annealing
-    \item Neural Network Quantum States
-    \item Quantum Approximate Optimization Algorithm
+    \item D-Wave Quantum Annealing
+    \item Neural Network Quantum States (NNQS)
+    \item Quantum Approximate Optimization Algorithm (QAOA)
     \item GUROBI Optimizer
     \item Fixstars Amplify QUBO Solver
 \end{enumerate}
 The following sections will provide more information on the solvers used for each method.
 
-\subsection{Quantum Annealing}
+\subsection{D-Wave Quantum Annealing}
 We will use quantum annealers from D-wave Systems as the solver for Quantum Annealing. D-Wave Systems, a Canadian-based company, currently produces the most popular commercially available quantum annealing hardware and uses superconducting qubits to represent binary variables in their annealers \cite{b14}.  Given a target QUBO problem to solve, the process for using a D-Wave Systems Quantum Processing Unit (QPU) is as follows:
 
 \begin{enumerate}
