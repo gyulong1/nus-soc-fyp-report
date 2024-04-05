@@ -643,8 +643,6 @@ FUNCTION {article}
       format.pages output
     }
   if$
-  new.block
-  note output
   fin.entry
 }
 

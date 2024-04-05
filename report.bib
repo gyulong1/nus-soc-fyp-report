@@ -152,9 +152,9 @@ doi = {10.1007/BF01343193}
 @misc{b16,
   title = {Minor-Embedding},
   author={{D-Wave Systems}},
-  year = 2023,
-  url = {https://docs.ocean.dwavesys.com/en/stable/concepts/embedding.html},
-  urldate = {2023-10-27}
+  year = 2024,
+  howpublished = {\url{https://docs.ocean.dwavesys.com/en/stable/concepts/embedding.html}},
+  note = {Accessed: 2024-01-04}
 }
 
 @article{b17,
@@ -359,7 +359,6 @@ day={02},
 volume={19},
 number={7},
 pages={197},
-abstract={The performance of the quantum approximate optimization algorithm is evaluated by using three different measures: the probability of finding the ground state, the energy expectation value, and a ratio closely related to the approximation ratio. The set of problem instances studied consists of weighted MaxCut problems and 2-satisfiability problems. The Ising model representations of the latter possess unique ground states and highly degenerate first excited states. The quantum approximate optimization algorithm is executed on quantum computer simulators and on the IBM Q Experience. Additionally, data obtained from the D-Wave 2000Q quantum annealer are used for comparison, and it is found that the D-Wave machine outperforms the quantum approximate optimization algorithm executed on a simulator. The overall performance of the quantum approximate optimization algorithm is found to strongly depend on the problem instance.},
 issn={1573-1332},
 doi={10.1007/s11128-020-02692-8},
 url={https://doi.org/10.1007/s11128-020-02692-8}
@@ -379,7 +378,6 @@ year="2023",
 publisher="Springer Nature Switzerland",
 address="Cham",
 pages="240--258",
-abstract="Quantum annealing (QA) and Quantum Alternating Operator Ansatz (QAOA) are both heuristic quantum algorithms intended for sampling optimal solutions of combinatorial optimization problems. In this article we implement a rigorous direct comparison between QA on D-Wave hardware and QAOA on IBMQ hardware. These two quantum algorithms are also compared against classical simulated annealing. The studied problems are instances of a class of Ising models, with variable assignments of {\$}{\$}+1{\$}{\$}+1or {\$}{\$}-1{\$}{\$}-1, that contain cubic ZZZ interactions (higher order terms) and match both the native connectivity of the Pegasus topology D-Wave chips and the heavy hexagonal lattice of the IBMQ chips. The novel QAOA implementation on the heavy hexagonal lattice has a CNOT depth of 6 per round and allows for usage of an entire heavy hexagonal lattice. Experimentally, QAOA is executed on an ensemble of randomly generated Ising instances with a grid search over 1 and 2 round angles using all 127 programmable superconducting transmon qubits of ibm{\_}washington. The error suppression technique digital dynamical decoupling is also tested on all QAOA circuits. QA is executed on the same Ising instances with the programmable superconducting flux qubit devices D-Wave Advantage{\_}system4.1 and Advantage{\_}system6.1 using modified annealing schedules with pauses. We find that QA outperforms QAOA on all problem instances. We also find that dynamical decoupling enables 2-round QAOA to marginally outperform 1-round QAOA, which is not the case without dynamical decoupling.",
 isbn="978-3-031-32041-5"
 }
 
@@ -455,7 +453,6 @@ year={2018}
 @article{metropolissampling,
  ISSN = {00063444},
  URL = {http://www.jstor.org/stable/2334940},
- abstract = {A generalization of the sampling method introduced by Metropolis et al. (1953) is presented along with an exposition of the relevant theory, techniques of application and methods and difficulties of assessing the error in Monte Carlo estimates. Examples of the methods, including the generation of random orthogonal matrices and potential applications of the methods to numerical problems arising in statistics, are discussed.},
  author = {W. K. Hastings},
  journal = {Biometrika},
  number = {1},
@@ -505,7 +502,6 @@ year={2018}
 
 
 @article{Kirkpatrick,
-	abstract = {There is a deep and useful connection between statistical mechanics (the behavior of systems with many degrees of freedom in thermal equilibrium at a finite temperature) and multivariate or combinatorial optimization (finding the minimum of a given function depending on many parameters). A detailed analogy with annealing in solids provides a framework for optimization of the properties of very large and complex systems. This connection to statistical mechanics exposes new information and provides an unfamiliar perspective on traditional optimization problems and methods.},
 	author = {S. Kirkpatrick and C. D. Gelatt and M. P. Vecchi},
 	doi = {10.1126/science.220.4598.671},
 	eprint = {https://www.science.org/doi/pdf/10.1126/science.220.4598.671},
@@ -540,7 +536,6 @@ doi = {https://doi.org/10.1016/S0377-2217(00)00242-3},
 url = {https://www.sciencedirect.com/science/article/pii/S0377221700002423},
 author = {Kengo Katayama and Hiroyuki Narihisa},
 keywords = {Heuristics, Local search, Simulated annealing, Unconstrained binary quadratic programming, Large-size problems},
-abstract = {The unconstrained binary quadratic programming problem (BQP) is known to be NP-hard and has many practical applications. This paper presents a simulated annealing (SA)-based heuristic for the BQP. The new SA heuristic for the BQP is based on a simple (1-opt) local search heuristic and designed with a simple cooling schedule, but the multiple annealing processes are adopted. To show practical performances of the SA, we test on publicly available benchmark instances of large size ranging from 500 to 2500 variables and compare them with other heuristics such as multi-start local search, the previous SA, tabu search, and genetic algorithm incorporating the 1-opt local search. Computational results indicate that our SA leads to high-quality solutions with short times and is more effective than the competitors particularly for the largest benchmark set. Furthermore, the values of new best-known solutions found by the SA for several large instances are also reported.}
 }
 
 @article{kadowaki1998quantum,
@@ -595,34 +590,36 @@ abstract = {A quantum system will stay near its instantaneous ground state if th
   year        = {2021}
 }
 
-@misc{dwavetopologywebsite, 
-  url={https://docs.dwavesys.com/docs/latest/c_gs_4.html}, 
-  journal={Solver Docs}, 
-  author={D-Wave Systems Inc.},
-  year={2024}
+@misc{dwavetopologywebsite,
+  title = {D-Wave QPU Architecture: Topologies},
+  author={{D-Wave Systems}},
+  year = 2024,
+  howpublished = {\url{https://docs.dwavesys.com/docs/latest/c_gs_4.html}},
+  note = {Accessed: 2024-01-04}
 }
 
-@misc{dwavefunctions, 
-  url={https://docs.dwavesys.com/docs/latest/doc_physical_properties.html},
-  journal={Solver Docs}, 
-  author={D-Wave Systems Inc.},
-  year={2024} 
+@misc{dwavefunctions,
+  title = {QPU-Specific Characteristics},
+  author={{D-Wave Systems}},
+  year = 2024,
+  howpublished = {\url{https://docs.dwavesys.com/docs/latest/doc_physical_properties.html}},
+  note = {Accessed: 2024-01-04}
 }
 
 @misc{dimodrandomnae3sat,
- url={https://docs.ocean.dwavesys.com/en/stable/docs_dimod/reference/generated/dimod.generators.random_nae3sat.html}, 
-journal={Solver Docs}, 
-author={D-Wave Systems Inc.},
- year={2024} 
- }
+  title = {Solver Docs},
+  author={{D-Wave Systems}},
+  year = 2024,
+  howpublished = {\url{https://docs.ocean.dwavesys.com/en/stable/docs_dimod/reference/generated/dimod.generators.random_nae3sat.html}},
+  note = {Accessed: 2024-01-04}
+}
 
-‌
-
-‌@misc{qiskittranspiler, 
-url={https://docs.quantum.ibm.com/api/qiskit/transpiler}, 
-journal={IBM Quantum Documentation}, 
-author={IBM},
-year={2024} 
+@misc{qiskittranspiler,
+  title = {Transpiler},
+  author={{IBM}},
+  year = 2024,
+  howpublished = {\url{https://docs.quantum.ibm.com/api/qiskit/transpiler}},
+  note = {Accessed: 2024-01-04}
 }
 
 ‌@article{nae3sattransition,
@@ -695,4 +692,15 @@ doi = {10.1145/365411.365760}
   pages={015026},
   year={2023},
   publisher={IOP Publishing}
+}
+
+@article{bressanini2002robust,
+  title={Robust wave function optimization procedures in quantum Monte Carlo methods},
+  author={Bressanini, Dario and Morosi, Gabriele and Mella, Massimo},
+  journal={The Journal of chemical physics},
+  volume={116},
+  number={13},
+  pages={5345--5350},
+  year={2002},
+  publisher={American Institute of Physics}
 }

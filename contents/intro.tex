@@ -4,24 +4,25 @@
 \vspace{2em}
 
 \section{Motivation}
-The quadratic unconstrained binary optimization (QUBO) problem arises in many types of combinatorial optimization tasks and has vast applications in both operational research and industry~\cite{b1}. Problems that involve choosing a set of binary decisions to optimise an objective function can usually be expressed as a QUBO problem. However, QUBO problems are NP-hard and are extremely hard to solve efficiently~\cite{barahona1982computational,b1}. Traditionally, QUBO-solving methods are specialized for a specific problem domain in order to leverage the unique characteristics of each problem domain, limiting the versatility and portability of QUBO-solving methods~\cite{b5}.
+The quadratic unconstrained binary optimization (QUBO) problem arises in many types of combinatorial optimization tasks and has vast applications in both operational research and industry~\cite{b1}. Problems that involve choosing a set of binary decisions to optimize an objective function can usually be expressed as a QUBO problem. Examples include the max-cut problem, knapsack problem, or even problems with more complex constraints such as the traveling salesman problem \cite{b10}. However, QUBO problems are NP-hard and are extremely hard to solve efficiently~\cite{barahona1982computational,b1}. Traditionally, QUBO-solving methods are specialized for a specific problem domain in order to leverage the unique characteristics of each problem domain, limiting the versatility and portability of QUBO-solving methods~\cite{b5}.
 
-The QUBO problem shares similarities with the Ising model in Physics, where variables are expressed as either $-1$ or $1$, instead of the binary variables used in QUBO. The two models turn out to be equivalent and the correspondence between the QUBO problem and the Ising model has opened the doors to solving QUBO problems with quantum computational methods~\cite{b5}. The equivalence not only enhances the problem domains that could be modelled as QUBO problems but also allows for the QUBO problem to be solved by more general quantum-based solving methods~\cite{b5}.
+The QUBO problem shares similarities with the Ising model in Physics, where variables are expressed as either $-1$ or $1$, instead of the binary variables used in QUBO. The two models are equivalent and the correspondence between the QUBO problem and the Ising model has opened the doors to solving QUBO problems with quantum computational methods~\cite{b5}. The equivalence not only enhances the problem domains that could be modeled as QUBO problems but also allows for the QUBO problem to be solved by more general quantum-inspired solving methods~\cite{b5}.
 
-With a broad range of classical and quantum-based methods available to tackle QUBO problems, it is imperative to consolidate and benchmark existing QUBO-solving methods to highlight their strengths and weaknesses for solving different kinds of QUBO problems.
+With a broad range of classical and quantum-inspired methods available to tackle QUBO problems, it is imperative to consolidate and benchmark existing QUBO-solving solvers to highlight their strengths and weaknesses for solving different kinds of QUBO problems.
 
 \section{Objectives}
-In the first section of the report, we aim to measure the performance of 3 quantum-based QUBO-solving methods:
-\begin{itemize}
+In the first section of the report, we aim to measure the performance of 3 quantum-inspired QUBO-solving solvers:
+\begin{enumerate}
     \item Quantum Annealing
     \item Neural Network Quantum States
     \item Quantum Approximate Optimization Algorithm
-\end{itemize}
-For comparison with quantum-based methods, we will also use classical solvers as a baseline. We will explore 2 classical solvers:
-\begin{itemize}
+\end{enumerate}
+For comparison with quantum-inspired solvers, we will also use classical solvers as a baseline. We will explore 2 classical solvers:
+\begin{enumerate}
+    \setcounter{enumi}{3}
     \item Fixstars Amplify QUBO Solver
     \item GUROBI Optimizer
-\end{itemize}
+\end{enumerate}
 
 %QUBOs are not always effective in practice, though. In particular, they cannot directly:
 
@@ -29,6 +30,8 @@ For comparison with quantum-based methods, we will also use classical solvers as
 %Support constraints (e.g., max/mins, price cannot exceed a certain value)
 %Prove optimality (e.g., you can’t be sure you’ve identified the best solution)
 
-For each solver, we will measure the success rate (probability of solving optimally) and effectiveness (performance of candidate solution) across QUBO problems of different types and sizes. More details of the solvers and performance metrics are available in \autoref{review} and \autoref{methodology}. The results of the study will allow us to understand the current state of quantum-based QUBO-solving methods and how they compare to classical solvers. 
+For each solver, we will calculate the success rate (probability of solving optimally) and normalized energy (relative performance of candidate solution) across QUBO problems of different types and sizes. More details of the solvers and performance metrics are available in \autoref{review} and \autoref{methodology}. The results of the study will allow us to understand the current state of quantum-inspired QUBO solvers and how they compare to classical solvers. 
 
-In the second section of the report, we will further explore how Neural Network Quantum States can be used to simulate the quantum annealing process to solve QUBO problems. We first sample intermediate states from both the NNQS and a physical quantum annealer to compare the annealing process that is being simulated in the NNQS. We will also conduct a systematic comparison of two different training algorithms highlighted in \autoref{methodology} for Neural Network Quantum States and extract any physical insights they provide which will bring us one step closer in harnessing its full potential.
+In the second section of the report, we will further explore how Neural Network Quantum States can be used to simulate the quantum annealing process to solve QUBO problems. We conduct a systematic comparison of 2 neural network architectures and 3 different training algorithms highlighted in \autoref{nnqsresults} for Neural Network Quantum States.
+
+The results of the study will allow us to better understand the current landscape of these quantum-inspired QUBO solvers and how they compare to the state-of-the-art classical commercial solvers.

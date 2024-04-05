@@ -33,9 +33,9 @@ Performance is shown for each of the datasets, accompanied by error bars represe
 
 Performance by size for the NAE3SAT dataset in \autoref{all-nae3sat-size} and average performance is shown in \autoref{all-nae3sat-average}. The D-wave solver and NNQS could both solve problems up to $n=300$. However, multiple embedding requests were required for problems of size $300$ for the D-wave Pegasus topology which suggests that $n=300$ might be near the D-wave size limit for the NAE3SAT problem. QAOA was only able to solve problems of up to $n=30$ due to the limitations on the number of qubits of the simulator.
 
-In terms of performance, the D-wave solver performs well up to $n=50$ with a success probability of $1$. For larger problem sizes, the performance of the D-wave solver drops off sharply. The NNQS performs well up to $n=20$, and then the success probability and normalized energy gradually decline until $n=300$. The QAOA solver performs well up to $n=15$, with declining performance until $n=30$. Between the classical solvers, the Fixstars QUBO solver performs better than the GUROBI optimizer at larger problem sizes ($>150$).
+In terms of performance, the D-wave solver performs well up to $n=50$ with a success probability of $1$. For larger problem sizes, the performance of the D-wave solver drops off sharply. The NNQS performs well up to $n=20$, and then the success probability and normalized energy gradually decline until $n=300$. The QAOA solver performs well up to $n=15$, with declining performance until $n=30$. Between the classical solvers, the Fixstars QUBO solver performs better than the GUROBI optimizer at larger problem sizes ($>150$). Both classical solvers outperform the quantum-inspired solvers.
 
-Overall, the NNQS has the highest average normalized energy among the 3 quantum-inspired solvers but has the lowest success probability. This is likely due to it being able to solve problems of larger sizes that the D-wave Annealer and QAOA solver cannot handle.
+Overall, the NNQS has the highest average normalized energy among the 3 quantum-inspired solvers but has the lowest success probability, which is likely due to it being able to solve problems of larger sizes that the D-wave Annealer and QAOA solver cannot handle. The QAOA solver has the highest success probability but can only handle problems of up to $n=30$.
 
 \subsection{Max-cut}
 
@@ -60,7 +60,7 @@ Performance by size for the max-cut dataset is shown in \autoref{all-maxcut-size
 
 In terms of performance, the D-wave solver performs well up to $n=30$ and the performance drops off sharply for larger problems. The NNQS performs well up to $n=150$, although the success probability declines for sizes more than $50$. The QAOA solver performs well only for $n=10$, with performance declining afterward.
 
-Overall, the NNQS has the highest average normalized energy among the 3 quantum-inspired solvers and has similar a success probability as the D-wave solver. The QAOA solver performs poorly in both metrics.
+Overall, the NNQS has the highest average normalized energy among the 3 quantum-inspired solvers and has a slightly lower success probability than the D-wave solver. The QAOA solver performs poorly in both metrics.
 
 \subsection{SK model}
 
@@ -83,16 +83,65 @@ Overall, the NNQS has the highest average normalized energy among the 3 quantum-
 
 Performance by size for the SK model dataset is shown in \autoref{all-skmodel-size} and average performance is shown in \autoref{all-skmodel-average}. For the SK model, the D-wave solver could only handle problem sizes up to $n=150$ due to the need for minor embedding onto the pegasus topology. The SK model is fully connected which makes embedding difficult for the D-wave QPU. QAOA was able to solve problems of up to $n=30$ due to the limitations of the simulator.
 
-The SK model presents a difficult problem for all QUBO solvers due to its multi-valley energy landscape and performance is much less consistent. The D-wave solver performs well up to $n=30$, with performance gradually decreasing for larger problems. The NNQS follows a similar trend, although it can solve problems of larger sizes and performs better at sizes of $=100,150$. The QAOA solver has consistently poor performance across problem sizes.
+The SK model presents a difficult problem for all QUBO solvers due to its multi-valley energy landscape. The D-wave solver performs well up to $n=30$, with performance gradually decreasing for larger problems. The NNQS follows a similar trend, although it can solve problems of larger sizes and performs better at sizes of $=100,150$. The QAOA solver has consistently poor performance across problem sizes.
 
 Overall, the D-wave annealer has the highest average normalized energy and success probability among the 3 quantum-inspired solvers. The NNQS is slightly worse in both metrics while the QAOA solver performs poorly in both metrics.
 
+\section{Time-Constrained Solver Comparison}
+We also measured the runtime for each solver for each problem and the average runtime across all problems with the same size $n$ shown in \autoref{results:timeaverage}. Runtimes split by problem type can be found in \autoref{appendix:timesizegraph}
+
+For the D-wave solver, the average runtime increases approximately linearly from $0.128\si{\second}$ for $n=10$ to $0.184\si{\second}$ for $n=50$ and $0.292\si{\second}$ for $n=300$. 
+
+For the NNQS solver, the runtime does not increase significantly from $n=10$ to $n=150$ and remains around from $250\si{\second}$ to $350\si{\second}$ but increases sharply for larger $n \geq 200$ which could be due to memory issues with the GPU or the sampling may have taken a longer time to converge. 
+
+For the QAOA solver, runtime remains stable from $n=10$ to $n=20$ at around $38 \si{\second}$ but increases rapidly to $6847 \si{\second}$ at $n=30$ due to the need for more optimization iterations and greater computational resources for the simulation.
+
+The GUROBI optimizer was set with a maximum time limit of $600 \si{\second}$ but was able to finish solving before the time limit for most problems with $n \leq 35$. The Fixstar solver was configured with a maximum time limit of $100 \si{\second}$, the maximum possible duration, and each solve utilized the entire time limit.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/all_time_average.png}
+    \caption{Average runtime in log scale taken by different solvers for QUBO problems by size}
+    \label{results:timeaverage}
+\end{figure}
+
+Using the average runtime of the D-wave solver, we conducted a second run of the benchmarking to measure the performance of the D-wave solver against the classical solvers---GUROBI and Fixstar. The purpose of this experiment was to test if the D-wave solver could outperform the classical solvers if they were limited to the same runtime. For a problem of a specific type and size, the classical solvers were run with a maximum runtime equal to the average time required by the D-wave solver for problems of equivalent type and size shown in \autoref{results:averageruntimedwave}.
+
+\begin{table}[!ht]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lrrrrrrrrrrrrr} \toprule
+        $n$ & 10 & 15 & 20 & 25 & 30 & 35 & 50 & 75 & 100 & 150 & 200 & 250 & 300 \\ \midrule
+        NAE3SAT & 0.133 & 0.135 & 0.141 & 0.149 & 0.138 & 0.156 & 0.173 & 0.184 & 0.201 & 0.243 & 0.259 & 0.286 & 0.292 \\
+        Max-cut & 0.127 & 0.136 & 0.1560 & 0.130 & 0.155 & 0.160 & 0.183 & 0.223 & 0.247 & 0.278 & - & - & - \\
+        SK model & 0.125 & 0.137 & 0.140 & 0.140 & 0.150 & 0.161 & 0.195 & 0.221 & 0.245 & 0.278 & - & - & - \\ \bottomrule
+    \end{tabular}}
+    \caption{Average runtime (seconds) of the D-wave solver by problem type and size. Dashes indicate that the D-wave solver was not able to embed problems of that size.}
+    \label{results:averageruntimedwave}
+\end{table}
+
+The results are shown in \autoref{all-time-size}. For each problem type, the performance of the GUROBI solver drops before the D-wave solver and there are problem types and sizes where the D-wave solver outperforms the GUROBI solver when the runtime is matched. The D-wave solver outperforms GUROBI for NAE3SAT with $n=50, 75$, max-cut with $n=30,35$, and SK model with $n=20, 35$. However, when the problem sizes increase even further, the D-wave solver performs poorly, possibly due to the increased noise of the quantum annealer. The Fixstar solver remains the top-performing solver across all problem types and sizes even when the runtime is matched with the D-wave solver. The results show that the D-wave solver does have the ability to outperform classical solvers like GUROBI for certain problem sizes when the runtime is matched.
+
+\begin{figure}[!htbp]
+    \centering
+    \subfloat[NAE3SAT]{\includegraphics[width=0.7\textwidth]{images/nae3sat_timing_size.png}}%\hfill
+    \\
+    \subfloat[Max-cut]{\includegraphics[width=0.7\textwidth]{images/maxcut_timing_size.png}}
+    \\    
+    \subfloat[SK model]{\includegraphics[width=0.7\textwidth]{images/skmodel_timing_size.png}}
+    \caption{Performance of D-wave solver against GUROBI and Fixstar by problem type and size}
+    \label{all-time-size}
+\end{figure}
+
+\section{Solver logs}
+During the benchmarking experiments, supplementary metadata from the D-wave and QAOA solver was recorded. For the D-wave solver, we recorded the embedded qubit count which tends to grow differently for different problem types. For the QAOA solver, we recorded the number of quantum gates and the circuit depth which can help to quantify the complexity of the quantum circuit used. A summary of the metadata is available in \autoref{appendix:metadata}.
+
 \section{Conclusion}
-When comparing the 3 quantum-inspired solvers, NNQS has the best normalized energy for the NAE3SAT and max-cut dataset while the D-wave solver has the best normalized energy for the SK model performance. NNQS also does the best in normalized energy when averaged across the 3 datasets. 
+When comparing the 3 quantum-inspired solvers, NNQS has the best normalized energy for the NAE3SAT and max-cut dataset while the D-wave solver has the best normalized energy for the SK model performance. NNQS also does the best in normalized energy when averaged across the 3 datasets. NNQS tends to do better in terms of normalized energy since it minimizes the energy expectation value which optimizes the average energy of samples but does not necessarily optimize for the highest probability of sampling the best solution. 
 
 QAOA has the best success probability for the NAE3SAT dataset. However, it is important to note that it was only able to handle problems with up to $30$ variables. The D-wave solver has the best success probability for the max-cut and SK model datasets and the success probability averaged across the 3 datasets.
 
-\autoref{results:allnormalizedenergy} and \autoref{results:allsuccess} show the average normalized energy and success probability for different solvers for each dataset and the average across all datasets.
+\autoref{results:allnormalizedenergy} and \autoref{results:allsuccess} show the average normalized energy and success probability for different solvers for each dataset and the average across all datasets. Across all datasets and both metrics, the Fixstar QUBO solver has the best performance, consistently returning the best solutions out of all solvers.
 
 
 \begin{table}[!ht]
@@ -100,9 +149,9 @@ QAOA has the best success probability for the NAE3SAT dataset. However, it is im
     \begin{tabular}{cccccc} \toprule
         ~ & D-wave & NNQS & QAOA & GUROBI & Fixstar \\ \midrule
         NAE3SAT & 0.617 & \textbf{0.755} & 0.640 & 0.983 & 1.00 \\
-        Max-cut & 0.610 & \textbf{0.783} & 0.190 & 0.983 & 1.00 \\
-        SK model & \textbf{0.691} & 0.646 & 0.178 & 0.870 & 0.910 \\ \midrule
-        Average & 0.640 & \textbf{0.728} & 0.336 & 0.946 & 0.970 \\ \bottomrule
+        Max-cut & 0.610 & \textbf{0.753} & 0.190 & 0.991 & 1.00 \\
+        SK model & \textbf{0.761} & 0.664 & 0.230 & 0.990 & 1.00 \\ \midrule
+        Average & 0.663 & \textbf{0.724} & 0.353 & 0.988 & 1.00 \\ \bottomrule
     \end{tabular}
     \caption{Average normalized energy for different solvers}
     \label{results:allnormalizedenergy}
@@ -112,10 +161,10 @@ QAOA has the best success probability for the NAE3SAT dataset. However, it is im
     \centering
     \begin{tabular}{cccccc} \toprule
         ~ & D-wave & NNQS & QAOA & GUROBI & Fixstar \\ \midrule
-        NAE3SAT & 0.617 & \textbf{0.755} & 0.640 & 0.983 & 1.00 \\
-        Max-cut & 0.610 & \textbf{0.783} & 0.190 & 0.983 & 1.00 \\
-        SK model & \textbf{0.691} & 0.646 & 0.178 & 0.870 & 0.910 \\ \midrule
-        Average & 0.640 & \textbf{0.728} & 0.336 & 0.946 & 0.970 \\ \bottomrule
+        NAE3SAT & 0.615 & 0.538 & \textbf{0.640} & 0.858 & 1.00 \\
+        Max-cut & \textbf{0.610} & 0.585 & 0.190 & 0.931 & 1.00 \\
+        SK model & \textbf{0.740} & 0.538 & 0.230 & 0.954 & 1.00 \\ \midrule
+        Average & \textbf{0.655} & 0.554 & 0.353 & 0.914 & 1.00 \\ \bottomrule
     \end{tabular}
 \caption{Success probability for different solvers}
 \label{results:allsuccess}

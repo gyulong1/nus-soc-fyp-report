@@ -75,9 +75,12 @@ For the maxcut dataset, the continuous training algorithm with the RBM performs 
 For the SK model dataset, the continuous training algorithm with the RBM performs the best in terms of both average performance and success probability when averaged across all sizes, shown in \autoref{nnqs-skmodel-average}. The performance averaged across all sizes, shown in \autoref{nnqs-skmodel-average}, also highlights that the RBM with a continuous training algorithm performs the best. However, it is interesting that the direct training schemes have poor performance with small problem sizes ($\leq 50$) but are relatively better at higher problem sizes ($100, 250$).
 
 \section{Conclusion}
-Across all the problem sets, the RBM has a better average performance compared to the MLP in both average normalized energy and success probability for each training algorithm. In terms of training schemes, direct training performs the worst among the 3, and continuous training performs better than progressive training. Using the RBM with a continuous training scheme gives the highest normalized energy and success probability across all datasets.
-
 \autoref{results:nnqsnormalizedenergy} and \autoref{results:nnqssuccess} show the average normalized energy and success probability for different types of NNQS for each dataset and the average across all datasets.
+
+Across all the problem sets, the RBM has a better average performance compared to the MLP in both average normalized energy and success probability for each training algorithm. In terms of training schemes, direct training performs the worst among the 3, and continuous training performs slightly better than progressive training. Using the RBM with a continuous training scheme gives the highest normalized energy and success probability across all datasets. 
+
+Even though progressive training more closely mimics the quantum annealing process in D-wave solvers, the sudden change of Hamiltonian may have led to large gradient changes that may have made it more difficult for the network to converge, leading to poorer training. Continuous training gradually changes the Hamiltonian which limits the gradient magnitudes which may result in better training. It is expected that direct training performs poorly as it tends to get stuck in local minima.
+
 
 \begin{table}[!ht]
     \centering
@@ -85,10 +88,10 @@ Across all the problem sets, the RBM has a better average performance compared t
         ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\
         \cmidrule{2-7} & Continuous & Direct & Progressive & Continuous & Direct & Progressive \\
         \midrule
-        NAE3SAT & 0.860 & 0.087 & 0.349 & \textbf{0.990} & 0.508 & 0.895 \\
-        Max-cut & 0.928 & 0.155 & 0.776 & \textbf{0.997} & 0.752 & 0.987 \\
-        SK model & 0.785 & 0.247 & 0.410 & \textbf{0.992} & 0.484 & 0.989 \\ \midrule
-        Average & 0.858 & 0.163 & 0.512 & \textbf{0.993} & 0.581 & 0.957 \\ \bottomrule
+        NAE3SAT & 0.866 & 0.118 & 0.352 & \textbf{0.997} & 0.511 & 0.910 \\
+        Max-cut & 0.924 & 0.102 & 0.686 & \textbf{0.998} & 0.704 & 0.988 \\
+        SK model & 0.790 & 0.248 & 0.411 & \textbf{0.999} & 0.488 & 0.995 \\ \midrule
+        Average & 0.860 & 0.156 & 0.483 & \textbf{0.998} & 0.568 & 0.965 \\ \bottomrule
     \end{tabular}
     \caption{Average normalized energy for different NNQS types}
     \label{results:nnqsnormalizedenergy}
@@ -100,10 +103,10 @@ Across all the problem sets, the RBM has a better average performance compared t
         ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\
         \cmidrule{2-7} & Continuous & Direct & Progressive & Continuous & Direct & Progressive \\
         \midrule
-        NAE3SAT & 0.533 & 0.000 & 0.062 & \textbf{0.700} & 0.167 & 0.227 \\
-        Max-cut & 0.808 & 0.000 & 0.667 & \textbf{0.912} & 0.417 & 0.817 \\
-        SK model & 0.400 & 0.000 & 0.333 & \textbf{0.650} & 0.000 & 0.583 \\ \midrule
-        Average & 0.580 & 0.000 & 0.354 & \textbf{0.754} & 0.194 & 0.542 \\ \bottomrule
+        NAE3SAT & 0.583 & 0.029 & 0.062 & \textbf{0.950} & 0.167 & 0.364 \\
+        Max-cut & 0.831 & 0.000 & 0.667 & \textbf{0.965} & 0.417 & 0.892 \\
+        SK model & 0.417 & 0.000 & 0.333 & \textbf{0.933} & 0.000 & 0.767 \\ \midrule
+        Average & 0.610 & 0.010 & 0.354 & \textbf{0.949} & 0.194 & 0.674 \\ \bottomrule
     \end{tabular}
     \caption{Success probability for different NNQS types}
     \label{results:nnqssuccess}

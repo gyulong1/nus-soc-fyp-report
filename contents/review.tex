@@ -54,7 +54,7 @@ When approximating the wave function of an Ising model, each visible node $s_i$ 
 \begin{equation}
     \Psi(\boldsymbol{s} ; \boldsymbol{\theta}_{rbm}) = \sum_{h} e^{\sum_i a_s s_i + \sum_j b_j h_j + \sum_{i,j}W_i s_i h_j} 
 \end{equation}
-where  $\boldsymbol{\theta}_{rbm} = \{\boldsymbol{a}, \boldsymbol{b}, \boldsymbol{W}\}$ are the biases and weights of the RBM \cite{b20}. The RBM is trained in an unsupervised manner. The network weights $\mathbf{W}$ are usually updated by performing Gibbs sampling, calculating the average energy of sampled configurations, and using gradient-based optimization algorithms \cite{b25}.
+where  $\boldsymbol{\theta}_{rbm} = \{\boldsymbol{a}, \boldsymbol{b}, \boldsymbol{W}\}$ are the biases and weights of the RBM \cite{b20}. The RBM is trained in an unsupervised manner. The network weights $\mathbf{W}$ are usually updated by performing Gibbs sampling, calculating the average energy of sampled configurations, and using gradient-based optimizers or the stochastic reconfiguration method to update the weight \cite{b25}.
 
 \begin{figure}[h!]
     \centering
@@ -70,7 +70,9 @@ Other neural network architectures such as the Multilayer Perceptron (MLP) can a
     \boldsymbol{W}_{out} \hspace{2px}
     \sigma_{hidden} \left( \boldsymbol{W}_{hidden}\boldsymbol{x} + \boldsymbol{b}_{input} \right) + \boldsymbol{b}_{hidden} \right)
 \end{equation}
-where  $\boldsymbol{\theta}_{mlp} = \{\boldsymbol{W}_{hidden}, \boldsymbol{b}_{input}, \boldsymbol{W}_{out}, \boldsymbol{b}_{hidden}\}$ are the weights and bias of the MLP and $\sigma_{out}, \sigma_{hidden}$ are the non-linear activation functions of the nodes \cite{b20}. The MLP is trained in an unsupervised manner, similar to the RBM, except that a more general sampling method, the Metropolis-Hasting algorithm, is used \cite{b25}.
+where  $\boldsymbol{\theta}_{mlp} = \{\boldsymbol{W}_{hidden}, \boldsymbol{b}_{input}, \boldsymbol{W}_{out}, \boldsymbol{b}_{hidden}\}$ are the weights and bias of the MLP and $\sigma_{out}, \sigma_{hidden}$ are the non-linear activation functions of the nodes \cite{b20}. 
+
+The MLP is trained in an unsupervised manner, similar to the RBM, except that a more general sampling method, the Metropolis-Hasting algorithm, is used \cite{b25}.
 
 \section{Hybrid quantum-classical}
 The fourth class of QUBO solving methods are hybrid quantum-classical methods which are designed to make use of current limited quantum computing resources by integrating them with classic methods to solve combinatorial optimization problems \cite{b32}. In the noisy intermediate-scale quantum (NISQ) era that we are currently in, quantum computers are not yet stable enough to be able to reliably run deep and complex quantum circuits. 
