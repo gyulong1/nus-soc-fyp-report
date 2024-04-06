@@ -75,7 +75,7 @@
 \pagenumbering{roman}
 
 % Replace as necessary
-\title{Data-driven and Physics-inspired Machine Learning: Benchmarking quantum-inspired quadratic unconstrained binary optimization solvers}
+\title{Data-driven and Physics-inspired Machine Learning: Benchmarking quantum-inspired quadratic unconstrained binary optimisation solvers}
 \author{Guo Yulong}
 \projyear{2023/2024}
 \projnumber{H0811550}
@@ -87,16 +87,17 @@
 
 % Replace as necessary
 \begin{abstract}
-The quadratic unconstrained binary optimization (QUBO) problem represents a cornerstone in the field of combinatorial optimization that encapsulates a variety of scientific and industrial optimization problems. However, the QUBO problem is NP-hard and is traditionally extremely difficult to solve efficiently due to the exponentially increasing search space. In our work, we aim to measure the performance of different quantum-inspired QUBO solvers that utilize quantum effects to search for optimal solutions. We benchmark the D-Wave Quantum Annealer, Neural Network Quantum States (NNQS), and Quantum Approximate Optimization Algorithm (QAOA) solvers with classical commercial QUBO solvers. We use a dataset with a variety of combinatorial problems---not-all-equal 3-satisfiability, max-cut, and the Sherrington-Kirkpatrick model (SK model), and the solvers will be evaluated based on the average normalized energy and success probability. Our results show that the D-wave and NNQS solvers outperform the QAOA solver but are not able to match the performance of commercial QUBO solvers. We further investigate the performance of the NNQS solver when using different architectures and training algorithms.  We find that the NNQS with a Restricted Boltzmann Machine with a continuous training algorithm gives the best performance across all datasets.
+The quadratic unconstrained binary optimisation (QUBO) problem represents a cornerstone in combinatorial optimisation that encapsulates various scientific and industrial optimisation problems. However, the QUBO problem is NP-hard and is traditionally extremely difficult to solve efficiently due to the exponentially increasing search space. Our work aims to measure the performance of different quantum-inspired QUBO solvers that utilise quantum effects to search for optimal solutions. We benchmark the D-Wave Quantum Annealer, Neural Network Quantum States (NNQS), and Quantum Approximate Optimization Algorithm (QAOA) solvers with classical commercial QUBO solvers. We use a dataset with various combinatorial problems---not-all-equal 3-satisfiability, max-cut, and the Sherrington-Kirkpatrick model (SK model), and the solvers will be evaluated based on the average normalised energy and success probability. Our results show that the D-wave and NNQS solvers outperform the QAOA solver but cannot match the performance of commercial QUBO solvers. However, the D-wave solver shows promising performance compared to the GUROBI solver for some problem sizes when we match the solver runtimes. We further investigate the performance of the NNQS solver when using different architectures and training algorithms. Our results show that the NNQS with a Restricted Boltzmann Machine and a continuous training algorithm perform best across all datasets.
 
 \begin{descriptors}
-    \item \itab{10002950.10003714.10003716.10011136 Mathematics of computing~Discrete optimization}
+    \item \itab{10002950.10003714.10003716.10011136 Discrete optimization}
+    %\item \itab{10002950.10003714.10003716.10011136 Mathematics of computing~Discrete optimization}
     \item \itab{10010405.10010432.10010441 Applied computing~Physics}
     \item \itab{10010147.10010257.10010293.10010294 Neural networks}
 
 \end{descriptors}
 \begin{keywords}
-    Quadratic unconstrained binary optimization, Ising model, Quantum annealing, Neural network quantum states, Quantum Approximate Optimization Algorithm
+    Quadratic unconstrained binary optimisation, Ising model, Quantum annealing, Neural network quantum states, Quantum Approximate Optimization Algorithm
 \end{keywords}
 
 % Replace/Delete as necessary
@@ -108,7 +109,7 @@ The quadratic unconstrained binary optimization (QUBO) problem represents a corn
 
 % Replace as necessary
 \begin{acknowledgement}
-I would like to thank my friends and family for their support during the project. I would also like to thank my project advisor Associate Professor St\'ephane Bressan, research fellow Lu Jianlong, and past and present members of the research group for their invaluable guidance and support.
+I would like to thank my friends and family for their invaluable support during the project. I would also like to thank my project advisor, Associate Professor St\'ephane Bressan, research fellow Lu Jianlong, and past and present research group members for their invaluable guidance and support.
 \end{acknowledgement}
 
 \listoffigures % Remove if no figures
@@ -130,10 +131,12 @@ I would like to thank my friends and family for their support during the project
 
 % Appendix (Remove if no appendix)
 \appendix
+\input{contents/appendixf}
 \input{contents/appendixa}
-\input{contents/appendixb}
 \input{contents/appendixc}
 \input{contents/appendixd}
 \input{contents/appendixe}
+\input{contents/appendixb}
+
 
 \end{document}

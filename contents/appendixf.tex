@@ -1,0 +1,23 @@
+\chapter{Reformulating the Knapsack problem as a QUBO problem}\label{appendix:knapsack}
+
+This appendix explains an example of how a combinatorial optimisation problem with inequality constraints can be formalised as a QUBO problem. The knapsack problem is a classic combinatorial optimisation problem with a knapsack with integer weight limit $W > 0$ and $n$ items, each with a weight $w_i > 0$ and profit $c_i > 0$. The problem seeks to find the optimal set of items to place in the knapsack to maximise total profit while not exceeding the weight limit. Formally, we have
+\begin{align}
+\max &\sum_{i=1}^n c_i x_i \label{eq:knapsack_cost}\\
+\mathrm{st.} &\sum_{i=1}^n w_i x_i \leq W \label{eq:knapsack_constraint}\\
+x_i &\in \{0,1\}^n \nonumber
+\end{align}
+The quantity \refeq{eq:knapsack_cost} refers to the total profit of the chosen items, and constraint \refeq{eq:knapsack_constraint} keeps the total weight below the weight limit. To convert this optimisation problem into a QUBO problem, we can include the inequality constraint in our QUBO formulation by introducing slack variables, $y_j$'s, which turn the inequality constraint into an equality constraint~\cite{b6}.
+\begin{align}
+\max &\sum_{i=1}^n c_i x_i \\
+\mathrm{st.} &\sum_{i=1}^n w_i x_i = \sum_{j=1}^W jy_j \label{eq:knapsack_slack_weight}\\
+&\sum_{j=1}^W y_j = 1 \label{eq:knapsack_slack_sum}\\
+x &\in \{0,1\}^n, y \in \{0,1\}^W \nonumber
+\end{align}
+The slack variables $y_j$ track the total weight of the knapsack with $y_j = 1 \Leftrightarrow$ total weight is $j$. Constraint \refeq{eq:knapsack_slack_sum} ensures that only one of $y_j$ equals $1$. With penalty parameters $C_1 > \sum_{i=1}^n c_i$ and $C_2 > \sum_{i=0}^n c_i$, we can formulate the following QUBO problem:
+\begin{align}
+    \max f(x, y) &\coloneqq \sum_{i=1}^n c_i x_i - C_1 P_w^2 - C_2 P_n^2 \\
+    P_w &\coloneqq \sum_{i=1}^n w_i x_i - \sum_{j=1}^W jy_j \\
+    P_n &\coloneqq 1 - \sum_{j=1}^W y_j \\
+    x &\in \{0,1\}^n, y \in \{0,1\}^W \nonumber
+\end{align}
+Since the penalty parameters are larger than $\sum_{i=1}^n c_i$, the optimal solution to the QUBO problem must have $P_w = P_n = 0$. Hence, it ensures that exactly one of the $y_i=1$ and the total weight is below the knapsack capacity. Since the optimal solution to the original knapsack must also have a total weight below the knapsack capacity, the value of $x$ that solves the QUBO must also solve the original knapsack problem. We can also formulate this QUBO problem in terms of $Q$ by following similar steps as \autoref{subsection:example_qubo}.

@@ -54,7 +54,7 @@ When approximating the wave function of an Ising model, each visible node $s_i$ 
 \begin{equation}
     \Psi(\boldsymbol{s} ; \boldsymbol{\theta}_{rbm}) = \sum_{h} e^{\sum_i a_s s_i + \sum_j b_j h_j + \sum_{i,j}W_i s_i h_j} 
 \end{equation}
-where  $\boldsymbol{\theta}_{rbm} = \{\boldsymbol{a}, \boldsymbol{b}, \boldsymbol{W}\}$ are the biases and weights of the RBM \cite{b20}. The RBM is trained in an unsupervised manner. The network weights $\mathbf{W}$ are usually updated by performing Gibbs sampling, calculating the average energy of sampled configurations, and using gradient-based optimizers or the stochastic reconfiguration method to update the weight \cite{b25}.
+where  $\boldsymbol{\theta}_{rbm} = \{\boldsymbol{a}, \boldsymbol{b}, \boldsymbol{W}\}$ are the biases and weights of the RBM \cite{b20}. The RBM is trained in an unsupervised manner. The network weights $\mathbf{W}$ are usually updated by performing Gibbs sampling, calculating the average energy of sampled configurations, and using gradient-based optimizers or the stochastic reconfiguration method to derive the weight updates \cite{b25}.
 
 \begin{figure}[h!]
     \centering
@@ -92,6 +92,8 @@ One such algorithm is the Quantum Approximate Optimization Algorithm (QAOA) whic
     U_C(\gamma) &= e^{-i\gamma H_c} \\
     U_B(\beta) &= e^{-i\beta H_0}
 \end{align*}
-Using the time-independent Schrödinger equation, we can see that $U_c$ and $U_B$ are operators that evolve the state with the Hamiltonian $H_c$ (problem Hamiltonian) and $H_0$ (an easy-to-implement, mixing Hamiltonian) for time intervals $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ while the parameter $p$ determines the number of independent parameters of the final state \cite{b34}. The state is then measured and $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ are chosen to minimize the average energy of the sample measurements. With the optimal parameters, the final solution can then be determined by repeatedly sampling from the trial wave function.
+Using the time-independent Schrödinger equation, we can see that $U_c$ and $U_B$ are operators that evolve the state with the Hamiltonian $H_c$ (problem Hamiltonian) and $H_0$ (an easy-to-implement, mixing Hamiltonian) for time intervals $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ while the parameter $p$ determines the number of time evolutions of the final state \cite{b34}. Each
+operation in the mixing Hamiltonian is implemented with a single rotation gate $R_X$ while the two-qubit operations in the problem Hamiltonian are implemented with a 2-qubit $R_{ZZ}$ gate \cite{qaoareview}. The state is then measured repeatedly, and $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ are chosen to minimise the average energy of the sample measurements. The final solution can be determined by repeatedly sampling from the trial wave function with the optimized parameters.
 
-There is evidence that QAOA is more difficult for classical computers to simulate compared to Quantum Annealing which may suggest that it could be a better way to demonstrate quantum supremacy \cite{farhi2016quantum}. In contrast to quantum annealing which can only be run on specialized quantum annealing devices, QAOA can be implemented on a general gate-based quantum computer \cite{b22}. 
+QAOA can be regarded as a discretized version of Quantum Annealing 
+\cite{qaoareview}. There is evidence that QAOA is more difficult for classical computers to simulate compared to Quantum Annealing which may suggest that it could be a better way to demonstrate quantum supremacy \cite{farhi2016quantum}. In contrast to quantum annealing which can only be run on specialized quantum annealing devices, QAOA can be implemented on a general gate-based quantum computer \cite{b22}. 
