@@ -189,14 +189,14 @@ FUNCTION {output.year.check}
 FUNCTION {format.month}
 { month empty$
     { "" }
-    { ", " month * }
+    { ", " month * ", " * }
   if$
 }
 
 FUNCTION {format.month.year}
 { year empty$
     { "empty year in " cite$ * warning$ }
-    { format.month ", " * year * }
+    { format.month year * }
   if$
 }
 
@@ -516,7 +516,6 @@ FUNCTION {format.vol.num.pages}
       if$
     }
   if$
-  ", " *
   format.month.year *
   pages empty$
     'skip$
