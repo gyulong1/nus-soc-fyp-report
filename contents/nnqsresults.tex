@@ -39,7 +39,7 @@ Performance is shown for each dataset, accompanied by error bars representing ea
 
 \subsection{NAE3SAT}
 
-\begin{figure}[!htbp]
+\begin{figure}[!htb]
     \centering
     \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_avg.png}}\hfill
     \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_success_avg.png}}
@@ -51,7 +51,7 @@ For the NAE3SAT dataset, the continuous training algorithm with the RBM performs
 
 \subsection{Max-cut}
 
-\begin{figure}[!htbp]
+\begin{figure}[!htb]
     \centering
     \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_avg.png}}\hfill
     \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_success_avg.png}}
@@ -64,7 +64,7 @@ For the maxcut dataset, the continuous training algorithm with the RBM performs 
 
 \subsection{SK model}
 
-\begin{figure}[!htbp]
+\begin{figure}[!htb]
     \centering
     \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/skmodel_nnqs_avg.png}}\hfill
     \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/skmodel_nnqs_success_avg.png}}
@@ -82,7 +82,7 @@ Across all the problem sets, the RBM has a better average performance than the M
 Even though progressive training more closely mimics the quantum annealing process in D-wave solvers, the sudden change of Hamiltonian may have led to large gradient changes that may have made it more difficult for the network to converge, leading to poorer training. Continuous training gradually changes the Hamiltonian, which limits the gradient magnitudes and may result in better training. Direct training is expected to have poor performance as it tends to get stuck in local minima.
 
 
-\begin{table}[!ht]
+\begin{table}[!htb]
     \centering
     \begin{tabular}{ccccccc} \toprule
         ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\
@@ -97,7 +97,7 @@ Even though progressive training more closely mimics the quantum annealing proce
     \label{results:nnqsnormalizedenergy}
 \end{table}
 
-\begin{table}[!ht]
+\begin{table}[!htb]
     \centering
     \begin{tabular}{ccccccc} \toprule
         ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\

@@ -17,7 +17,7 @@ There are various classical approaches to solving QUBO problems, as they have be
 \section{Quantum Annealing}\label{section:annealing}
 Quantum annealing, introduced by Kadowaki and Nishimori \yrcite{kadowaki1998quantum}, finds the ground state configuration of Ising models. For a QUBO problem, we convert it to the equivalent Ising model and then use the \textit{adiabatic theorem} to find its ground state configuration. The \textit{adiabatic theorem} states that "a quantum system in its ground state will remain in the ground state, provided that the Hamiltonian governing the dynamics changes sufficiently slowly" \cite{b14,b15}. Suppose we can manipulate the final Hamiltonian of a quantum system to one that describes the Ising model of interest. In that case, we can find the ground state of the Ising model simply by measuring the final configuration of the quantum system.
 
-\begin{figure}[h!]
+\begin{figure}[htb!]
     \centering
     \includegraphics[width=0.8\linewidth]{images/quantum_annealing.png}
     \caption{Energy landscape before (left) and after (right) quantum annealing}
@@ -40,7 +40,7 @@ Carleo and Troyer \cite{b20} introduced a neural-network-based method for modell
 The theoretical foundations for NNQS to approximate wave functions of quantum systems rely on the Kolmogorov–Arnold representation theorem \cite{kolmogorov1957representation}, which implies that neural networks can represent all multivariate, smooth functions. Since the wave function generally satisfies these requirements, we can expect that a neural network can reasonably approximate the wave function of a quantum system \cite{b20}.
 
 The original NNQS architecture utilised a Restricted Boltzmann Machine (RBM) as its neural network \cite{b20}. The RBM, shown in \autoref{rbmstructure}, is an energy-based generative model that has three components: a visible layer $\boldsymbol{s}$ with $n$ nodes, a hidden layer $\boldsymbol{h}$ with $m$ nodes, and a weight matrix $\mathbf{W}$. The number of hidden nodes is generally a multiple of the number of visible nodes, and the ratio $\alpha = \frac{m}{n}$ is a hyperparameter of the model. Each visible node $s_i$ is connected to every hidden node $h_j$ with a certain weight $W_{ij}$, but there are no connections within the visible or hidden layer. In other words, the visible and hidden nodes of the RBM form a bipartite graph.
-\begin{figure}[h!]
+\begin{figure}[htb!]
     \centering
     \includegraphics[width=0.9\linewidth]{images/rbm_diagram.png}
     \caption{Structure of Restricted Boltzmann Machine}
@@ -55,7 +55,7 @@ where  $\boldsymbol{\theta}_{rbm} = \{\boldsymbol{a}, \boldsymbol{b}, \boldsymbo
 
 Other neural network architectures, such as the Multilayer Perceptron (MLP), can also be used for NNQS. An MLP model is a feedforward artificial neural network that consists of an input layer $\boldsymbol{x}$, one or more hidden layers, and an output layer. Each layer is fully connected to the next layer with certain weights, and each node has a non-linear activation function $\sigma$ such as the sigmoid or ReLU function. 
 
-\begin{figure}[h!]
+\begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\linewidth]{images/mlp_diagram.png}
     \caption{Structure of Multilayer Perceptron with one hidden layer and one real-valued output node}
@@ -81,7 +81,7 @@ Using the time-independent Schrödinger equation, we can see that $U_c$ and $U_B
 
 Each operation in the mixing Hamiltonian is implemented with a single rotation gate $R_X$ while the two-qubit operations in the problem Hamiltonian are implemented with a 2-qubit $R_{ZZ}$ gate \cite{qaoareview}. A circuit diagram of the QAOA circuit is shown in \autoref{qaoacircuit} with the Hadamard gates on the left, repeated blocks of $U_c$ and $U_B$ operators and a measurement of the final qubit states. The state is then measured repeatedly to obtain samples of the qubit configurations, the energies of the samples are calculated, and $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ are optimised to minimise the average energy of the samples. The final solution can be determined by repeatedly sampling from the trial wave function with the optimised parameters.
 
-\begin{figure}[h!]
+\begin{figure}[htb!]
     \centering
     \includegraphics[width=\linewidth]{images/qaoa_circuit.png}
     \caption{Circuit diagram of the QAOA algorithm circuit with $p=1$}

@@ -19,7 +19,7 @@ The following sections will provide more information on the solvers.
 \subsection{D-Wave Quantum Annealing}
 We will use quantum annealers from D-Wave Systems, which produce the most popular commercially available quantum annealing hardware. The annealers are accessed with D-Wave's Solver API and use radio frequency superconducting quantum–interference device (rf-SQUID) qubits to represent spin variables during the annealing process \cite{b14}. External magnetic fields represent the linear interactions ($h$ terms), while couplers help entangle pairs of qubits to represent the interaction between qubits ($J$ terms). The qubits are arranged in the Pegasus graph topology shown in \autoref{pegasustopology} that allows up to 15 couplers per qubit \cite{b14}. 
 
-\begin{figure}[htp]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.4\linewidth]{images/pegasus_topology.png}
     \caption[A view of the D-Wave pegasus topology. Each line represents a qubit, and intersections represent available couplers. Each qubit can only be coupled to at most $15$ other qubits.]{A view of the D-Wave pegasus topology. Each line represents a qubit, and intersections represent available couplers. Each qubit can only be coupled to at most $15$ other qubits. ~\protect\cite{dwaveadvantage}}
@@ -42,7 +42,7 @@ The experiments will be conducted with the D-Wave Advantage 4.1 QPU, which has u
     \item \textbf{Resample} As finite-time quantum annealing does not guarantee optimality, we repeat the annealing and sampling process for $1000$ iterations and use the sample with the lowest energy as the candidate solution.
 \end{enumerate}
 
-\begin{figure}[h!]
+\begin{figure}[htb!]
     \centering
     \includegraphics[width=0.5\linewidth]{images/dwave_annealing.png}
     \caption[Annealing functions $A(s)$ and $B(s)$ as a function of the normalised anneal fraction $s$. $A(s) >> B(s)$ when $s=0$ and $B(s) >> A(s)$ when $s=1$. The functions have an energy scale of around $10^{-24} J$.]{Annealing functions $A(s)$ and $B(s)$ as a function of the normalised anneal fraction $s$. $A(s) >> B(s)$ when $s=0$ and $B(s) >> A(s)$ when $s=1$. The functions have an energy scale of around $10^{-24} J$. ~\protect\cite{dwaveadvantage}}
@@ -83,7 +83,7 @@ The derivation of the gradients is detailed in the appendix of \cite{b20}. The c
 \subsection{Quantum Approximate Optimization Algorithm}
 We will implement QAOA in Qiskit, an open-source software development kit for quantum computing, with $p=1$ using a backend hosted on the IBM Quantum Platform (IBMQ) \cite{b24}. We will utilise the IBMQ simulator, \texttt{ibmq\_qasm\_simulator}, a general-purpose simulator for quantum circuits that can handle up to 32 qubits. Even though IBMQ allows for access to quantum computers, it is limited by long wait times ($>5$ hours for each problem) and is infeasible for a benchmarking experiment. To measure the optimal performance of the QAOA algorithm, we will assume an ideal circuit without a quantum noise model. We will use the default mixing Hamiltonian of $\Hat{H}_0 = \sum_{i}\Hat{\sigma}_x^{(i)}$ and the Qiskit transpiler to optimise the decomposition of the operators into their individual parametrised quantum gates as shown in \autoref{qiskitcircuit} \cite{qiskittranspiler}.
 
-\begin{figure}[htp]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=1\linewidth]{images/qiskit_circuit.png}
     \caption{Circuit diagram with the Hadamard gates, problem Hamiltonian operator, mixing Hamiltonian operator and measurement gates (left to right)}
@@ -106,7 +106,7 @@ The GUROBI optimiser is a state-of-the-art classical commercial solver \cite{b26
 %All GUROBI experiments used the Gurobi Optimizer version 9.0.1 and were run on a local machine with an 8-core Apple M1 chip at 3.2GHz with 16GB of RAM.
 
 \subsection{Fixstars Amplify QUBO Solver}
-The Fixstar Amplify QUBO solver is a commercial simulated annealing-based QUBO solver \cite{b12}. As the Fixstar solver supports QUBO problems, we submit the QUBO matrix directly using the Fixstar API and run the solver with the highest allowed time limit of $100$ seconds for each input problem. The solver is implemented on GPUs and runs on Fixstar remote servers.
+The Fixstar Amplify QUBO solver is a commercial simulated annealing-based QUBO solver which is run in parallel on GPUs \cite{b12}. As the Fixstar solver supports QUBO problems, we submit the QUBO matrix directly using the Fixstar API and run the solver with the highest allowed time limit of $100$ seconds for each input problem. The solver is implemented on GPUs and runs on Fixstar remote servers.
 
 \section{Benchmark datasets}
 We use three randomly generated problem sets to benchmark our QUBO solvers: not-all-equal 3-satisfiability (NAE3SAT), max-cut, and the Sherrington-Kirkpatrick (SK) model. These problems were chosen as they are commonly used in QUBO experiments to represent NP-hard problems and are relatively straightforward to encode into QUBO form. The NAE3SAT and max-cut problem sets are macro benchmarks (application-based) to represent practical combinatorial optimisation problems. In contrast, the SK model problem set is a microbenchmark designed as a difficult problem set. Each problem set comprises problems of 13 sizes, ranging from $10$ to $300$\footnote{$n \in [10,15,20,25,30,35,50,75,100,150,200,250,300]$}. $20$ different random problems are generated\footnote{random seed is chosen to be from $0-19$} for each problem size for a total of $260$ problems per problem set. Each problem is first formulated in either the QUBO or Ising form, and the conversion between them follows \autoref{qubotoising} and \autoref{isingtoqubo}.
