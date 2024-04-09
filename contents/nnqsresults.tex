@@ -1,85 +1,90 @@
 \chapter{NNQS exploration}\label{nnqsresults}
-This chapter explores the effects of different architectures and training schemes that can be used to train NNQS to solve QUBO problems. All experiments in this section were run on a subset of the entire dataset with problem sizes of $10,25,50,75,200,250$ and $10$ problems for each problem type and size. The problem evaluation metrics are also calculated by considering the solutions from the different types of NNQS to draw a clearer comparison between architectures and training schemes.
+This chapter explores the performance of different architectures and training schedules that can be used to train the NNQS solver. All experiments in this section were run on a subset of the entire dataset with problem sizes of $10,25,50,75,200,250$ and $10$ problems for each problem type and size. 
 
-\section{Architectures and training algorithms}
-We will utilise the Restricted Boltzmann Machine (RBM) and the Multilayer Perceptron (MLP) as the architecture for NNQS. For a given input problem with $n$ variables, the RBM model will have $n$ visible nodes and $5n$ hidden nodes, while the MLP will have $n$ input nodes, $1$ hidden layer of size $5n$ and $1$ positive real output node. The RBM uses the sigmoid function, while the MLP uses the ReLU activation function. We use Gibbs sampling for the RBM and Metropolis-Hasting sampling for the MLP; both sampling methods are detailed in \autoref{samplingmethods}.
+%The problem evaluation metrics are also calculated by considering the solutions from the different types of NNQS to draw a clearer comparison between architectures and training schemes.
 
-We will also compare three training algorithms for NNQS---progressive, direct, and continuous. The progressive training algorithm follows \autoref{alg:progressive}. In direct training, described in \autoref{alg:direct}, the normalised anneal fraction $s$ is held constant at $1$ for all epochs. In continuous training, described in \autoref{alg:continuous}, the normalised anneal fraction is increased gradually every epoch and the NNQS is not trained to convergence.
+\section{Architectures and Training Schedules}
+We will utilise the Restricted Boltzmann Machine (RBM) and the Multilayer Perceptron (MLP) as the architecture for NNQS. For a given input problem with $n$ variables, the RBM model will have $n$ visible nodes and $5n$ hidden nodes, while the MLP will have $n$ input nodes, $1$ hidden layer of size $5n$ and $1$ positive real output node. The RBM uses the sigmoid function, while the MLP uses the ReLU activation function and a sigmoid function as the output function. We use Gibbs sampling for the RBM and Metropolis sampling for the MLP which are detailed in \autoref{samplingmethods}.
+
+We will also compare three training schedules for the NNQS solver---progressive, direct, and continuous. The progressive training algorithm follows \autoref{alg:progressiveagain} and has been utilised in previous experiments. In progressive training, the normalised anneal fraction $s$ is incremented by $0.1$, and the NNQS is trained until convergence each time. In direct training, described in \autoref{alg:direct}, $s$ is held constant at $1$ for all epochs. In continuous training, described in \autoref{alg:continuous}, $s$ is gradually increased every iteration and the NNQS is not trained to convergence. All schedules use at most $1000$ iterations.
 
 \begin{algorithm}
     \begin{algorithmic}
-    \Require Problem Hamiltonian $\hat{H}_c$
-    \Ensure Trained NNQS
-    \State Initialize NNQS with random weights;
+    \For {$s \in [0.1, 1.0]$ step $0.1$}
+    \State Set $H(s) \leftarrow A(s)\hat{H}_0 + B(s)\hat{H}_c$;
+    \State Train NNQS on $H(s)$ until convergence or until epoch limit of $100$ is reached;
+    \EndFor
+    \end{algorithmic}
+    \caption{NNQS Progressive Schedule}
+    \label{alg:progressiveagain}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
     \State Set $H \leftarrow B(1)\hat{H}_c$;
     \State Train NNQS on $H$ until convergence or until epoch limit of $1000$ is reached;
     \end{algorithmic}
-    \caption{NNQS Direct Training}
+    \caption{NNQS Direct Schedule}
     \label{alg:direct}
 \end{algorithm}
 
 \begin{algorithm}
     \begin{algorithmic}
-    \Require Problem Hamiltonian $\hat{H}_c$
-    \Ensure Trained NNQS
-    \State Initialize NNQS with random weights;
     \For {$s \in [0.001, 1.0]$ step $0.001$}
     \State Set $H(s) \leftarrow A(s)\hat{H}_0 + B(s)\hat{H}_c$;
     \State Train NNQS on $H(s)$ for $1$ epoch;
     \EndFor
     \end{algorithmic}
-    \caption{NNQS Continuous Training}
+    \caption{NNQS Continuous Schedule}
     \label{alg:continuous}
 \end{algorithm}
 
-Direct training serves as a baseline for directly training a neural network with the cost function as the problem Hamiltonian. Progressive training most closely resembles the quantum annealing process, where the system is kept at the ground state by training until convergence in each increment of $s$. Continuous training combines the other two by slowly incrementing $s$ but never reaching convergence.
+Direct training is a baseline for training a neural network with the cost function as the problem Hamiltonian for the entire training period. Progressive training most closely resembles the quantum annealing process, where the system is kept at the ground state by training until convergence after each increment of $s$. Continuous training slowly increments $s$ but does not train until convergence.
 
 \section{Results and Discussion}
-Performance is shown for each dataset, accompanied by error bars representing each data point's unbiased standard error of the mean. Graphs with problem sizes on the x-axis are plotted with a log scale. The graphs for performance by size are shown in \autoref{appendix:nnqssizegraph}.
+We present the performance metrics for each dataset, accompanied by error bars representing the unbiased standard error of the mean. Graphs with problem sizes on the x-axis are plotted with a log scale. The performance by dataset and problem size is shown in \autoref{appendix:nnqssizegraph}.
 
 \subsection{NAE3SAT}
+For the NAE3SAT dataset, the continuous training scheme with the RBM performs the best in average performance and success probability when averaged across all problem sizes, shown in \autoref{nnqs-nae3sat-average}. The RBM, with progressive training, and the MLP, with continuous training, also perform well.
 
 \begin{figure}[!htb]
     \centering
-    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_avg.png}}\hfill
-    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/nae3sat_nnqs_success_avg.png}}
+    \subfloat[Normalized energy]{\includegraphics[width=0.5\textwidth]{images/nae3sat_nnqs_avg.png}}
+    \subfloat[Success probability]{\includegraphics[width=0.5\textwidth]{images/nae3sat_nnqs_success_avg.png}}
     \caption{Average performance of different NNQS types for NAE3SAT}
     \label{nnqs-nae3sat-average}
 \end{figure}
 
-For the NAE3SAT dataset, the continuous training algorithm with the RBM performs the best in average performance and success probability when averaged across all sizes, shown in \autoref{nnqs-nae3sat-average}. In the performance by problem size, the continuous training algorithm with the RBM performed the best in normalised energy and success probability, shown in \autoref{nnqs-nae3sat-size}, except with a problem size of $50$, which is likely due to variance in the randomly generated data set. 
-
 \subsection{Max-cut}
+For the maxcut dataset, the continuous training algorithm with the RBM again performs the best in average performance and success probability when averaged across all sizes, shown in \autoref{nnqs-maxcut-average}. The RBM, with progressive training, and the MLP, with continuous training, also perform well. However, the performance gap between the top three solvers is relatively small, implying that the max-cut problem is easier than the NAE3SAT problem.
 
 \begin{figure}[!htb]
     \centering
-    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_avg.png}}\hfill
-    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/maxcut_nnqs_success_avg.png}}
+    \subfloat[Normalized energy]{\includegraphics[width=0.5\textwidth]{images/maxcut_nnqs_avg.png}}
+    \subfloat[Success probability]{\includegraphics[width=0.5\textwidth]{images/maxcut_nnqs_success_avg.png}}
     \caption{Average performance of different NNQS types for max-cut}
     \label{nnqs-maxcut-average}
 \end{figure}
 
-For the maxcut dataset, the continuous training algorithm with the RBM performs the best in average performance and success probability when averaged across all sizes, shown in \autoref{nnqs-maxcut-average}. In the performance by problem size, the continuous training algorithm with the RBM performed the best in normalised energy and success probability, shown in \autoref{nnqs-maxcut-size}, except with a problem size of $25$, which is again likely due to variance in the randomly generated data set. However, the gap in success probability between the models is relatively small, which likely implies that the max-cut problem is easier in general than the NAE3SAT problem.
-
-
 \subsection{SK model}
+For the SK model dataset, the continuous training algorithm with the RBM again performs the best in average performance and success probability when averaged across all sizes, shown in \autoref{nnqs-skmodel-average}. The RBM, with progressive training also perform well in both metrics.
 
 \begin{figure}[!htb]
     \centering
-    \subfloat[Normalized energy]{\includegraphics[width=0.49\textwidth]{images/skmodel_nnqs_avg.png}}\hfill
-    \subfloat[Success probability]{\includegraphics[width=0.49\textwidth]{images/skmodel_nnqs_success_avg.png}}
+    \subfloat[Normalized energy]{\includegraphics[width=0.5\textwidth]{images/skmodel_nnqs_avg.png}}
+    \subfloat[Success probability]{\includegraphics[width=0.5\textwidth]{images/skmodel_nnqs_success_avg.png}}
     \caption{Average performance of different NNQS types for SK model}
     \label{nnqs-skmodel-average}
 \end{figure}
 
-For the SK model dataset, the continuous training algorithm with the RBM performs the best in average performance and success probability when averaged across all sizes, shown in \autoref{nnqs-skmodel-average}. The performance averaged across all sizes, shown in \autoref{nnqs-skmodel-average}, also highlights that the RBM with a continuous training algorithm performs the best. However, it is interesting that the direct training schemes perform poorly with small problem sizes ($\leq 50$) but are relatively better at higher problem sizes ($100, 250$).
-
 \section{Conclusion}
-\autoref{results:nnqsnormalizedenergy} and \autoref{results:nnqssuccess} show the average normalised energy and success probability for different types of NNQS for each dataset and the average across all datasets.
+\autoref{results:nnqsnormalizedenergy} and \autoref{results:nnqssuccess} summarises the average normalised energy and success probability for different types of NNQS for each dataset and also the average across all datasets.
 
-Across all the problem sets, the RBM has a better average performance than the MLP in average normalised energy and success probability for each training algorithm. In terms of training schemes, direct training performs the worst among the 3, and continuous training performs slightly better than progressive training. Using the RBM with a continuous training scheme gives the highest normalised energy and success probability across all datasets. 
+Comparing the two architectures, RBM performs better than MLP in average normalised energy and success probability for all datasets and training schemes. In terms of training schemes, direct training performs the worst among the three, and continuous training performs slightly better than progressive training. Using the RBM with a continuous training scheme gives the highest normalised energy and success probability across all datasets. 
 
-Even though progressive training more closely mimics the quantum annealing process in D-wave solvers, the sudden change of Hamiltonian may have led to large gradient changes that may have made it more difficult for the network to converge, leading to poorer training. Continuous training gradually changes the Hamiltonian, which limits the gradient magnitudes and may result in better training. Direct training is expected to have poor performance as it tends to get stuck in local minima.
+The RBM likely performs better as it uses Gibbs sampling, which helps the neural network approximate the wave function more closely. The Gibbs sampling method also allows for multiple-bit flips in each iteration and is thus able to explore a larger state space.
+
+Even though progressive training more closely mimics the quantum annealing process in D-wave solvers, the sudden change of Hamiltonian may have led to large gradient terms that may have made it more difficult for the network to converge, leading to poorer training. Continuous training gradually changes the Hamiltonian, which limits the gradient magnitudes and may result in better training. Direct training is expected to perform poorly as it tends to get stuck in local minima.
 
 
 \begin{table}[!htb]

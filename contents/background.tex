@@ -111,11 +111,11 @@ Gibbs and Metropolis-Hasting sampling are Markov Chain Monte Carlo (MCMC) sampli
 Metropolis-Hasting sampling \cite{metropolissampling} is often used when the underlying architecture of the NNQS is a Multilayer Perceptron (MLP) and proceeds as follows:
 \begin{enumerate}
     \item Initialise the MLP inputs with a random sample $x$.
-    \item Draw a new candidate sample $x^*$ uniformly from the set of configurations with one flipped spin.
-    \item Accept the new candidate by replacing $x \leftarrow x^*$ with probability $\alpha = \min \left(1, \frac{\probP(x^*)}{\probP(x)}\right)$.
+    \item Draw a new candidate sample $x^*$ from the set of configurations with one flipped spin with a proposal distribution $q(x^*|x)$.
+    \item Accept the new candidate by replacing $x \leftarrow x^*$ with probability $\alpha = \min \left(1, \frac{\probP(x^*)}{\probP(x)} \frac{q(x|x^*)}{q(x^*|x)}\right)$.
     \item Repeat steps 2 and 3 for a certain number of iterations.
 \end{enumerate}
-
+For the NNQS, we usually use a uniform distribution for $q$, which leads to $\alpha = \min \left(1, \frac{\probP(x^*)}{\probP(x)} \right)$. When the proposal distributions are symmetric, the sampling method is also known as Metropolis sampling.
 \subsection*{Gibbs sampling}
 Gibbs sampling \cite{gibbssampling} is used when the conditional distribution is easy to sample, which is the case when the underlying architecture for the NNQS is a Restricted Boltzmann Machine (RBM). Gibbs sampling proceeds as follows:
 

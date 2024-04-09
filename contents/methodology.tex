@@ -45,16 +45,20 @@ The experiments will be conducted with the D-Wave Advantage 4.1 QPU, which has u
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.5\linewidth]{images/dwave_annealing.png}
-    \caption[Annealing functions $A(s)$ and $B(s)$ as a function of the normalised anneal fraction $s$. $A(s) >> B(s)$ when $s=0$ and $B(s) >> A(s)$ when $s=1$. The functions have an energy scale of around $10^{-24} J$.]{Annealing functions $A(s)$ and $B(s)$ as a function of the normalised anneal fraction $s$. $A(s) >> B(s)$ when $s=0$ and $B(s) >> A(s)$ when $s=1$. The functions have an energy scale of around $10^{-24} J$. ~\protect\cite{dwaveadvantage}}
+    \caption[Annealing functions $A(s)$ and $B(s)$ as a function of the normalised anneal fraction $s$. $A(s) >> B(s)$ when $s=0$ and $B(s) >> A(s)$ when $s=1$.]{Annealing functions $A(s)$ and $B(s)$ as a function of the normalised anneal fraction $s$. $A(s) >> B(s)$ when $s=0$ and $B(s) >> A(s)$ when $s=1$. ~\protect\cite{dwaveadvantage}}
     \label{dwaveannealing}
 \end{figure}
 
 \subsection{Neural-Network Quantum States}
 We will adopt the Python library MAPALUS for implementing Neural-Network Quantum States \cite{b25}. MAPALUS uses the Tensorflow library and enables parallel execution on general-purpose graphics processing units for quicker sampling. We will use the Restricted Boltzmann Machine with $5n$ hidden nodes and the sigmoid activation function as the underlying architecture for the NNQS.
 
-To solve a QUBO problem, the NNQS simulates the D-Wave quantum annealing process on a classical computer with a time-dependent Hamiltonian that follows \autoref{eqn:annealinghamiltonian}. Since the equations for $A(s)$ and $B(s)$ are unavailable, we employ a curve-fitting process to obtain analytical functions from the discrete points provided by D-Wave. The annealing functions used are $A(s) = 1.11e^{-7.06s} + -0.00569$ and $B(s)= 0.680s^2 + 0.288s + 0.0305$. The curve fitting process is detailed in \autoref{appendix:curvefitting}.
-
-The NNQS will be trained with a progressive training schedule that mimics the quantum annealing process and follows \autoref{alg:progressive}. $\hat{H}_c$ is the problem Hamiltonian and $\hat{H}_0$ is a Hamiltonian with linear biases as $1$ and no quadratic terms. The normalised anneal fraction $s$ is increased in small steps while the NNQS is trained to convergence, which simulates the slow change in the system Hamiltonian during quantum annealing. Like quantum annealing, the NNQS remains in the ground state throughout the training as it is trained to convergence.
+To solve a QUBO problem, the NNQS simulates the D-Wave quantum annealing process on a classical computer with a time-dependent Hamiltonian that follows \autoref{eqn:annealinghamiltonian}. Since the equations for $A(s)$ and $B(s)$ are unavailable, we employ a curve-fitting process to obtain analytical functions from the discrete points provided by D-Wave. The annealing functions used are:
+\begin{gather}
+    A(s) = 1.11e^{-7.06s} + -0.00569 \\
+    B(s)= 0.680s^2 + 0.288s + 0.0305
+    \label{fittedeq}
+\end{gather}
+The curve fitting process is detailed in \autoref{appendix:curvefitting}. The NNQS will be trained with a progressive training schedule that mimics the quantum annealing process and follows \autoref{alg:progressive}. $\hat{H}_c$ is the problem Hamiltonian and $\hat{H}_0$ is a Hamiltonian with linear biases as $1$ and no quadratic terms. The normalised anneal fraction $s$ is increased in small steps while the NNQS is trained to convergence, which simulates the slow change in the system Hamiltonian during quantum annealing. Like quantum annealing, the NNQS remains in the ground state throughout the training as it is trained to convergence.
 
 \begin{algorithm}
     \begin{algorithmic}
