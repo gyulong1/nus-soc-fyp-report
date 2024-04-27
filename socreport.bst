@@ -366,7 +366,7 @@ FUNCTION {format.book.editors}
 FUNCTION {format.title}
 { title empty$
     { "" }
-    { title "t" change.case$ }
+    {title}
   if$
 }
 
@@ -396,7 +396,7 @@ FUNCTION {n.dashify}
 }
 
 FUNCTION {format.btitle}
-{ title "t" change.case$ emphasize
+{ title emphasize
 }
 
 FUNCTION {tie.or.space.connect}

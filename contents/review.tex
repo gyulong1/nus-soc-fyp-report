@@ -71,17 +71,17 @@ When approximating the wave function of an Ising model, each input node $x_i$ re
 where  $\boldsymbol{\theta}_{mlp} = \{\boldsymbol{W}_{hidden}, \boldsymbol{b}_{input}, \boldsymbol{W}_{out}, \boldsymbol{b}_{hidden}\}$ are the weights and bias of the MLP and $\phi_{hidden}, \phi_{out}$ are the activation functions of the hidden and output layer respectively \cite{b20}. The MLP is trained similarly to the RBM, except a more general sampling method, the Metropolis-Hasting algorithm, is used \cite{b25}.
 
 \section{Hybrid quantum-classical}
-Hybrid quantum-classical methods are designed to use current limited quantum computing resources by integrating them with classical optimisers to solve QUBO problems \cite{b32}. One such method is the Quantum Approximate Optimization Algorithm (QAOA), which was first introduced by \outcite{b23}. Like NNQS, QAOA aims to find an approximation of the ground state of the problem Hamiltonian using a gate-based quantum circuit used as an Ansatz.
+Hybrid quantum-classical methods are designed to use current limited quantum computing resources by integrating them with classical optimisers to solve QUBO problems \cite{b32}. One such method is the Quantum Approximate Optimization Algorithm (QAOA), which was first introduced by \outcite{b23}. Like NNQS, QAOA aims to find an approximation of the ground state of the problem Hamiltonian using a gate-based quantum circuit.
 
-Each operation in the mixing Hamiltonian is implemented with a single rotation gate $R_X$ while the two-qubit operations in the problem Hamiltonian are implemented with a 2-qubit $R_{ZZ}$ gate \cite{qaoareview}. A circuit diagram of the QAOA circuit is shown in \autoref{qiskitcircuit} with the Hadamard gates on the left, repeated blocks of $U_c$ and $U_B$ operators and a measurement of the final qubit states. The state is then measured repeatedly to obtain samples of the qubit configurations, the energies of the samples are calculated, and $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ are optimised to minimise the average energy of the samples. The final solution can be determined by repeatedly sampling from the trial wave function with the optimised parameters.
-
+QAOA can be regarded as a discretised version of quantum annealing \cite{qaoareview} and consists of repeated applications of the problem Hamiltonian and a mixing Hamiltonian. The one-qubit operations of the problem Hamiltonian are implemented with $R_Z$ rotation gates while the two-qubit operations are implemented with a 2-qubit $R_{ZZ}$ gate. The usual choice of mixing Hamiltonian is the Pauli-X operator acting on each qubit and is implemented with $R_X$ rotation gates. The Hamiltonians are applied repeatedly for time intervals of $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ which are variational parameters to be optimised. The algorithm also has a hyperparameter $p$ which decides the number of variational parameters. A circuit diagram of the QAOA circuit is shown in \autoref{qiskitcircuit}. 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=\linewidth]{images/qaoanewcircuit.png}
-    \caption{Circuit diagram of the QAOA algorithm circuit with $p=1$}
+    \caption{Circuit diagram of the QAOA algorithm circuit with $p=1$. The Hadamard gates on the left put the qubits in a superposition state, followed by the parametrised gates used for the problem (blue) and mixing (red) Hamiltonian, followed by measurements of the qubit states.}
     \label{qiskitcircuit}
 \end{figure}
 
+The circuit is measured repeatedly to obtain samples of the qubit configurations that are used to calculate the expected energy, which is minimised by varying $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$. The final solution is determined by repeated sampling from the optimised circuit.
 %\begin{figure}[htb!]
 %    \centering
 %    \includegraphics[width=\linewidth]{images/qaoa_circuit.png}
@@ -89,4 +89,4 @@ Each operation in the mixing Hamiltonian is implemented with a single rotation g
 %    \label{qaoacircuit}
 %\end{figure}
 
-QAOA can be regarded as a discretised version of quantum annealing \cite{qaoareview}. In the noisy intermediate-scale quantum (NISQ) era, quantum computers are not yet stable enough to reliably run deep and complex quantum circuits \cite{qaoareview}. Hybrid methods could serve as the intermediate solution for optimisation problems on quantum computers. In contrast to quantum annealing, which can only be run on specialised quantum annealing devices, QAOA can be implemented on a general gate-based quantum computer \abbrevcite{b22}. 
+In contrast to quantum annealing, which can only be run on specialised quantum annealing devices, QAOA can be implemented on a general gate-based quantum computer \abbrevcite{b22}. In the noisy intermediate-scale quantum (NISQ) era, quantum computers are not yet stable enough to reliably run deep and complex quantum circuits and hybrid methods could serve as the intermediate solution for solving optimisation problems on quantum computers \cite{qaoareview}. Currently, quantum computers can be accessed through service providers such as IBM Quantum and Entropica Labs. There are also many variants of possible QAOA Ansatz and training procedures which are detailed in the review paper by \outcite{qaoareview}.
