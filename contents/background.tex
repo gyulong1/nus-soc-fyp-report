@@ -8,21 +8,21 @@ The quadratic unconstrained binary optimisation (QUBO) problem is defined as
 \begin{equation} 
 \argmin_{x \in \{0, 1\}^n} x^\intercal Q x
 \end{equation}
-where $Q \in \boldsymbol{M}_{n\times n}(\mathbb{R})$ is an upper triangular square matrix with real coefficients and $x$ is a binary input vector~\cite{b1}. The matrix $Q$ characterises the QUBO problem, and $x^\intercal Q x$ is known as the objective function for the problem. Some characteristics of QUBO problems are summarised below:
+where $Q \in \boldsymbol{M}_{n\times n}(\mathbb{R})$ is an upper triangular square matrix with real coefficients and $x$ is a binary input vector~\cite{b1}. The matrix $Q$ characterises the QUBO problem, and $x^\intercal Q x$ is the objective function for the problem. Some characteristics of QUBO problems are summarised below:
 \begin{itemize}
-    \item The possible input space grows exponentially with the size of the problem $n$, making the QUBO problem NP-hard and difficult to solve efficiently.
+    \item The size of the input space for $x$ grows exponentially with the problem size $n$, making the QUBO problem NP-hard and difficult to solve efficiently.
     \item In general, the solution of a QUBO problem does not need to be unique as multiple input $x$'s can produce the same objective value.
-    %\item The objective function $x^\intercal Q x$ can also be expressed as $\sum_{i=1}^{n}\sum_{j=1}^{n} Q_{ij}x_{i}x_{j}$ which intuitively means that we sum up the coefficients $Q_{ij}$ where both $x_{i}$ and $x_{j}$ are $1$.
-    \item The density $d$ of a QUBO problem is measured by the number of non-zero elements above the main diagonal of $Q$ (quadratic terms). In general, a denser QUBO is more difficult to solve efficiently. 
-    \item We can also express a QUBO problem as a maximisation problem by finding $\argmax_{x \in \{0, 1\}^n} -x^\intercal Q x$.
+    \item The objective function $x^\intercal Q x$ can also be expressed as $\sum_{i \leq j} Q_{ij}x_{i}x_{j}$ which intuitively means that we sum up the coefficients $Q_{ij}$ where both $x_{i}$ and $x_{j}$ are $1$. When the objective function is expressed as $\sum_{i=1}^{n} Q_{ii}x_{i}x_{i} + \sum_{i < j} Q_{ij}x_{i}x_{j}$, we can split the objective function into a sum of linear terms and quadratic terms.
+    \item The density $d$ of a QUBO problem is measured by the number of non-zero elements above the main diagonal of $Q$ (quadratic terms). In general, denser QUBO problems are more difficult to solve.
+    \item We can also express a QUBO problem as a maximisation problem by solving $\argmax_{x \in \{0, 1\}^n} -x^\intercal Q x$.
 \end{itemize}
 
-Most problems that optimise an objective function concerning a set of binary decisions can be reformulated as a QUBO problem~\cite{b5}. Thus, the QUBO problem model has applications in a wide range of combinatorial optimisation problems such as Max-Cut~\cite{b2}, number partitioning~\cite{b3}, and machine scheduling problems~\cite{b4}. Once an optimisation problem is expressed in a QUBO format, we can utilise general QUBO-solving methods without specialising in a particular problem domain~\cite{b1}. The following section will describe an example of a QUBO problem.
+Most problems that optimise an objective function concerning a set of binary decisions can be reformulated as a QUBO problem~\cite{b5}. Thus, the QUBO problem model has applications in a wide range of combinatorial optimisation problems such as Max-Cut~\cite{b2}, number partitioning~\cite{b3}, and machine scheduling problems~\cite{b4}. Once an optimisation problem is expressed in a QUBO format, we can utilise general QUBO-solving methods without specialising in a particular problem domain~\cite{b1}. The following section describes an example QUBO problem.
 
 \subsection{Example QUBO problem}\label{subsection:example_qubo}
-Consider the objective function \begin{equation}
+Consider the objective function: \begin{equation}
 f(x_1, x_2, x_3) = -8x_1 + 6x_2 + 3x_3 - 2 x_1 x_2 + 4 x_2 x_3
-\end{equation} where $x_1, x_2, x_3 \in \{0, 1\}$ and we want to minimise $f$ over all possible ($x_1$, $x_2$, $x_3$). Since the variables are binary, $x_i^2 = x_i$ for all $i$, and we can redefine the objective function as:
+\end{equation} where $x_1, x_2, x_3 \in \{0, 1\}$ and we want to minimise $f$ over all possible $x_1$, $x_2$, $x_3$. Since the variables are binary, $x_i = x_i^2$ for all $i$, and we can redefine the objective function as:
 \begin{equation}
 f(x) = x^\intercal Q x, \text{ where } x = \begin{bmatrix}
 x_1 \\
@@ -35,77 +35,76 @@ Q = \begin{bmatrix}
 0 & 0 & 3
 \end{bmatrix}
 \end{equation}
-The coefficients for $Q_{ii}$ are equal to the coefficient of $x_i$ in the original objective function. The coefficients for $Q_{ij}$ is the coefficient of $x_{i}x_j$ for $i < j$ and $0$ otherwise. This simple QUBO problem can be solved by enumerating all the possible inputs to obtain the optimal solution of $x_1 = 1, x_2 = 0, x_3 = 0$, and $f(1,0,0) = -8$.
+The coefficients for $Q_{ii}$ are the coefficients of $x_i$ in the original objective function. The coefficients for $Q_{ij}$ are the coefficients of $x_{i}x_j$ for $i < j$ and $0$ otherwise. This simple QUBO problem can be solved by enumerating all the possible inputs to obtain the optimal solution of $x_1 = 1, x_2 = 0, x_3 = 0$, with the corresponding objective value of $f(1,0,0) = -8$.
 
-We also show how a more complex combinatorial optimisation problem, the knapsack problem, can be converted to a QUBO problem in \autoref{appendix:knapsack}. The knapsack problem has inequality constraints, which QUBO can also handle by introducing additional slack variables.
+We also show how a more complex combinatorial optimisation problem, the knapsack problem, can be converted to a QUBO problem in \autoref{appendix:knapsack}. The knapsack problem has inequality constraints, which QUBO handles by introducing additional slack variables. \outcite{b5} provides a detailed tutorial on converting various optimisation problems into QUBO form. 
 
 \subsection{Practical applications}
-There are numerous practical scenarios where optimisation problems can be reformulated as QUBO problems. 
+There are also numerous practical scenarios where optimisation problems can be reformulated as QUBO problems. 
 \begin{itemize}
-    \item~\cite{b7} uses real-world data of the location of DB Schenker shipping hubs in Europe to solve the vehicle routing problem using a QUBO reformulation.
-    \item~\cite{b8} uses a QUBO formulation to solve portfolio optimisation problems using real-world stock data sets of the New York Stock Exchange.
-    \item~\cite{b9} formulates an image binarisation method as a QUBO problem where the objective is to segment an image into its foreground and background, which has further possible medical applications to improve x-ray imaging.
+    \item~\abbrevoutcite{b7} uses real-world data of the location of DB Schenker shipping hubs in Europe to solve the vehicle routing problem using a QUBO reformulation.
+    \item~\outcite{b8} uses a QUBO formulation to solve portfolio optimisation problems using data from stocks listed on the New York Stock Exchange.
+    \item~\outcite{b9} formulates an image binarisation method as a QUBO problem where the objective is to segment an image into its foreground and background, which has possible medical applications for improving x-ray imaging.
 \end{itemize}
-These practical applications of the QUBO problem further motivate efficient methods for solving QUBO problems, some of which are detailed in \autoref{review}.
+These practical applications of the QUBO problem further motivate efficient methods for solving QUBO problems.
 
 \section{The Ising Model}
-The Ising model in Physics, proposed by Ernst Ising in 1925, can be thought of as a model of a magnet~\cite{isingising} and has been widely studied in Physics for its phase transition properties~\cite{cipra1987introduction}. The Ising model serves as the bridge that allows for QUBO problems to be solved with quantum-based methods~\cite{b10}. In the classical Ising model, a magnet consists of $n$ molecules that are `constrained to lie on the sites of a regular lattice' \cite{b11}. Each molecule $i$ can be seen as a microscopic magnet that points along some axis and has a `spin' ($s_i$) that is either $+1$ (parallel to the axis) or $-1$ (anti-parallel to the axis). With $n$ particles, the system can have $2^n$ states, each corresponding to a configuration of the individual molecule spins.
+The Ising model, proposed by Ernst Ising in 1925, can be thought of as a model of a magnet~\cite{isingising} and has been widely studied in Physics for its phase transition properties~\cite{cipra1987introduction}. The Ising model serves as the bridge that allows for QUBO problems to be solved with quantum-inspired methods~\cite{b10}. In the classical Ising model, a magnet consists of $n$ particles that are 'constrained to lie on the sites of a regular lattice' \cite{b11}. Each particle $i$ can be seen as a microscopic magnet that points along some axis and has a `spin' ($s_i$) that is either $+1$ (parallel to the axis) or $-1$ (anti-parallel to the axis). With $n$ particles, the system can have $2^n$ configurations, each corresponding to a set of individual molecule spins.
 
 \subsection{Ising Hamiltonian}\label{isinghamiltonian}
-In quantum mechanics, the Hamiltonian of a system $\Hat{H}$ is a linear operator that represents the total energy of a system and is a critical component that governs the evolution of the system~\cite{GriffithsSchroeter2018}. \hyperref[wavefunction]{Section \ref{wavefunction}} discusses the Hamiltonian in greater detail. For this study, we can treat the Hamiltonian as a function of the quantum system that maps a quantum state to an energy level. A key property of the Hamiltonian matrix is that the possible energy levels of the system are precisely the eigenvalues of its Hamiltonian matrix, and the corresponding eigenvectors are the possible states mapped to a specific energy level~\cite{b21}. 
+In quantum mechanics, the Hamiltonian of a system, denoted as $\Hat{H}$, is a linear operator that represents the total energy of a system and is a critical component that governs the evolution of the system~\cite{GriffithsSchroeter2018}. \hyperref[wavefunction]{Section \ref{wavefunction}} discusses the Hamiltonian in greater detail. In our study, we can treat the Hamiltonian as a function of the quantum system that maps a state to an energy level. A key property of the Hamiltonian matrix is that the possible energy levels of the system are precisely the eigenvalues of its Hamiltonian matrix, and the corresponding eigenvectors are the possible states mapped to a specific energy level~\abbrevcite{b21}. 
 
 In the Ising model with $n$ particles, the Hamiltonian has two components --- the external field term (characterised by $\mathbf{h} = (h_1, h_2, ..., h_n) \in \mathbb{R}^n$) and the interaction term between molecules (characterised by a strictly upper triangular matrix $\mathbf{J} \in \boldsymbol{M}_{n\times n}(\mathbb{R})$)~\cite{b10}. We can express the Hamiltonian of an Ising model as a function of the $n$ spins of the particles:
 \begin{equation}
     \Hat{H}(s_1, s_2, ... , s_n) = -\sum_{1\leq i < j \leq N} J_{ij}s_i s_j - \sum_{i=1}^N h_i s_i
 \end{equation}
-We can view $\mathbf{h}$ as the interaction of each particle with an external magnetic field and $\mathbf{J}$ as the coupling between pairs of spins. A positive $J_{ij}$ term means that the energy is low when spins $s_i$ and $s_j$ are aligned, while a negative $J_{ij}$ term means that the energy is low when the spins are anti-aligned. A large magnitude of $h_i$ means the spin $s_i$ tends to be either aligned or anti-aligned with an external magnetic field.
+We can view $\mathbf{h}$ as the interaction of each particle with an external magnetic field and $\mathbf{J}$ as the interaction between pairs of spins. A positive $J_{ij}$ term means that the energy is low when spins $s_i$ and $s_j$ are aligned, while a negative $J_{ij}$ term means that the energy is low when the spins are anti-aligned. A large magnitude of $h_i$ means the spin $s_i$ tends to be either aligned or anti-aligned with an external magnetic field.
 
-The Ising model was initially proposed to study phase transitions of the system at certain critical temperatures by solving for the system's ground state at different temperatures~\cite{isingising}. To find the ground state---the state of spins that minimises the total system energy of the Ising model---we have to solve for $ \argmin \Hat{H}(s_1, s_2, \ldots , s_n) $ for $ s_1, s_2, \ldots , s_n \in \{ 0, 1 \}$. This optimisation problem is equivalent to a corresponding QUBO problem up to a change in the variable domain (from spins to binary variables). The equivalence of the QUBO problem and the Ising model is one of the most significant properties of QUBO~\cite{b5}. The following subsections will explain converting a QUBO problem into an Ising model and vice versa.
+The Ising model was initially proposed to study phase transitions of the system at certain critical temperatures by solving for the system's ground state at different temperatures~\cite{isingising}. To find the ground state---the state of spins that minimises the energy of the Ising model---we have to solve for $ \argmin \Hat{H}(s_1, s_2, \ldots , s_n) $ for $ s_1, s_2, \ldots , s_n \in \{ 0, 1 \}$. This optimisation problem is equivalent to a corresponding QUBO problem up to a change in the variable domain (from spins to binary variables). The equivalence of the QUBO problem and the Ising model is one of the most significant properties of QUBO~\cite{b5}. The following subsections will detail how we can convert a QUBO problem into an Ising model and vice versa.
 
 \subsection{Converting QUBO to Ising}\label{qubotoising}
-Given a QUBO problem with QUBO matrix $Q$, we can use the conversion, $x_i = \frac{s_i + 1}{2}, s_i \in \{-1, 1\}$ to change the spin variables into binary variables. The objective function $f(x)$ of the QUBO problem can be expressed as
+Given a QUBO problem with QUBO matrix $Q$, we use the conversion, $x_i = \frac{s_i + 1}{2}, s_i \in \{-1, 1\}$ to change the binary variables into spins. The objective function $f(x)$ of the QUBO problem can be expressed as:
 \begin{align}
     f(x) &= f(x_1, ..., x_n) \nonumber\\
-    &= \sum_{1\leq i < j \leq n} Q_{ij}(x_i x_j) + \sum_{i=1}^N Q_{ii} x_i \nonumber \\
+    &= \sum_{1\leq i < j \leq n} Q_{ij}(x_i)(x_j) + \sum_{i=1}^N Q_{ii} x_i \nonumber \\
     &= \sum_{1\leq i < j \leq n} \frac{1}{4} Q_{ij}(s_i + 1)(s_j + 1) + \sum_{i=1}^N \frac{1}{2} Q_{ii} (s_i + 1) \nonumber
 \end{align}
 If we group the constant terms into $k$ and let $a_i = \sum_{1\leq j \leq N, j \neq i} \frac{1}{4}Q_{\min(i,j)\max(i,j)} + \frac{1}{2}Q_{ii}$, we can express the objective function as:
 \begin{align}
-    f(x) = \sum_{1\leq i < j \leq n} \frac{1}{4} Q_{ij}s_i s_j + \sum_{i=1}^N a_i s_i + k \nonumber
+    f(x) = \sum_{1\leq i < j \leq n} \frac{1}{4} Q_{ij}s_i s_j + \sum_{i=1}^N a_i s_i + k
 \end{align}
-Removing the constant $k$, which is irrelevant for optimisation, we can reformulate the QUBO problem as an Ising model with $h_i = -a_i$ and $J_{ij} = -\frac{1}{4}Q_{ij}$ for $i \neq j$. Finding the ground state for the Ising model is the same problem as finding $\argmin_{x \in \{0, 1\}^n} x^\intercal Q x$, and the solution to the ground state of the Ising model can be converted into a solution for QUBO problem using $x_i = \frac{s_i + 1}{2}$. However, the optimal objective function value may differ due to the constant $k$.
+Removing the constant $k$, which is irrelevant for optimisation, we can reformulate the QUBO problem as an Ising model with $h_i = -a_i$ and $J_{ij} = -\frac{1}{4}Q_{ij}$ for $i < j$ and $0$ otherwise. Solving for the ground state for the Ising model is the same problem as solving $\argmin_{x \in \{0, 1\}^n} x^\intercal Q x$, and the solution to the ground state of the Ising model can be converted into a solution for QUBO problem using $x_i = \frac{s_i + 1}{2}$. However, the optimal objective function value may differ due to the constant $k$.
 
 \subsection{Converting Ising to QUBO}\label{isingtoqubo}
-Given the Hamiltonian of an Ising problem, we use the conversion $s_i = 2x_i - 1, x_i \in \{0, 1\}$ to change the spin variables into binary variables:
-\begin{align}
+Given the Hamiltonian of an Ising problem, we use the conversion $s_i = 2x_i - 1, x_i \in \{0, 1\}$ to change the spins into binary variables. The Hamiltonian of the Ising model can be expressed as: \begin{align}
     \Hat{H}(s) &= -\sum_{1\leq i < j \leq n} J_{ij}s_i s_j - \sum_{i=1}^N h_i s_i \nonumber\\
     &= -\sum_{1\leq i < j \leq n} J_{ij}(2x_i - 1) (2x_j - 1) - \sum_{i=1}^N h_i (2x_i - 1) \nonumber\\
     &= -\sum_{1\leq i < j \leq n} J_{ij}(4x_i x_j - 2x_i - 2x_j + 1) - \sum_{i=1}^N (2h_i x_i - h_i) \nonumber
 \end{align}
 If we group the constant terms into $k$ and let $a_i = 2h_i + \sum_{1\leq j \leq N, j \neq i} 2J_{\min(i,j)\max(i,j)}$, we can express the Hamiltonian as:
 \begin{align}
-    \Hat{H}(s) &= -\sum_{1\leq i < j \leq n} 4J_{ij}x_i x_j - \sum_{i=0}^N a_{i}x_i + k \nonumber
+    \Hat{H}(s) &= -\sum_{1\leq i < j \leq n} 4J_{ij}x_i x_j - \sum_{i=0}^N a_{i}x_i + k
 \end{align}
-Removing the constant $k$, which is irrelevant for optimisation, we can reformulate the Ising model Hamiltonian as a QUBO matrix $Q$ such that $Q_{ii} = -a_i$ and $Q_{ij} = -4J_{ij}$ for $i < j$. Finding $\argmin_{x \in \{0, 1\}^n} x^\intercal Q x$ is now the same problem as finding the ground state for the original Ising model, and the solution to the ground state of the Ising model can be mapped to a solution for QUBO problem using $s_i = 2x_i - 1$. However, the optimal objective function value may differ due to the constant $k$.
+Removing the constant $k$, which is irrelevant for optimisation, we can reformulate the Ising model Hamiltonian as a QUBO matrix $Q$ such that $Q_{ii} = -a_i$ and $Q_{ij} = -4J_{ij}$ for $i < j$ and $0$ otherwise. Solving $\argmin_{x \in \{0, 1\}^n} x^\intercal Q x$ is the same problem as solving for the ground state of the original Ising model, and the solution to the ground state of the Ising model can be mapped to a solution for QUBO problem using $s_i = 2x_i - 1$. However, the optimal objective function value may differ due to the constant $k$.
 
 \subsection{Solving for the ground state of the Ising model}
-In one and two-dimensional Ising models, each particle interacts with a small number of neighbours, and the ground state can be solved by calculating the partition function~\cite{onsager} or by using the transfer matrix method~\cite{kramerising}. However, the Ising models of interest are of higher dimensions due to a large number of possible quadratic interactions, which render exact methods for finding their ground states computationally infeasible \cite{barahona1982computational}. However, there are ways to approximate the ground state for higher dimensional Ising models which are explained in \autoref{review}.
+In one and two-dimensional Ising models, each particle interacts with a small number of neighbours, and the ground state can be solved efficiently by calculating the partition function~\cite{onsager} or by using the transfer matrix method~\cite{kramerising}. However, the Ising models of interest are of higher dimensions due to a large number of possible quadratic interactions, which render exact methods for finding their ground states computationally infeasible \cite{barahona1982computational}. Nevertheless, there are ways to approximate the ground state for higher dimensional Ising models which are explained in \autoref{review}.
 
 \section{Wave functions, Observables and Ansatzes}\label{wavefunction}
 Quantum physics is built around wave functions and operators \cite{GriffithsSchroeter2018}. Wave functions represent the state of the system and live in a infinite-dimensional Hilbert space, which is defined as the set of all square-integrable functions:
 \begin{equation*}
     f(x) \text{ such that } \int_{-\infty}^\infty |f(x)|^2 \; dx < \infty
 \end{equation*}
-The properties of the Hilbert space allow the wave function, denoted as $\Psi$, to be normalised so that $\int_{-\infty}^\infty |\Psi|^2 \; dx = 1$. Under the statistical interpretation of quantum mechanics, $|\Psi(x)|^2$ would also represent the probability of a system being in state $x$ once it is measured. The probabilistic nature of the wave function also implies that a wave function consists of a superposition of states. For this project, we will adopt the statistical interpretation and view the wave function as a probability distribution over all possible state configurations.
+The properties of the Hilbert space allow the wave function, denoted as $\Psi$, to be normalised so that $\int_{-\infty}^\infty |\Psi|^2 \; dx = 1$. Under the statistical interpretation of quantum mechanics, $|\Psi(x)|^2$ would also represent the probability of a system being in configuration $x$ once it is measured. Additionally, the probabilistic nature of the wave function implies that a wave function can consist of a superposition of configurations. For this project, we will adopt the statistical interpretation and view the wave function as a probability distribution over all possible states.
 
-Quantum operators represent the observables---measurable system quantities such as position, momentum, or energy. Quantum operators are hermitian linear operators that act on a wave function to map states to observable values, which must be real. The operator's eigenvalues correspond to possible values of the represented quantity and are also real. When an operator acts on a wavefunction that exists as a superposition of multiple states, it returns an expected value of the observable instead, where $p(x) = |\Psi (x)|^2$. The Hamiltonian is the energy operator, and the eigenvalues of the Hamiltonian are all the possible energies a system could have. We will only be concerned with the Hamiltonian operator in this study.
+Quantum operators represent the observables---measurable system quantities such as position, momentum, or energy. Quantum operators are Hermitian linear operators that act on a wave function to map configurations to observable values, which are real-valued. The operator's eigenvalues correspond to possible values of the measurable quantity and are thus also real. When an operator acts on a wavefunction that consists of a superposition of multiple configurations, it returns an expected value of the observable instead, where the probability of a state $x$, $p(x)$ is equal to $|\Psi (x)|^2$. The Hamiltonian is the energy operator, and the eigenvalues of the Hamiltonian are the possible energy levels a system could have. We will only be concerned with the Hamiltonian operator in our study.
 
-For an Ising model, the wavefunction encodes the probabilities of each spin configuration, and the Hamiltonian maps a wavefunction to an energy expectation value, which is the expected energy.
+For an Ising model, the wavefunction encodes the probabilities of each spin configuration, and the Hamiltonian maps a wavefunction to an energy expectation value, which is the expected energy value if we measure the system.
 
-An Ansatz is an educated guess for the solution to a problem, which often reduces the complexity or size of the problem \cite{qaoareview}. When solving for the ground state of a wave function with variational methods, an Ansatz represents a subspace of the infinite-dimensional Hilbert space in which the wave function lives. It is important to ensure that the wave function is general enough to closely approximate the space of all solutions yet is specific enough to be optimised efficiently.
+An Ansatz is an educated guess for the solution to a problem, which often reduces the complexity or size of the problem \abbrevcite{qaoareview}. When solving for the ground state of a wave function with variational methods, an Ansatz represents a subspace of the infinite-dimensional Hilbert space in which the wave function lives. It is important to ensure that the wave function is general enough to closely approximate the space of all solutions yet is specific enough to be optimised efficiently.
 
 \section{Sampling methods}\label{samplingmethods}
-Gibbs and Metropolis-Hasting sampling are Markov Chain Monte Carlo (MCMC) sampling methods used to sample from a probability distribution when direct sampling is infeasible. MCMC sampling methods are often used when training Neural Network Quantum States (NNQS) since we need the energy expectation value, but there are exponentially many states to average over. However, if we can sample from the probability distribution that the NNQS encodes, then we can obtain an unbiased estimate of the energy expectation value. We will first introduce Metropolis-Hasting sampling and then Gibbs sampling as a special case of Metropolis-Hasting sampling. We denote the complex probability distribution that we want to sample from as $\probP(x)$.
+Gibbs and Metropolis-Hasting sampling are Markov chain Monte Carlo (MCMC) sampling methods used to sample from a probability distribution when directly sampling from the distribution is infeasible. MCMC sampling methods are often used when training Neural Network Quantum States (NNQS) since we need to minimise the energy expectation value which is averaged over exponentially many states. However, if we can sample from the probability distribution that the NNQS encodes, then we can obtain an unbiased estimate of the energy expectation value and proceed with stochastic gradient descent. We will first introduce Metropolis-Hasting sampling and then Gibbs sampling as a special case of Metropolis-Hasting sampling. We denote the complex probability distribution that we want to sample from as $\probP(x)$.
 
 \subsection*{Metropolis-Hasting sampling}
 Metropolis-Hasting sampling \cite{metropolissampling} is often used when the underlying architecture of the NNQS is a Multilayer Perceptron (MLP) and proceeds as follows:
@@ -115,15 +114,16 @@ Metropolis-Hasting sampling \cite{metropolissampling} is often used when the und
     \item Accept the new candidate by replacing $x \leftarrow x^*$ with probability $\alpha = \min \left(1, \frac{\probP(x^*)}{\probP(x)} \frac{q(x|x^*)}{q(x^*|x)}\right)$.
     \item Repeat steps 2 and 3 for a certain number of iterations.
 \end{enumerate}
-For the NNQS, we usually use a uniform distribution for $q$, which leads to $\alpha = \min \left(1, \frac{\probP(x^*)}{\probP(x)} \right)$. When the proposal distributions are symmetric, the sampling method is also known as Metropolis sampling.
+For the NNQS, we usually use a uniform distribution for $q$, which leads to $\alpha = \min \left(1, \frac{\probP(x^*)}{\probP(x)} \right)$. When the proposal distributions are symmetric, as in the case of a uniform distribution, the sampling method is also known as Metropolis sampling.
+
 \subsection*{Gibbs sampling}
-Gibbs sampling \cite{gibbssampling} is used when the conditional distribution is easy to sample, which is the case when the underlying architecture for the NNQS is a Restricted Boltzmann Machine (RBM). Gibbs sampling proceeds as follows:
+Gibbs sampling \cite{gibbssampling} is used when the full distribution is difficult to sample from but the respective conditional distributions are easy to sample from, which is the case when the underlying architecture of the NNQS is a Restricted Boltzmann Machine (RBM). Gibbs sampling proceeds as follows:
 
 \begin{enumerate}
-    \item Initialise the visible layer of the RBM with a random sample $\mathbf{s}$.
-    \item Update the hidden layer by sampling from their respective conditional probability distribution given the current visible layer configuration with $\probP(h_i=1|\mathbf{s}) = \sigma(b_i + \sum_j W_{ji}s_j)$ where $\sigma$ is the sigmoid function.
-    \item Update the visible layer by sampling from their respective conditional probability distribution given the current hidden layer configuration with $\probP(s_i=1|\mathbf{h}) = \sigma(a_i + \sum_j W_{ij}h_j)$ where $\sigma$ is the sigmoid function.
+    \item Initialise the visible layer of the RBM with a random configuration $\mathbf{s}$.
+    \item Update the hidden layer units by sampling from their respective conditional probability distribution given the current visible layer configuration with $\probP(h_i=1|\mathbf{s}) = \sigma(b_i + \sum_j W_{ji}s_j)$ where $\sigma$ is the sigmoid function.
+    \item Update the visible layer units by sampling from their respective conditional probability distribution given the current hidden layer configuration with $\probP(s_i=1|\mathbf{h}) = \sigma(a_i + \sum_j W_{ij}h_j)$ where $\sigma$ is the sigmoid function.
     \item Repeat steps 2 and 3 for a certain number of iterations.
 \end{enumerate}
 
-The key benefit of Gibbs sampling on an RBM is that the visible units are conditionally independent given the hidden layer, and the hidden units are similarly conditionally independent given the visible layer. Thus, Gibbs sampling can be easily parallelised and accelerated using general purpose graphics processing units (GPUs).
+The key benefit of Gibbs sampling for an RBM is that the visible units are conditionally independent given the hidden layer, and the hidden units are similarly conditionally independent given the visible layer. Thus, Gibbs sampling can be easily parallelised and accelerated using general-purpose graphics processing units (GPUs), which is a key feature of the MAPALUS Python library \cite{b25}.

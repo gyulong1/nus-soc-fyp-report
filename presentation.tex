@@ -1,0 +1,76 @@
+\documentclass[pdf]{beamer}
+\mode<presentation>{\usetheme{mtheme}}
+\setbeamertemplate{footline}[frame number]
+\setbeamercolor{footline}{fg=black}
+\setbeamerfont{footline}{series=\bfseries}
+%List of packages
+\usepackage{booktabs}
+\usepackage{graphicx} 
+\usepackage{dcolumn} 
+\usepackage{breqn}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{physics}
+\usepackage[normalem]{ulem}
+\usepackage{mathtools}
+\usepackage{amsthm, bm}
+\usepackage[font=footnotesize,labelformat=simple]{subcaption}
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\usepackage{subfigure}
+
+\setbeamerfont{bibliography item}{size=\footnotesize}
+\setbeamerfont{bibliography entry author}{size=\footnotesize}
+\setbeamerfont{bibliography entry title}{size=\footnotesize}
+\setbeamerfont{bibliography entry location}{size=\footnotesize}
+\setbeamerfont{bibliography entry note}{size=\footnotesize}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\rua}{{\color{red}\uparrow}}
+\newcommand{\rda}{{\color{red}\downarrow}}
+\newcommand{\rr}{{\color{red}r}}
+\newcommand{\ua}{\uparrow}
+\newcommand{\da}{\downarrow}
+
+\setbeamertemplate{page number in head/foot}[appendixframenumber]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Metadata %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hypersetup
+{
+	%Separate multiple authors by comma
+	pdfauthor={Yulong Guo},
+	pdftitle={Solving QUBO problems with Qiskit},
+	colorlinks=false
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title related %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{subsection in toc}[default]
+\date{22 April 2023}
+%\usetheme{Darmstadt}%1
+
+%The contact for one of the authors MUST be embedded on the title (see below)
+\title[Data-driven and Physics-inspired Machine Learning: Benchmarking Quantum-inspired Quadratic Unconstrained Binary Optimisation Solvers]{Data-driven and Physics-inspired Machine Learning: Benchmarking Quantum-inspired Quadratic Unconstrained Binary Optimisation Solvers \\ Project No: H0811550}
+
+%For LICENSE, we suggest CC-BY-SA, but you are free to choose your own as long
+%as the LICENSE you choose is AT LEAST as permissive as CC-BY-SA
+%\author[Yulong Guo \hspace{0.2cm}]{\texorpdfstring{Yulong Guo}{}}
+
+\author[Yulong Guo \hspace{0.2cm}]{Yulong Guo} 
+%\small Supervised by: A/P St\'ephane Bressan}
+\institute[National University of Singapore]{National University of Singapore}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Presentation begins here %%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition} \newcommand{\defnautorefname}{Definition}
+
+{\setbeamertemplate{footline}{} 
+\begin{frame}[noframenumbering]
+\titlepage
+\end{frame}
+} %this removes the footline from title page
+
+\end{document}

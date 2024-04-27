@@ -320,9 +320,10 @@
       \@citea\def\@citea{;\ }\def\@lastcite{##1##2##3}%
       \@ifempty{##3}{##1}%
       {\@ifempty{##2}{##1~\&\ ##3}%
-        {##1\ et~al.}}%
+        {\@setfirstcite{##6}##1\ et~al.}}%
       ,\ ##5\fi}%
   \def\@bcite{\@bccite}\def\@ecite{\@eccite}\@internalcite}
+
 
 \def\abbrevoutcite{%
   \def\citename##1##2##3##4##5##6{%

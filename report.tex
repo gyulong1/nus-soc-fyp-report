@@ -13,7 +13,7 @@
 \usepackage{fullpage}
 \usepackage{amsthm}
 \usepackage{amssymb}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
@@ -87,7 +87,7 @@
 
 % Replace as necessary
 \begin{abstract}
-The quadratic unconstrained binary optimisation (QUBO) problem is a fundamental problem in combinatorial optimisation and offers a versatile framework that encapsulates various scientific and industrial optimisation challenges. However, the QUBO problem is NP-hard and is traditionally extremely difficult to solve efficiently due to its exponentially increasing search space. Our work aims to measure the performance of different quantum-inspired QUBO solvers that utilise quantum effects to search for optimal solutions. We benchmarked the D-Wave Quantum Annealer, Neural Network Quantum States (NNQS), and Quantum Approximate Optimization Algorithm (QAOA) solvers with classical commercial QUBO solvers. We used a dataset with various combinatorial problems---not-all-equal 3-satisfiability, max-cut, and the Sherrington-Kirkpatrick model, and the solvers were evaluated based on average normalised energy and success probability. Our results show that the D-wave and NNQS solvers outperform the QAOA solver but cannot match the performance of commercial QUBO solvers. However, when we match the solver runtimes, the D-wave solver showed promising performance for specific problem sizes. We also investigate the performance of the NNQS solver with different architectures and training algorithms. Our results show that the NNQS solver with a Restricted Boltzmann Machine and a continuous training algorithm performed best across all datasets.
+The quadratic unconstrained binary optimisation (QUBO) problem is a fundamental problem in combinatorial optimisation and offers a versatile framework that encapsulates various scientific and industrial optimisation challenges. However, the QUBO problem is NP-hard and is traditionally extremely difficult to solve efficiently due to its exponentially increasing search space. Our work aims to measure the performance of different quantum-inspired QUBO solvers that utilise quantum effects to search for optimal solutions. We benchmarked the D-Wave Quantum Annealer, Neural Network Quantum States (NNQS), and Quantum Approximate Optimization Algorithm (QAOA) solvers along with two classical commercial QUBO solvers. We used three benchmark datasets, each with a different type of combinatorial problem---not-all-equal 3-satisfiability, max-cut, and the Sherrington-Kirkpatrick model. The solvers were evaluated based on average normalised energy and success probability. Our results show that the D-Wave and NNQS solvers outperform the QAOA solver but cannot match the performance of commercial QUBO solvers. However, when we matched the solver runtimes, the D-Wave solver showed promising performance for specific problem sizes. We also investigate the performance of the NNQS solver with different architectures and training algorithms. Our results show that the Restricted Boltzmann Machine with a continuous training algorithm performed best across all datasets.
 
 \begin{descriptors}
     \item \itab{10002950.10003714.10003716.10011136 Discrete optimization}
@@ -97,19 +97,19 @@ The quadratic unconstrained binary optimisation (QUBO) problem is a fundamental 
 
 \end{descriptors}
 \begin{keywords}
-    Quadratic unconstrained binary optimisation, Ising model, Quantum annealing, Neural network quantum states, Quantum Approximate Optimization Algorithm
+    Quadratic unconstrained binary optimisation, Ising model, Quantum annealing, Neural Network Quantum States, Quantum Approximate Optimization Algorithm
 \end{keywords}
 
 % Replace/Delete as necessary
 \begin{implement}
-    \item{Linux, GPUs, Tesla A100, Python, Tensorflow, Dimod, Qiskit}
+    \item{Tesla A100, Python, TensorFlow, Dimod, Qiskit}
 \end{implement}
 
 \end{abstract}
 
 % Replace as necessary
 \begin{acknowledgement}
-I would like to thank my friends and family for their constant support throughout the project. I would also like to thank my project advisor, Associate Professor St\'ephane Bressan, research fellow Lu Jianlong, and past and present research group members for their invaluable guidance and support.
+I would like to thank my friends and family for their constant support throughout the project. I would also like to thank my project advisor, Associate Professor St\'ephane Bressan, research fellow Lu Jianlong, and past and present members of the research group for their invaluable guidance and support.
 \end{acknowledgement}
 
 \listoffigures % Remove if no figures

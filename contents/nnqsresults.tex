@@ -1,4 +1,4 @@
-\chapter{NNQS exploration}\label{nnqsresults}
+\chapter{NNQS Exploration}\label{nnqsresults}
 This chapter explores the performance of different architectures and training schedules that can be used to train the NNQS solver. All experiments in this section were run on a subset of the entire dataset with problem sizes of $10,25,50,75,200,250$ and $10$ problems for each problem type and size. 
 
 %The problem evaluation metrics are also calculated by considering the solutions from the different types of NNQS to draw a clearer comparison between architectures and training schemes.
@@ -89,6 +89,8 @@ Even though progressive training more closely mimics the quantum annealing proce
 
 \begin{table}[!htb]
     \centering
+    \caption{Average normalised energy for different NNQS types}
+    \label{results:nnqsnormalizedenergy}
     \begin{tabular}{ccccccc} \toprule
         ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\
         \cmidrule{2-7} & Continuous & Direct & Progressive & Continuous & Direct & Progressive \\
@@ -98,12 +100,12 @@ Even though progressive training more closely mimics the quantum annealing proce
         SK model & 0.790 & 0.248 & 0.411 & \textbf{0.999} & 0.488 & 0.995 \\ \midrule
         Average & 0.860 & 0.156 & 0.483 & \textbf{0.998} & 0.568 & 0.965 \\ \bottomrule
     \end{tabular}
-    \caption{Average normalised energy for different NNQS types}
-    \label{results:nnqsnormalizedenergy}
 \end{table}
 
 \begin{table}[!htb]
     \centering
+    \caption{Success probability for different NNQS types}
+    \label{results:nnqssuccess}
     \begin{tabular}{ccccccc} \toprule
         ~ & \multicolumn{3}{c}{MLP} & \multicolumn{3}{c}{RBM} \\
         \cmidrule{2-7} & Continuous & Direct & Progressive & Continuous & Direct & Progressive \\
@@ -113,6 +115,4 @@ Even though progressive training more closely mimics the quantum annealing proce
         SK model & 0.417 & 0.000 & 0.333 & \textbf{0.933} & 0.000 & 0.767 \\ \midrule
         Average & 0.610 & 0.010 & 0.354 & \textbf{0.949} & 0.194 & 0.674 \\ \bottomrule
     \end{tabular}
-    \caption{Success probability for different NNQS types}
-    \label{results:nnqssuccess}
 \end{table}

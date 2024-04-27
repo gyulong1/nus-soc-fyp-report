@@ -35,7 +35,7 @@ The experiments will be conducted with the D-Wave Advantage 4.1 QPU, which has u
     \item \textbf{Annealing} The system evolves with a time-varying Hamiltonian:
     \begin{equation}
         \label{eqn:dwavehamiltonian}
-        H(s) = -\frac{A(s)}{2}\left(\sum_{i} \Hat{\sigma}_x^{(i)}\right) + \frac{B(s)}{2}\left(\sum_{i}h_i \Hat{\sigma}_z^{(i)}\ + \sum_{i > j}J_{i,j} \Hat{\sigma}_z^{(i)}\Hat{\sigma}_z^{j)}\right)
+        4.
     \end{equation}
     where $s$ is the normalised anneal fraction and $A(s), B(s)$ are annealing functions shown in \autoref{dwaveannealing}. We will use the default annealing time of $20\mu s$. 
     \item \textbf{Readout of solution} The spin values of the qubits are measured and stored as a possible solution.
@@ -50,7 +50,7 @@ The experiments will be conducted with the D-Wave Advantage 4.1 QPU, which has u
 \end{figure}
 
 \subsection{Neural-Network Quantum States}
-We will adopt the Python library MAPALUS for implementing Neural-Network Quantum States \cite{b25}. MAPALUS uses the Tensorflow library and enables parallel execution on general-purpose graphics processing units for quicker sampling. We will use the Restricted Boltzmann Machine with $5n$ hidden nodes and the sigmoid activation function as the underlying architecture for the NNQS.
+We will adopt the Python library nqs\-tensorflow\footnote for implementing Neural-Network Quantum States \cite{b25}. The library uses Tensorflow to enable parallel execution on general-purpose graphics processing units for quicker sampling. We will use the Restricted Boltzmann Machine with $5n$ hidden nodes and the sigmoid activation function as the underlying architecture for the NNQS.
 
 To solve a QUBO problem, the NNQS simulates the D-Wave quantum annealing process on a classical computer with a time-dependent Hamiltonian that follows \autoref{eqn:annealinghamiltonian}. Since the equations for $A(s)$ and $B(s)$ are unavailable, we employ a curve-fitting process to obtain analytical functions from the discrete points provided by D-Wave. The annealing functions used are:
 \begin{gather}
@@ -87,12 +87,7 @@ The derivation of the gradients is detailed in the appendix of \cite{b20}. The c
 \subsection{Quantum Approximate Optimization Algorithm}
 We will implement QAOA in Qiskit, an open-source software development kit for quantum computing, with $p=1$ using a backend hosted on the IBM Quantum Platform (IBMQ) \cite{b24}. We will utilise the IBMQ simulator, \texttt{ibmq\_qasm\_simulator}, a general-purpose simulator for quantum circuits that can handle up to 32 qubits. Even though IBMQ allows for access to quantum computers, it is limited by long wait times ($>5$ hours for each problem) and is infeasible for a benchmarking experiment. To measure the optimal performance of the QAOA algorithm, we will assume an ideal circuit without a quantum noise model. We will use the default mixing Hamiltonian of $\Hat{H}_0 = \sum_{i}\Hat{\sigma}_x^{(i)}$ and the Qiskit transpiler to optimise the decomposition of the operators into their individual parametrised quantum gates as shown in \autoref{qiskitcircuit} \cite{qiskittranspiler}.
 
-\begin{figure}[!htb]
-    \centering
-    \includegraphics[width=1\linewidth]{images/qiskit_circuit.png}
-    \caption{Circuit diagram with the Hadamard gates, problem Hamiltonian operator, mixing Hamiltonian operator and measurement gates (left to right)}
-    \label{qiskitcircuit}
-\end{figure}
+ 
 
 The parameters $(\boldsymbol{\gamma}, \boldsymbol{\beta})$ are updated to minimise the energy expectation value. The training algorithm is described as follows:
 \begin{enumerate}
@@ -105,15 +100,15 @@ The parameters $(\boldsymbol{\gamma}, \boldsymbol{\beta})$ are updated to minimi
 We will repeatedly sample the final optimised circuit $1000$ times, and the candidate solution will be chosen as the best solution among the sampled configurations. The QAOA solver is accessed with the IBM Quantum Qiskit Runtime API and is run on the IBMQ cloud servers.
 
 \subsection{GUROBI Optimizer}
-The GUROBI optimiser is a state-of-the-art classical commercial solver \cite{b26}. As the GUROBI optimiser supports QUBO problems, we construct the QUBO matrix directly using the Gurobi Python library and run the optimiser locally for $10$ minutes for each input problem. If the optimiser finishes before the cutoff, the candidate solution is guaranteed to be the optimal configuration. Otherwise, we would use the best solution within the cutoff time as the candidate solution. The GUROBI optimiser uses a branch and bound algorithm that first relaxes the integer constraint of the QUBO problem, then branches into subproblems based on variables that violate the constraints. All experiments were run on a 32 Core AMD 7543P Processor using Gurobi Optimizer version 10.0.3.
+The GUROBI optimiser is a state-of-the-art classical commercial solver \cite{b26}. The GUROBI optimiser uses a branch and bound algorithm that first relaxes the integer constraint of the QUBO problem, then branches into subproblems based on variables that violate the constraints. As the GUROBI optimiser supports QUBO problems, we construct the QUBO matrix directly and run the optimiser locally for $10$ minutes for each input problem. If the optimiser finishes before the cutoff, the candidate solution is guaranteed to be the optimal configuration. Otherwise, we would use the best solution within the cutoff time as the candidate solution.  All experiments were run on a 32 Core AMD 7543P Processor using Gurobi Optimizer version 10.0.3.
 
 %All GUROBI experiments used the Gurobi Optimizer version 9.0.1 and were run on a local machine with an 8-core Apple M1 chip at 3.2GHz with 16GB of RAM.
 
 \subsection{Fixstars Amplify QUBO Solver}
-The Fixstar Amplify QUBO solver is a commercial simulated annealing-based QUBO solver which is run in parallel on GPUs \cite{b12}. As the Fixstar solver supports QUBO problems, we submit the QUBO matrix directly using the Fixstar API and run the solver with the highest allowed time limit of $100$ seconds for each input problem. The solver is implemented on GPUs and runs on Fixstar remote servers.
+The Fixstars Amplify QUBO solver is a commercial simulated annealing-based QUBO solver that runs in parallel on GPUs on Fixstars' remote servers \cite{b12}. As the Fixstars solver supports QUBO problems, we submit the QUBO matrix using the Fixstars API and run the solver with the highest allowed time limit of $100$ seconds for each input problem.
 
 \section{Benchmark datasets}
-We use three randomly generated problem sets to benchmark our QUBO solvers: not-all-equal 3-satisfiability (NAE3SAT), max-cut, and the Sherrington-Kirkpatrick (SK) model. These problems were chosen as they are commonly used in QUBO experiments to represent NP-hard problems and are relatively straightforward to encode into QUBO form. The NAE3SAT and max-cut problem sets are macro benchmarks (application-based) to represent practical combinatorial optimisation problems. In contrast, the SK model problem set is a microbenchmark designed as a difficult problem set. Each problem set comprises problems of 13 sizes, ranging from $10$ to $300$\footnote{$n \in [10,15,20,25,30,35,50,75,100,150,200,250,300]$}. $20$ different random problems are generated\footnote{random seed is chosen to be from $0-19$} for each problem size for a total of $260$ problems per problem set. Each problem is first formulated in either the QUBO or Ising form, and the conversion between them follows \autoref{qubotoising} and \autoref{isingtoqubo}.
+We use three randomly generated problem sets to benchmark our QUBO solvers: not-all-equal 3-satisfiability (NAE3SAT), max-cut, and the Sherrington-Kirkpatrick (SK) model. These problems were chosen as they are commonly used in QUBO experiments to represent NP-hard problems and are relatively straightforward to encode into QUBO form. The NAE3SAT and max-cut problem sets are macro benchmarks (application-based) to represent practical combinatorial optimisation problems. In contrast, the SK model problem set is a microbenchmark designed as a difficult QUBO problem set. Each problem set comprises problems of 13 sizes, ranging from $10$ to $300$\footnote{$n \in [10,15,20,25,30,35,50,75,100,150,200,250,300]$}. $20$ different random problems are generated\footnote{random seed is chosen to be from $0-19$} for each problem size for a total of $260$ problems per problem set. Each problem is first formulated in either the QUBO or Ising form, and the conversion between them follows \autoref{qubotoising} and \autoref{isingtoqubo}.
 
 \subsection*{Not-all-equal 3-satisfiability (NAE3SAT)}
 The NAE3SAT problem is a variant of the boolean satisfiability problem where each problem instance consists of $n$ boolean variables $(x_1, x_2, ..., x_n)$ and $m$ clauses that each combine three literals, which can be a variable or its negation. The objective is to find an assignment of boolean values such that the three values in each clause are not all the same, i.e., each clause has at least one true and one false value. We generate random NAE3SAT problems with $\rho = \frac{m}{n} = 2.1$, where NAE3SAT problems are known to transition from being satisfiable to unsatisfiable \cite{nae3sattransition}, using the random\_nae3sat generator from the dimod Python library, which uniformly samples 3-variable clauses with replacement \cite{dimodrandomnae3sat}. 
@@ -152,7 +147,7 @@ We use two metrics to evaluate the performance of the solvers, which are calcula
     \begin{equation}
         \Bar{p} = \frac{\text{number of lowest energy solutions found}}{20}
     \end{equation}
-    \item The average normalized energy, used in \cite{b34}, which is:
+    \item The average normalised energy, used in \cite{b34}, which is:
     \begin{equation}
         \Bar{r}_{solver} =  \frac{1}{20} \sum_{i = 1}^{20} \frac{E^i_{max} - E^i_{solver}}{E^i_{max} - E^i_{min}}
     \end{equation}
